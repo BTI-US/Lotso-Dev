@@ -67,7 +67,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link bor" href="#" data-toggle="modal" data-target="#connectModal">Connect</a>
+                        <a class="nav-link bor" id="connectWallet" href="#" data-toggle="modal" data-target="#connectModal">Connect</a>
                     </li>
                 </ul>
             </div>
@@ -166,7 +166,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Notes Before Connecting</h5>
+                            <h5 class="modal-title" id="walletAddressTitle">Notes Before Connecting</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -174,14 +174,14 @@
                         <div class="modal-body">
                             <form>
                                 <div class="info-txt">
-                                    <div>To continue, please connect your Web3 wallet, such as MetaMask or WalletConnect. This allows our website to securely interact with your wallet.</div>
-                                    <div>By clicking "Accept and Continue," you agree to our terms and will be prompted to connect your wallet via an external link. Ensure you're using a trusted and secure wallet service.</div>
+                                    <div id="walletAddressHint1">To continue, please connect your Web3 wallet, such as MetaMask or WalletConnect. This allows our website to securely interact with your wallet.</div>
+                                    <div id="walletAddressHint2">By clicking "Accept and Continue," you agree to our terms and will be prompted to connect your wallet via an external link. Ensure you're using a trusted and secure wallet service.</div>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="dropboxx" data-dismiss="modal">Decline</button>
-                            <button type="submit" class="dropboxx2" data-dismiss="modal">Accept and Continue</button>
+                            <button type="button" id='connectDecline' class="dropboxx" data-dismiss="modal">Decline</button>
+                            <button type="submit" id="connectAccept" class="dropboxx2" data-dismiss="modal" data-param="dark">Accept and Continue</button>
                         </div>
                     </div>
                 </div>
@@ -1081,6 +1081,8 @@
     <script src="js/custom.js"></script>
     <script src="js/play-video.js"></script>
     <script src="js/contact-form.js"></script>
+    <script src="js/address-copy.js"></script>
+    <script type="module" src="dist/bundle.js"></script>
 
     <div id="videoModal" class="video-modal" style="display:none;">
         <div class="video-modal-content">

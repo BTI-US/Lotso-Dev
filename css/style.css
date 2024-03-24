@@ -1902,6 +1902,13 @@ textarea::placeholder {
     background-color: transparent;
 }
 
+/* Media query for screens smaller than 768px */
+@media screen and (max-width: 768px) {
+    .video-modal-content {
+        width: 90%;
+    }
+}
+
 .video-modal-content iframe {
     width: 100%;
     height: auto;
@@ -1931,4 +1938,48 @@ textarea::placeholder {
 .success-message {
     color: green;
     margin-top: 5px;
+}
+
+.address-container {
+    display: flex;
+    align-items: center;
+    border: none;
+    padding: 20px;
+    justify-content: center; /* Centers items horizontally inside the container */
+    margin: auto; /* Centers the container itself in the middle of the row */
+    background-color: #444444; /* Dark grey background color for the container */
+    border-radius: 10px; /* This value might need to be adjusted based on the container's height */
+    margin-bottom: 15px !important; /* Adds 15px space above the username container */
+    max-width: 1000px; /* or any other value that suits your design */
+}
+
+.address-container input {
+    border: none;
+    margin-right: 10px;
+    flex-grow: 1;
+    background-color: #444444; /* Dark grey background color for the input */
+    color: #fff; /* Adjust text color for better visibility, if necessary */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px; /* Adjust the font size as needed */
+}
+
+/* You might also want to add some styles to handle the focus state of the input */
+.address-container input:focus {
+    outline: none; /* Removes the default outline */
+    box-shadow: 0 0 0 2px #313131; /* Optional: Adds a grey glow when the input is focused */
+}
+
+.address-container button {
+    border: none;
+    background-color: #444444; /* Dark grey background color for the button */
+    color: #fff; /* Set the button text/icon color to white */
+    cursor: pointer;
+    padding: 0;
+    margin-left: 5px;
+    font-size: 20px; /* Adjust as needed */
+}
+
+/* Optional: Style for hover state */
+.address-container button:hover {
+    background-color: #444444; /* Slightly lighter grey for hover state */
 }
