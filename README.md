@@ -1,6 +1,7 @@
 # Lotso Coins - Leading the PvP Mode
 
 [![Deploy static content to Pages](https://github.com/BTI-US/Lotso/actions/workflows/static.yml/badge.svg?branch=master)](https://github.com/BTI-US/Lotso/actions/workflows/static.yml)
+[![CodeQL](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml)
 
 - Last Modified: 2024-03-25
 - Author: Saurabh Kumar
@@ -52,6 +53,10 @@ Lotso Coins is a decentralized application (dApp) that allows users to play PvP 
    npm run build
    ```
 Note: After running the command, a `dist` folder will be created in the root directory of the project, and the bundled JavaScript file `bundle.js` will be generated in the `dist` folder. Remember to perform a production build before deploying the project to GitHub Pages.
+
+## Documentation
+
+Click [here](https://lotso.org/documentation/index.html) to view the documentation.
 
 ## WalletConnect API Usage
 
