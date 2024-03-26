@@ -24,6 +24,18 @@ Lotso Coins is a decentralized application (dApp) that allows users to play PvP 
    npm install --save-dev webpack webpack-cli
    ```
 
+3. Install the following dependencies for Web3:
+
+   ```bash
+   npm install --save-dev web3
+   ```
+
+4. Install the following dependencies for Babel:
+
+   ```bash
+   npm install --save-dev @babel/core @babel/preset-env babel-loader
+   ```
+
 ## How to Use Webpack to Bundle the Project
 
 1. Create a `webpack.config.js` file in the root directory of the project.
@@ -63,6 +75,10 @@ Click [here](https://lotso.org/documentation/index.html) to view the documentati
 Click [here](https://docs.walletconnect.com/quick-start/dapps/web3-provider) to learn more about WalletConnect API.
 
 Click [here](https://docs.walletconnect.com/web3modal/javascript/about) to learn more about how to use the WalletConnect API for JavaScripts.
+
+## Infura API Usage
+
+Click [here](https://infura.io/docs) to learn more about Infura API.
 
 ## Size of Images
 

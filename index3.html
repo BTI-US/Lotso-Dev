@@ -197,6 +197,12 @@
                                     <div id="walletAddressHint2">By clicking "Accept and Continue," you agree to our terms and will be prompted to connect your wallet via an external link. Ensure you're using a trusted and secure wallet service.</div>
                                 </div>
                             </form>
+                            <form id="airdrop" style="display: none;">
+                                <button type="button" id="claimAirdrop" class="dropboxx2">Check Your Account</button>
+                                <div class="info-txt">
+                                    <div id="airdropMessage"></div>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" id='connectDecline' class="dropboxx" data-dismiss="modal">Decline</button>
@@ -1104,7 +1110,8 @@
     <script src="js/play-video.js"></script>
     <script src="js/contact-form.js"></script>
     <script src="js/address-copy.js"></script>
-    <script type="module" src="dist/bundle.js"></script>
+    <script src="dist/wallet-connect.bundle.js"></script>
+    <script src="dist/claim-airdrop.bundle.js"></script>
 
     <div id="videoModal" class="video-modal" style="display:none;">
         <div class="video-modal-content">

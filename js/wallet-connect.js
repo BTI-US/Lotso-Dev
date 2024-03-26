@@ -45,6 +45,7 @@ const hint2 = document.getElementById('walletAddressHint2')
 const acceptBtn = document.getElementById('connectAccept')
 const declineBtn = document.getElementById('connectDecline')
 const connectTitle = document.getElementById('walletAddressTitle')
+const airdrop = document.getElementById('airdrop')
 
 if (acceptBtn) {
   acceptBtn.addEventListener('click', function() {
@@ -80,9 +81,10 @@ watchAccount(config,
         if (account.isConnected) {
           hint1.innerText = 'Your wallet address is:'
           acceptBtn.innerText = 'Disconnect'
-          connectBtn.innerText = 'Account'
+          connectBtn.innerText = 'Airdrop'
           connectTitle.innerText = 'Account Information'
           declineBtn.innerText = 'Close'
+          airdrop.style.display = 'block'
         } else {
           hint1.innerText = 'To continue, please connect your Web3 wallet, such as MetaMask or WalletConnect. This allows our website to securely interact with your wallet.'
           hint2.innerText = 'By clicking "Accept and Continue", you agree to our terms and will be prompted to connect your wallet via an external link. Ensure you\'re using a trusted and secure wallet service.'
@@ -90,6 +92,7 @@ watchAccount(config,
           connectBtn.innerText = 'Connect'
           connectTitle.innerText = 'Notes Before Connecting'
           declineBtn.innerText = 'Decline'
+          airdrop.style.display = 'none'
         }
       }
     }
