@@ -2994,7 +2994,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((module) => {
 
 "use strict";
-eval("module.exports = /*#__PURE__*/JSON.parse('{\"_comment\":\"Input base or baseGoerli for mainnet or goerli testnet respectively\",\"activeNetwork\":\"mainnet\",\"contractAddress\":\"YOUR_CONTRACT_ADDRESS\"}');\n\n//# sourceURL=webpack:///./contract-config.json?");
+eval("module.exports = /*#__PURE__*/JSON.parse('{\"_comment\":\"Input base or baseGoerli for mainnet or goerli testnet respectively\",\"activeNetwork\":\"base\",\"contractAddress\":\"YOUR_CONTRACT_ADDRESS\"}');\n\n//# sourceURL=webpack:///./contract-config.json?");
 
 /***/ })
 

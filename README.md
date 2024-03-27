@@ -86,7 +86,9 @@ We are using the Base Mainnet network for our blockchain.
 
 Click [here](https://docs.base.org/network-information/) to learn more about the Base Mainnet network.
 
-## Mainnet Information
+We use viem library to define the Base network in our project.
+
+## Blockchain Information for Base Network
 
 |Name|Value|
 |-|-|
@@ -97,9 +99,9 @@ Click [here](https://docs.base.org/network-information/) to learn more about the
 |Currency Symbol|ETH|
 |Block Explorer|https://basescan.org|
 
-Refer to the [Base Mainnet](https://github.com/wevm/viem/blob/main/src/chains/definitions/base.ts) for the definition of the Base Mainnet network in viem.
+Refer to the [Base Network](https://github.com/wevm/viem/blob/main/src/chains/definitions/base.ts) for the definition of the Base Mainnet network in viem.
 
-## Goerli Testnet Information
+## Blockchain Information for Base Goerli Network
 
 |Name|Value|
 |-|-|
@@ -109,6 +111,8 @@ Refer to the [Base Mainnet](https://github.com/wevm/viem/blob/main/src/chains/de
 |Chain ID|84531|
 |Currency Symbol|ETH|
 |Block Explorer|https://goerli.basescan.org|
+
+Refer to the [Base Goerli Network](https://github.com/wevm/viem/blob/main/src/chains/definitions/baseGoerli.ts) for the definition of the Base Mainnet network in viem.
 
 ## Supported Blockchain
 
