@@ -1513,6 +1513,14 @@ over-btn a i {
     margin-bottom: 10px;
 }
 
+.info-txt p, .info-txt h3, .info-txt ul {
+    margin-bottom: 1em; /* Adjusts space below each paragraph, heading, and list */
+}
+
+.info-txt ul li {
+    margin-bottom: 0.5em; /* Adjusts space between list items, if needed */
+}
+
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder,
 input:focus,
