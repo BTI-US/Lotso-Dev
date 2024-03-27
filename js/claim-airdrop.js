@@ -58,10 +58,10 @@ async function initiateTransaction() {
 
         try {
             const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            const isGoerli = chainId === '0x5' && activeNetwork === 'goerli';
-            const isMainnet = chainId === '0x1' && activeNetwork === 'mainnet';
+            const isGoerli = chainId === '0x84531' && activeNetwork === 'baseGoerli';
+            const isBase = chainId === '0x8453' && activeNetwork === 'base';
 
-            if (isGoerli || isMainnet) {
+            if (isGoerli || isBase) {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 const contract = new web3.eth.Contract(contractABI, contractAddress);
                 const userAccount = accounts[0];
@@ -86,7 +86,7 @@ async function initiateTransaction() {
                     });
             } else {
                 console.log('Incorrect network:', chainId);
-                displayMessage(`Please switch to the ${activeNetwork === 'goerli' ? 'Goerli Test Network' : 'Ethereum Main Network'} in your MetaMask wallet.`, 'info');
+                displayMessage(`Please switch to the ${activeNetwork === 'baseGoerli' ? 'Goerli Test Network' : 'Base Network'} in your MetaMask wallet.`, 'info');
             }
         } catch (error) {
             console.error('Unable to get the current chain ID:', error);

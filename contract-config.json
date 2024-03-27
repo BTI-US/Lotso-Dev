@@ -1,4 +1,5 @@
 {
-    "activeNetwork": "mainnet",
+    "_comment": "Input base or baseGoerli for mainnet or goerli testnet respectively",
+    "activeNetwork": "base",
     "contractAddress": "YOUR_CONTRACT_ADDRESS"
 }

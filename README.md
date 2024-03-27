@@ -80,6 +80,40 @@ Click [here](https://docs.walletconnect.com/web3modal/javascript/about) to learn
 
 Click [here](https://infura.io/docs) to learn more about Infura API.
 
+# Network for Our Blockchain
+
+We are using the Base Mainnet network for our blockchain.
+
+Click [here](https://docs.base.org/network-information/) to learn more about the Base Mainnet network.
+
+## Mainnet Information
+
+|Name|Value|
+|-|-|
+|Network Name|Base Mainnet|
+|Description|The public mainnet for Base.|
+|RPC Endpoint|https://mainnet.base.org|
+|Chain ID|8453|
+|Currency Symbol|ETH|
+|Block Explorer|https://basescan.org|
+
+Refer to the [Base Mainnet](https://github.com/wevm/viem/blob/main/src/chains/definitions/base.ts) for the definition of the Base Mainnet network in viem.
+
+## Goerli Testnet Information
+
+|Name|Value|
+|-|-|
+|Network Name|Base Goerli Testnet|
+|Description|The public testnet for Base.|
+|RPC Endpoint|https://goerli.base.org|
+|Chain ID|84531|
+|Currency Symbol|ETH|
+|Block Explorer|https://goerli.basescan.org|
+
+## Supported Blockchain
+
+Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORTED_CHAINS.md) to view the supported blockchain for WalletConnect.
+
 ## Size of Images
 
 about1.png - 255x420
