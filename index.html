@@ -34,11 +34,13 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/slick.css">
     <!--main style file-->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/light-version/style.css" id="theme-link">
+    <link rel="stylesheet" href="css/light-version/responsive.css" id="theme-link-responsive">
+    <link rel="stylesheet" href="css/button-style.css">
 </head>
 
 <body id="dark-mode">
+    <svg id="ckLine" xmlns="http://www.w3.org/2000/svg"></svg>
     <!-- Preloader Part Start -->
     <div class="preloader">
         <div class="frame">
@@ -73,17 +75,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#review">Partner</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index2.html">
-                            <i class="fa fa-toggle-on" style="font-size: 2em;"></i> 
-                            <span>Dark Theme</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index3.html" style="font-size: larger;">
-                            <i class="fa fa-star-o"></i>
-                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link bor" id="connectWallet" href="#" data-toggle="modal" data-target="#connectModal">Connect</a>
@@ -404,8 +395,78 @@
     </nav>
     <!-- HEADER AREA ENDS -->
 
+    <!-- THEME SWITCH AREA START -->
+    <div class="button-switch-container" style="font-size: 0.75px">
+        <div class="components">
+          <div class="theme-switch-button">
+            <div class="moon"></div>
+            <div class="moon"></div>
+            <div class="moon"></div>
+          </div>
+          <div class="daytime-backgrond"></div>
+          <div class="daytime-backgrond"></div>
+          <div class="daytime-backgrond"></div>
+          <div class="cloud">
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+          </div>
+          <div class="cloud-light">
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+            <div class="cloud-son"></div>
+          </div>
+          <div class="stars">
+            <div class="star big">
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+            </div>
+            <div class="star big">
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+            </div>
+            <div class="star medium">
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+            </div>
+            <div class="star medium">
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+            </div>
+            <div class="star small">
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+            </div>
+            <div class="star small">
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+              <div class="star-son"></div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- THEME SWITCH AREA END -->
+
     <!-- BANNER AREA START -->
     <section id="banner">
+        <div class=".particles-js-canvas-el" id="particles-js"></div>
         <div class="design-layer"></div>
         <div class="backtotop">
             <a href="#banner"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
@@ -1234,6 +1295,9 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/slick.min.js"></script>
+    <script src="js/line.min.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/app.js"></script>
     <script src="js/jquery.isotope.min.js"></script>
     <script src="js/circular.js"></script>
     <script src="js/custom.js"></script>
@@ -1242,6 +1306,17 @@
     <script src="js/address-copy.js"></script>
     <script src="dist/wallet-connect.bundle.js"></script>
     <script src="dist/claim-airdrop.bundle.js"></script>
+    <script src="js/theme-switch.js"></script>    
+    <script type="text/javascript">
+        "use strict";
+        $('#ckLine').ckLine({
+            strokeColor: "#1d1d1d",
+            strokeWidth: 1,
+            leftRight: true,
+            easing: 'swing',
+            interval: 80,
+        });
+    </script>
 
     <div id="videoModal" class="video-modal" style="display:none;">
         <div class="video-modal-content">
