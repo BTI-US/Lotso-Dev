@@ -188,8 +188,8 @@
                         <div class="modal-body">
                             <form>
                                 <div class="info-txt">
-                                    <div id="walletAddressHint1">To continue, please connect your Web3 wallet, such as MetaMask or WalletConnect. This allows our website to securely interact with your wallet.</div>
-                                    <div id="walletAddressHint2">By clicking "Accept and Continue," you agree to our terms and will be prompted to connect your wallet via an external link. Ensure you're using a trusted and secure wallet service.</div>
+                                    <div id="walletAddressHint1">To continue, please connect your Web3 wallet, such as <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a> or <a href="https://walletconnect.org/" target="_blank" rel="noopener noreferrer">WalletConnect</a>. This allows our website to securely interact with your wallet.</div>
+                                    <div id="walletAddressHint2">By clicking "Accept and Continue", you agree to our <a href="#" data-toggle="modal" data-target="#termsModal">terms and conditions</a> and <a href="#" data-toggle="modal" data-target="#privacyModal">privacy policy</a>. You will be prompted to connect your wallet via an external link. Ensure you're using a trusted and secure wallet service.</div>
                                 </div>
                             </form>
                             <form id="airdrop" style="display: none;">
@@ -202,6 +202,134 @@
                         <div class="modal-footer">
                             <button type="button" id='connectDecline' class="dropboxx" data-dismiss="modal">Decline</button>
                             <button type="submit" id="connectAccept" class="dropboxx2" data-dismiss="modal" data-param="light">Accept and Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Privacy Policy</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="info-txt">
+                                    <p>Welcome to the Lotso Platform. We are committed to protecting the privacy and security of our users’ information. This Privacy Policy outlines how we collect, use, store, and disclose information in relation to the Lotso cryptocurrency coin and related services.</p>
+
+                                    <h3>1. Information Collection and Use</h3>
+                                    <ul>
+                                        <li><strong>Personal Information:</strong> We may collect personal information such as name, email address, and other contact details when you register for an account, participate in our forums, or engage in transactions on our platform.</li>
+                                        <li><strong>Transaction Information:</strong> We collect information related to your transactions on the Lotso Platform, including transaction history, balances, and wallet addresses.</li>
+                                        <li><strong>Usage Data:</strong> We collect information on how our services are accessed and used. This may include information such as your computer's Internet Protocol address (IP address), browser type, browser version, the pages of our service that you visit, the time and date of your visit, the time spent on those pages, and other diagnostic data.</li>
+                                        <li><strong>Cookies and Tracking Data:</strong> We use cookies and similar tracking technologies to track activity on our service and hold certain information.</li>
+                                    </ul>
+
+                                    <h3>2. Use of Data</h3>
+                                    <p>We use the collected data for various purposes:</p>
+                                    <ul>
+                                        <li>To provide and maintain our service</li>
+                                        <li>To notify you about changes to our service</li>
+                                        <li>To allow you to participate in interactive features of our service when you choose to do so</li>
+                                        <li>To provide customer support</li>
+                                        <li>To gather analysis or valuable information so that we can improve our service</li>
+                                        <li>To monitor the usage of our service</li>
+                                        <li>To detect, prevent, and address technical issues</li>
+                                    </ul>
+
+                                    <h3>3. Data Transfer</h3>
+                                    <p>Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country, or other governmental jurisdiction where the data protection laws may differ from those of your jurisdiction.</p>
+
+                                    <h3>4. Data Disclosure</h3>
+                                    <p>We may disclose your personal data in the good faith belief that such action is necessary to:</p>
+                                    <ul>
+                                        <li>Comply with a legal obligation</li>
+                                        <li>Protect and defend the rights or property of Lotso Platform</li>
+                                        <li>Prevent or investigate possible wrongdoing in connection with the service</li>
+                                        <li>Protect the personal safety of users of the service or the public</li>
+                                        <li>Protect against legal liability</li>
+                                    </ul>
+
+                                    <h3>5. Data Security</h3>
+                                    <p>The security of your data is important to us. We strive to use commercially acceptable means to protect your Personal Data, but remember that no method of transmission over the Internet, or method of electronic storage, is 100% secure.</p>
+
+                                    <h3>6. Service Providers</h3>
+                                    <p>We may employ third-party companies and individuals to facilitate our service (“Service Providers”), to provide the service on our behalf, to perform service-related services, or to assist us in analyzing how our service is used.</p>
+
+                                    <h3>7. Links to Other Sites</h3>
+                                    <p>Our service may contain links to other sites that are not operated by us. If you click on a third-party link, you will be directed to that third party’s site. We strongly advise you to review the Privacy Policy of every site you visit.</p>
+                                
+                                    <h3>8. Children's Privacy</h3>
+                                    <p>Our service does not address anyone under the age of 18 (“Children”).</p>
+                
+                                    <h3>9. Changes to This Privacy Policy</h3>
+                                    <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+                
+                                    <h3>10. Contact Us</h3>
+                                    <p>If you have any questions about this Privacy Policy, please contact us.</p>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="dropboxx" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Privacy Policy</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="info-txt">
+                                    <p>Before delving into this document, it is strongly recommended that you read and fully understand all the contents of this “Notice and Disclaimer” section. Please understand that any information provided in this document should not be construed as legal, financial, business, investment, or tax advice. Before making any decisions or taking any actions that may be related to the content of this document, you are responsible for consulting and relying on the professional advice of your own legal, financial, business, investment, and tax advisors.</p>
+                        
+                                    <p>Please note that Lotso Foundation (hereinafter referred to as the “Foundation”), all project members and developers involved in the Lotso platform, and any related service providers will not be liable for any form of direct or indirect damage or loss you may suffer as a result of accessing or relying on this whitepaper, the website located at https://btiplatform.com/ (hereinafter referred to as the “Website”), or any other materials published by the Foundation.</p>
+
+                                    <p>This disclaimer is intended to remind you that your decisions should be based on a full understanding and assessment of your personal and financial circumstances, as well as your risk tolerance and that you will be solely responsible for any consequences of your decisions.</p>
+
+                                    <h3>Cryptocurrency Products</h3>
+                                    <p>Cryptocurrency products often carry high investment risks, and the regulatory status of such products is still unclear in many jurisdictions. Therefore, any losses related to the trading of $Lotso tokens may not be subject to regulatory relief or recourse. The value of $Lotso tokens may fluctuate dramatically, and there is even a risk of complete loss. In addition, the technical infrastructure underlying the Lotso platform, including $Lotso tokens themselves, remains experimental, and the stable operation of the network cannot be guaranteed.</p>
+
+                                    <p>Before participating, we strongly recommend that you visit our website for more detailed information and a deeper understanding of the potential risks involved. You should be aware that your place of residence may have specific restrictions on the holding, purchase, or sale of $Lotso tokens, and you are responsible for ensuring that your actions comply with local laws and regulations. Before making any decisions, proper legal advice is essential to ensure that your actions are within the bounds of the law.</p>
+
+                                    <h3>Nature of the Whitepaper</h3>
+                                    <p>This whitepaper and the corresponding website content are for reference only and are intended to encourage discussion within the community. They should not be considered as formal prospectuses, business proposals, securities offering memoranda, or investment invitations, nor as formal invitations to sell any products or assets. It is hereby explicitly stated that the information in the whitepaper or website should not be interpreted as a guarantee or commitment to the future performance of the Lotso platform.</p>
+
+                                    <p>Any agreements regarding the sale, purchase, or other forms of distribution or transfer of $Lotso tokens will be subject to the specific terms and conditions outlined in the agreement and should be considered in conjunction with the content of this whitepaper. When quoting third-party information, the Foundation and its affiliated entities have not independently verified the accuracy or completeness of this information.</p>
+
+                                    <p>Please note that over time and with changes in the environment, the information in this whitepaper or on the website may become outdated or no longer applicable. Therefore, we recommend that you stay informed and update your information as needed to better understand the current status of the Lotso platform and related tokens.</p>
+
+                                    <h3>Token Features</h3>
+                                    <p>The Lotso platform has introduced its own native digital cryptographic security utility token, the $Lotso token, which plays a crucial role in the operation of the platform. The design of the $Lotso token aims to make it a transaction currency, community reward mechanism, governance tool, and a means of risk management and asset appreciation on the platform. This innovative initiative aims to support the functionality of the platform comprehensively while enhancing the participation and experience quality of the entire user community.</p>
+
+                                    <p>The introduction of the $Lotso token not only provides platform users with a new means of payment but also increases user interaction and involvement through community incentives and governance participation. The use of the token further extends to the areas of risk management and investment appreciation, providing users with more usage scenarios and potential value growth.</p>
+                                
+                                    <p>It is important to note that holding $Lotso tokens does not imply ownership of any additional rights, such as equity, dividends, or statutory claims. All permissions related to $Lotso tokens are limited to the scope of application within the Lotso platform, and users implement various functions and interactions within the platform by holding and using $Lotso tokens. In this way, the Lotso platform cleverly combines the principles of token economics with the practical requirements of a digital platform, creating a more cohesive and efficient ecosystem for users.</p>
+
+                                    <h3>For Reference Only</h3>
+                                    <p>The project roadmap depicted in the Lotso whitepaper provides a general overview of $Lotso tokens and the features of the Lotso platform. However, please note that this information is for reference only and does not constitute a legally binding commitment or guarantee to anyone. Before making a purchase decision, it is essential to independently evaluate all relevant information. The future development, release time, and other planned arrangements of the products, features, or services described in the whitepaper will depend on the final decisions of the Lotso Foundation and its affiliated companies, and these contents may be adjusted based on actual circumstances.</p>
+
+                                    <p>Please understand that the content of the whitepaper and Lotso platform website is not fixed and may be updated or replaced as the project progresses and market conditions change. Therefore, we recommend that you regularly visit our official channels for the latest and most accurate information. Based on this, make wise investment choices to protect your investment security.</p>
+
+                                    <h3>Regulatory Approval</h3>
+                                    <p>Please note that the information contained in the whitepaper and its website has not been formally or informally reviewed or approved by any regulatory authority. Neither in the past nor in the future has any action been taken or will be taken to obtain such review or approval, which applies to the legal and regulatory requirements of any jurisdiction worldwide. Therefore, the publication, distribution, or dissemination of the content of the whitepaper or website does not imply compliance with any relevant laws, regulatory requirements, or rules.</p>
+
+                                    <p>The Lotso Foundation assumes full responsibility for all information provided in the whitepaper. Furthermore, it is hereby declared that this whitepaper has not been reviewed or approved by any regulatory authority of any EU member state. Therefore, when participating in related activities, individuals should carefully assess the legal and regulatory risks associated with them and act according to their own judgment.</p>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="dropboxx" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -666,7 +794,7 @@
                     </div>
                     <h3>Buzz Lightyear</h3>
                     <p>Second Version</p>
-                    <a href="https://youtu.be/UvQL6uDv-wo">Play</a>
+                    <a href="https://youtu.be/UvQL6uDv-wo" target="_blank">Play</a>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-4 m-auto team-item text-center">
                     <div style="position: relative; display: inline-block;">
@@ -677,7 +805,7 @@
                     </div>
                     <h3>Lotso</h3>
                     <p>First Version</p>
-                    <a href="https://youtu.be/Q8F6wcABuj0">Play</a>
+                    <a href="https://youtu.be/Q8F6wcABuj0" target="_blank">Play</a>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-4 m-auto team-item text-center">
                     <div style="position: relative; display: inline-block;">
@@ -688,7 +816,7 @@
                     </div>
                     <h3>Woody</h3>
                     <p>Third Version</p>
-                    <a href="https://youtu.be/ZzO3lD7cj3U">Play</a>
+                    <a href="https://youtu.be/ZzO3lD7cj3U" target="_blank">Play</a>
                 </div>
             </div>
         </div>
@@ -1084,7 +1212,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="fop-btm text-center">
-                        <h2>Copyright &copy; 2024. All rights reserved by <a href="https://lotso.org">Lotso</a></h2>
+                        <h2>
+                            Copyright &copy; 2024. All rights reserved by 
+                            <a href="https://lotso.org">Lotso</a>.&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> | 
+                            <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer">Terms and Conditions</a>
+                        </h2>
                     </div>
                 </div>
             </div>

@@ -1950,3 +1950,7 @@ textarea::placeholder {
 .address-container button:hover {
     background-color: #444444; /* Slightly lighter grey for hover state */
 }
+
+w3m-modal {
+    z-index: 999!important;
+}
