@@ -52,8 +52,18 @@ const airdrop = document.getElementById('airdrop')
 
 if (acceptBtn) {
   acceptBtn.addEventListener('click', function() {
-      var param = this.getAttribute('data-param');
-      connect(param);
+    // Get the responsive menu element
+    var responsiveMenu = document.querySelector('.navbar-collapse');
+
+    // Close the responsive menu if it's open
+    if (responsiveMenu.classList.contains('show')) {
+        responsiveMenu.classList.remove('show');
+        responsiveMenu.setAttribute('aria-expanded', 'false');
+    }
+
+    // Get the data-param attribute and proceed with the connect function
+    var param = this.getAttribute('data-param');
+    connect(param);
   });
 }
 
