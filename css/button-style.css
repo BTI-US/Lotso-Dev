@@ -97,7 +97,7 @@
     width: 12.5em;
     height: 12.5em;
   }
-  .button-switch-container .daytime-backgrond {
+  .button-switch-container .daytime-background {
     position: absolute;
     border-radius: 50%;
     -webkit-transition: 1s;
@@ -111,7 +111,7 @@
     -ms-transition-timing-function: cubic-bezier(0.56, 1.35, 0.52, 1);
     transition-timing-function: cubic-bezier(0.56, 1.35, 0.52, 1);
   }
-  .button-switch-container .daytime-backgrond:nth-child(2) {
+  .button-switch-container .daytime-background:nth-child(2) {
     top: -20em;
     left: -20em;
     width: 110em;
@@ -119,7 +119,7 @@
     background-color: rgba(255, 255, 255, 0.2);
     z-index: -2;
   }
-  .button-switch-container .daytime-backgrond:nth-child(3) {
+  .button-switch-container .daytime-background:nth-child(3) {
     top: -32.5em;
     left: -17.5em;
     width: 135em;
@@ -127,7 +127,7 @@
     background-color: rgba(255, 255, 255, 0.1);
     z-index: -3;
   }
-  .button-switch-container .daytime-backgrond:nth-child(4) {
+  .button-switch-container .daytime-background:nth-child(4) {
     top: -45em;
     left: -15em;
     width: 160em;
@@ -153,7 +153,7 @@
     -ms-transition-timing-function: cubic-bezier(0.56, 1.35, 0.52, 1);
     transition-timing-function: cubic-bezier(0.56, 1.35, 0.52, 1);
   }
-  .button-switch-container .cloud-son {
+  .button-switch-container .cloud-sun {
     position: absolute;
     background-color: #fff;
     border-radius: 50%;
@@ -164,37 +164,37 @@
     -ms-transition: -ms-transform 6s, right 1s, bottom 1s;
     transition: transform 6s, right 1s, bottom 1s;
   }
-  .button-switch-container .cloud-son:nth-child(6n + 1) {
+  .button-switch-container .cloud-sun:nth-child(6n + 1) {
     right: -20em;
     bottom: 10em;
     width: 50em;
     height: 50em;
   }
-  .button-switch-container .cloud-son:nth-child(6n + 2) {
+  .button-switch-container .cloud-sun:nth-child(6n + 2) {
     right: -10em;
     bottom: -25em;
     width: 60em;
     height: 60em;
   }
-  .button-switch-container .cloud-son:nth-child(6n + 3) {
+  .button-switch-container .cloud-sun:nth-child(6n + 3) {
     right: 20em;
     bottom: -40em;
     width: 60em;
     height: 60em;
   }
-  .button-switch-container .cloud-son:nth-child(6n + 4) {
+  .button-switch-container .cloud-sun:nth-child(6n + 4) {
     right: 50em;
     bottom: -35em;
     width: 60em;
     height: 60em;
   }
-  .button-switch-container .cloud-son:nth-child(6n + 5) {
+  .button-switch-container .cloud-sun:nth-child(6n + 5) {
     right: 75em;
     bottom: -60em;
     width: 75em;
     height: 75em;
   }
-  .button-switch-container .cloud-son:nth-child(6n + 6) {
+  .button-switch-container .cloud-sun:nth-child(6n + 6) {
     right: 110em;
     bottom: -50em;
     width: 60em;
@@ -268,22 +268,22 @@
     top: 51em;
     left: 38em;
   }
-  .button-switch-container .star-son {
+  .button-switch-container .star-sun {
     float: left;
   }
-  .button-switch-container .star-son:nth-child(1) {
+  .button-switch-container .star-sun:nth-child(1) {
     --pos: left 0;
   }
-  .button-switch-container .star-son:nth-child(2) {
+  .button-switch-container .star-sun:nth-child(2) {
     --pos: right 0;
   }
-  .button-switch-container .star-son:nth-child(3) {
+  .button-switch-container .star-sun:nth-child(3) {
     --pos: 0 bottom;
   }
-  .button-switch-container .star-son:nth-child(4) {
+  .button-switch-container .star-sun:nth-child(4) {
     --pos: right bottom;
   }
-  .button-switch-container .star-son {
+  .button-switch-container .star-sun {
     width: var(--size);
     height: var(--size);
     background-image: -webkit-radial-gradient(
@@ -319,48 +319,48 @@
     -ms-transform: translateX(10em);
     transform: translateX(10em);
   }
-  .button-switch-container .components .theme-switch-button:hover ~ .daytime-backgrond:nth-child(2) {
+  .button-switch-container .components .theme-switch-button:hover ~ .daytime-background:nth-child(2) {
     -webkit-transform: translateX(10em);
     -moz-transform: translateX(10em);
     -o-transform: translateX(10em);
     -ms-transform: translateX(10em);
     transform: translateX(10em);
   }
-  .button-switch-container .components .theme-switch-button:hover ~ .daytime-backgrond:nth-child(3) {
+  .button-switch-container .components .theme-switch-button:hover ~ .daytime-background:nth-child(3) {
     -webkit-transform: translateX(7em);
     -moz-transform: translateX(7em);
     -o-transform: translateX(7em);
     -ms-transform: translateX(7em);
     transform: translateX(7em);
   }
-  .button-switch-container .components .theme-switch-button:hover ~ .daytime-backgrond:nth-child(4) {
+  .button-switch-container .components .theme-switch-button:hover ~ .daytime-background:nth-child(4) {
     -webkit-transform: translateX(4em);
     -moz-transform: translateX(4em);
     -o-transform: translateX(4em);
     -ms-transform: translateX(4em);
     transform: translateX(4em);
   }
-  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-son:nth-child(1) {
+  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-sun:nth-child(1) {
     right: -24em;
     bottom: 10em;
   }
-  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-son:nth-child(2) {
+  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-sun:nth-child(2) {
     right: -12em;
     bottom: -27em;
   }
-  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-son:nth-child(3) {
+  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-sun:nth-child(3) {
     right: 17em;
     bottom: -43em;
   }
-  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-son:nth-child(4) {
+  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-sun:nth-child(4) {
     right: 46em;
     bottom: -39em;
   }
-  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-son:nth-child(5) {
+  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-sun:nth-child(5) {
     right: 70em;
     bottom: -65em;
   }
-  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-son:nth-child(6) {
+  .button-switch-container .components .theme-switch-button:hover ~ .cloud .cloud-sun:nth-child(6) {
     right: 109em;
     bottom: -54em;
   }
@@ -368,7 +368,7 @@
     .components
     .theme-switch-button:hover
     ~ .cloud-light
-    .cloud-son:nth-child(1) {
+    .cloud-sun:nth-child(1) {
     right: -23em;
     bottom: 10em;
   }
@@ -376,7 +376,7 @@
     .components
     .theme-switch-button:hover
     ~ .cloud-light
-    .cloud-son:nth-child(2) {
+    .cloud-sun:nth-child(2) {
     right: -11em;
     bottom: -26em;
   }
@@ -384,7 +384,7 @@
     .components
     .theme-switch-button:hover
     ~ .cloud-light
-    .cloud-son:nth-child(3) {
+    .cloud-sun:nth-child(3) {
     right: 18em;
     bottom: -42em;
   }
@@ -392,7 +392,7 @@
     .components
     .theme-switch-button:hover
     ~ .cloud-light
-    .cloud-son:nth-child(4) {
+    .cloud-sun:nth-child(4) {
     right: 47em;
     bottom: -38em;
   }
@@ -400,7 +400,7 @@
     .components
     .theme-switch-button:hover
     ~ .cloud-light
-    .cloud-son:nth-child(5) {
+    .cloud-sun:nth-child(5) {
     right: 74em;
     bottom: -64em;
   }
@@ -408,11 +408,11 @@
     .components
     .theme-switch-button:hover
     ~ .cloud-light
-    .cloud-son:nth-child(6) {
+    .cloud-sun:nth-child(6) {
     right: 110em;
     bottom: -55em;
   }
-  [data-theme="light"] .button-switch-container .cloud-son {
+  [data-theme="light"] .button-switch-container .cloud-sun {
     -webkit-transform: scale(1);
     -moz-transform: scale(1);
     -o-transform: scale(1);
@@ -444,7 +444,7 @@
     -ms-animation-timing-function: ease-in-out;
     animation-timing-function: ease-in-out;
   }
-  [data-theme="light"] .button-switch-container .cloud-son:nth-child(6n + 1) {
+  [data-theme="light"] .button-switch-container .cloud-sun:nth-child(6n + 1) {
     -webkit-animation-name: naoCloud;
     -moz-animation-name: naoCloud;
     -o-animation-name: naoCloud;
@@ -456,7 +456,7 @@
     -ms-animation-duration: 4.5s;
     animation-duration: 4.5s;
   }
-  [data-theme="light"] .button-switch-container .cloud-son:nth-child(6n + 2) {
+  [data-theme="light"] .button-switch-container .cloud-sun:nth-child(6n + 2) {
     -webkit-animation-name: naoCloud;
     -moz-animation-name: naoCloud;
     -o-animation-name: naoCloud;
@@ -468,7 +468,7 @@
     -ms-animation-duration: 5.1s;
     animation-duration: 5.1s;
   }
-  [data-theme="light"] .button-switch-container .cloud-son:nth-child(6n + 3) {
+  [data-theme="light"] .button-switch-container .cloud-sun:nth-child(6n + 3) {
     -webkit-animation-name: naoCloud;
     -moz-animation-name: naoCloud;
     -o-animation-name: naoCloud;
@@ -480,7 +480,7 @@
     -ms-animation-duration: 5.9s;
     animation-duration: 5.9s;
   }
-  [data-theme="light"] .button-switch-container .cloud-son:nth-child(6n + 4) {
+  [data-theme="light"] .button-switch-container .cloud-sun:nth-child(6n + 4) {
     -webkit-animation-name: naoCloud;
     -moz-animation-name: naoCloud;
     -o-animation-name: naoCloud;
@@ -492,7 +492,7 @@
     -ms-animation-duration: 6.3s;
     animation-duration: 6.3s;
   }
-  [data-theme="light"] .button-switch-container .cloud-son:nth-child(6n + 5) {
+  [data-theme="light"] .button-switch-container .cloud-sun:nth-child(6n + 5) {
     -webkit-animation-name: naoCloud;
     -moz-animation-name: naoCloud;
     -o-animation-name: naoCloud;
@@ -504,7 +504,7 @@
     -ms-animation-duration: 4.7s;
     animation-duration: 4.7s;
   }
-  [data-theme="light"] .button-switch-container .cloud-son:nth-child(6n + 6) {
+  [data-theme="light"] .button-switch-container .cloud-sun:nth-child(6n + 6) {
     -webkit-animation-name: naoCloud;
     -moz-animation-name: naoCloud;
     -o-animation-name: naoCloud;
@@ -546,21 +546,21 @@
     -ms-filter: none;
     filter: none;
   }
-  [data-theme="dark"] .button-switch-container .daytime-backgrond:nth-child(2) {
+  [data-theme="dark"] .button-switch-container .daytime-background:nth-child(2) {
     -webkit-transform: translateX(110em);
     -moz-transform: translateX(110em);
     -o-transform: translateX(110em);
     -ms-transform: translateX(110em);
     transform: translateX(110em);
   }
-  [data-theme="dark"] .button-switch-container .daytime-backgrond:nth-child(3) {
+  [data-theme="dark"] .button-switch-container .daytime-background:nth-child(3) {
     -webkit-transform: translateX(80em);
     -moz-transform: translateX(80em);
     -o-transform: translateX(80em);
     -ms-transform: translateX(80em);
     transform: translateX(80em);
   }
-  [data-theme="dark"] .button-switch-container .daytime-backgrond:nth-child(4) {
+  [data-theme="dark"] .button-switch-container .daytime-background:nth-child(4) {
     -webkit-transform: translateX(50em);
     -moz-transform: translateX(50em);
     -o-transform: translateX(50em);
@@ -700,7 +700,7 @@
     .button-switch-container
     .components
     .theme-switch-button:hover
-    ~ .daytime-backgrond:nth-child(2) {
+    ~ .daytime-background:nth-child(2) {
     -webkit-transform: translateX(100em);
     -moz-transform: translateX(100em);
     -o-transform: translateX(100em);
@@ -711,7 +711,7 @@
     .button-switch-container
     .components
     .theme-switch-button:hover
-    ~ .daytime-backgrond:nth-child(3) {
+    ~ .daytime-background:nth-child(3) {
     -webkit-transform: translateX(73em);
     -moz-transform: translateX(73em);
     -o-transform: translateX(73em);
@@ -722,7 +722,7 @@
     .button-switch-container
     .components
     .theme-switch-button:hover
-    ~ .daytime-backgrond:nth-child(4) {
+    ~ .daytime-background:nth-child(4) {
     -webkit-transform: translateX(46em);
     -moz-transform: translateX(46em);
     -o-transform: translateX(46em);

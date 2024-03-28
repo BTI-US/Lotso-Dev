@@ -1,3 +1,5 @@
+document.body.setAttribute("data-theme", "dark");
+
 document.querySelector('.theme-switch-button').addEventListener('click', function() {
     var themeLink = document.getElementById('theme-link');
     var themeLinkResponsive = document.getElementById('theme-link-responsive');
