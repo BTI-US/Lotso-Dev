@@ -8,7 +8,7 @@
 
 ## Introduction
 
-Lotso Coins is a decentralized application (dApp) that allows users to play PvP games and earn rewards in the form of cryptocurrencies. The dApp is built on the Ethereum blockchain and uses smart contracts to facilitate the gaming experience. Players can connect their wallets to the dApp and participate in various games to win Lotso Coins (LTC). The dApp also features a leaderboard that displays the top players based on their performance in the games. Lotso Coins aims to provide a fun and rewarding gaming experience for users while promoting the adoption of cryptocurrencies.
+Lotso Coins is a decentralized application (dApp) designed for player-versus-player (PvP) gaming, where participants can earn rewards in cryptocurrency. This dApp operates on the **Base** blockchain, leveraging its capabilities to enhance the gaming experience through smart contracts. Players have the opportunity to connect their digital wallets to the dApp, engaging in an array of games with the potential to win Lotso Coins (LTC). Additionally, the dApp showcases a leaderboard, highlighting top players based on their gaming achievements. By merging entertainment with the practical use of digital currencies, Lotso Coins aspires to offer an engaging, rewarding gaming environment, simultaneously fostering the broader integration of cryptocurrencies.
 
 ## Requirements
 
@@ -148,6 +148,57 @@ Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORT
 | `data.transaction_count` | Integer | The number of transactions associated with the address.                                     |
 | `data.airdrop_count`| Integer | The airdrop count for the address, which is either `0` or `1000000000`.                           |
 | `data.has_airdropped` | Boolean | Indicates if the airdrop has occurred. `false` means airdrop has not started; `true` means airdrop has occurred, and the user cannot claim it again if already claimed. |
+
+## Setting Up `contract-config.json` for Local Deployment
+
+To successfully deploy and run the project locally, you need to create a `contract-config.json` file in the root directory of the project. This file contains essential configuration details needed for the application to interact with the blockchain network.
+
+### Step-by-Step Guide
+
+1. **Create the File:**
+   - In the root directory of your project, create a file named `contract-config.json`.
+
+2. **Add Basic Structure:**
+   - Open the file in a text editor and add the following JSON structure:
+     ```json
+     {
+         "_comment": "Input base or baseGoerli for mainnet or goerli testnet respectively",
+         "activeNetwork": "Your_Network_Choice",
+         "contractAddress": "Your_Contract_Address",
+         "webAddress": "Your_Web_Address"
+     }
+     ```
+   - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
+   - Replace `Your_Contract_Address` with the actual contract address you are using.
+   - Replace `Your_Web_Address` with the web address for transaction count (if applicable).
+
+3. **Save the File:**
+   - Save your changes to `contract-config.json`.
+
+4. **Important Notes:**
+   - The `contract-config.json` file is crucial for the application's interaction with the blockchain. Ensure that the details are correct.
+   - If you are working in a team or planning to push this code to a public repository, **do not** include sensitive information like private keys or secret tokens in the `contract-config.json` file. Instead, use environment variables or other secure methods to handle sensitive data.
+
+5. **.gitignore:**
+   - If you are using Git, make sure to add `contract-config.json` to your `.gitignore` file to prevent accidentally pushing it to a public repository:
+     ```bash
+     echo "contract-config.json" >> .gitignore
+     ```
+
+### Example File
+
+Here is an example of what your `contract-config.json` might look like for the Base Mainnet:
+
+```json
+{
+    "_comment": "Input base or baseGoerli for mainnet or goerli testnet respectively",
+    "activeNetwork": "base",
+    "contractAddress": "0x123abc456def789ghi",
+    "webAddress": "https://flxdu.cn:8011/v1/info/transaction_count"
+}
+```
+
+Once you have created and configured your `contract-config.json` file, you can proceed with the local deployment of the application.
 
 ## Size of Images
 

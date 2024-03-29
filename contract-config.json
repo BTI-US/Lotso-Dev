@@ -1,6 +1,0 @@
-{
-    "_comment": "Input base or baseGoerli for mainnet or goerli testnet respectively",
-    "activeNetwork": "base",
-    "contractAddress": "YOUR_CONTRACT_ADDRESS",
-    "webAddress": "http://flxdu.cn:8011/v1/info/transaction_count"
-}

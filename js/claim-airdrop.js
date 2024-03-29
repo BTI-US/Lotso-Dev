@@ -1,12 +1,9 @@
 import Web3 from 'web3';
 
-const infuraUrl = 'https://mainnet.infura.io/v3/8ec095d09ec74722a4157f133c97a41d';
-const web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
-
 async function initiateTransaction() {
     if (typeof window.ethereum !== 'undefined') {
         // MetaMask is installed
-        const web3 = new Web3(window.ethereum);
+        const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.base.org'));
 
         let activeNetwork, contractAddress;
 

@@ -31,6 +31,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Create and Configure contract-config.json
+        run: |
+          cat <<EOF > contract-config.json
+          {
+              "_comment": "Input base or baseGoerli for mainnet or goerli testnet respectively",
+              "activeNetwork": "${{ secrets.CONTRACT_NETWORK_TYPE }}",
+              "contractAddress": "${{ secrets.CONTRACT_ADDRESS }}",
+              "webAddress": "${{ secrets.AIRDROP_SERVER_ADDRESS }}"
+          }
+          EOF
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
