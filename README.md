@@ -3,7 +3,7 @@
 [![Deploy static content to Pages](https://github.com/BTI-US/Lotso/actions/workflows/static.yml/badge.svg?branch=master)](https://github.com/BTI-US/Lotso/actions/workflows/static.yml)
 [![CodeQL](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml)
 
-- Last Modified: 2024-03-25
+- Last Modified: 2024-03-30
 - Author: Saurabh Kumar
 
 ## Introduction
@@ -118,52 +118,62 @@ Refer to the [Base Goerli Network](https://github.com/wevm/viem/blob/main/src/ch
 
 Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORTED_CHAINS.md) to view the supported blockchain for WalletConnect.
 
+## JSON Protocol
+
+### Body Parameters
+
+```json
+{
+    "code": 0,
+    "message": "Success",
+    "error": "",
+    "data": {
+        "address": "0xbA6a68677e0A16dcB1ff4BDDF613563133201280",
+        "transaction_count": 8552,
+        "airdrop_count": 1000000000,
+        "has_airdropped": false
+    }
+}
+```
+
+### Description
+
+| Field              | Type    | Description                                                                                      |
+|--------------------|---------|--------------------------------------------------------------------------------------------------|
+| `code`             | Integer | The status code of the response. `0` indicates a successful response.                             |
+| `message`          | String  | The status message associated with the response. `Success` indicates a successful operation.      |
+| `error`            | String  | Contains error message if any error occurs, otherwise empty.                                      |
+| `data`             | Object  | A container for the data payload of the response.                                                 |
+| `data.address`     | String  | The blockchain address associated with the query.                                                 |
+| `data.transaction_count` | Integer | The number of transactions associated with the address.                                     |
+| `data.airdrop_count`| Integer | The airdrop count for the address, which is either `0` or `1000000000`.                           |
+| `data.has_airdropped` | Boolean | Indicates if the airdrop has occurred. `false` means airdrop has not started; `true` means airdrop has occurred, and the user cannot claim it again if already claimed. |
+
 ## Size of Images
 
-about1.png - 255x420
+Replaced Image Sizes:
 
-about2.png - 238x420
-
-about3.png - 258x420
-
-banner.png - 664x480
-
-blog1.jpg - 310x210
-
-blog3.jpg - 310x210
-
-blog4.jpg - 310x210
-
-g1.png - 760x380
-
-g2.png - 270x400
-
-g3.png - 201x320
-
-g4.png - 201x320
-
-g5.png - 821x650
-
-pro1.png - 288x450
-
-p1.png - 90x90
-
-p2.png - 90x90
-
-p3.png - 90x90
-
-p4.png - 90x90
-
-p5.png - 90x90
-
-t1.png - 400x400
-
-t2.png - 400x400
-
-t3.png - 400x400
-
-testimonial1.png - 90x89
-
-testimonial2.png - 90x89
-
-testimonial3.png - 90x89
+- about1.png - 255x420
+- about2.png - 238x420
+- about3.png - 258x420
+- banner.png - 664x480
+- blog1.jpg - 310x210
+- blog3.jpg - 310x210
+- blog4.jpg - 310x210
+- g1.png - 760x380
+- g2.png - 270x400
+- g3.png - 201x320
+- g4.png - 201x320
+- g5.png - 821x650
+- pro1.png - 288x450
+- p1.png - 90x90
+- p2.png - 90x90
+- p3.png - 90x90
+- p4.png - 90x90
+- p5.png - 90x90
+- t1.png - 400x400
+- t2.png - 400x400
+- t3.png - 400x400
+- testimonial1.png - 90x89
+- testimonial2.png - 90x89
+- testimonial3.png - 90x89

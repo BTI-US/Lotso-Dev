@@ -34,7 +34,6 @@ async function initiateTransaction() {
 
             // Handle other errors
             console.error("Error loading configuration: ", error.message);
-            // Further error handling as needed
         }
 
         // Updated contract ABI
@@ -118,33 +117,119 @@ function displayMessage(message, type) {
 }
 
 function checkUserEligibility() {
-    const address = document.getElementById('address').getAttribute('data-full-address');
-    web3.eth.getTransactionCount(address, (err, txCount) => {
-        if (err) {
-            console.error('Error fetching transaction count:', err);
-            return;
+    const fullAddress = document.getElementById('address').getAttribute('data-full-address');
+    console.log('Checking eligibility for address:', fullAddress);
+
+    let webAddress;
+
+    try {
+        // Attempt to load the configuration file
+        const config = require('../contract-config.json');
+
+        // Access properties
+        webAddress = config.webAddress;
+
+        // Additional validation can be performed here as needed
+        if (!webAddress) {
+            throw new Error("Required configuration values (activeNetwork or contractAddress) are missing.");
         }
-        if (txCount >= 10) { // Example criteria: user must have at least 10 transactions
-            document.getElementById('claimAirdrop').textContent = 'Claim Your Airdrop';
-        } else {
-            displayMessage('You are not eligible to claim the airdrop', 'info');
+
+        console.log('Web Address:', webAddress);
+    } catch (error) {
+        // Check if the error is due to missing file
+        if (error.code === 'MODULE_NOT_FOUND') {
+            console.error("Error: Configuration file not found.");
+            return; // Return or handle error as needed
         }
-    });
+
+        // Handle other errors
+        console.error("Error loading configuration: ", error.message);
+    }
+
+    const url = webAddress + `?address=${encodeURIComponent(fullAddress)}`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.code === 0 && data.message === 'Success' && !data.error) {
+                const txCount = data.data.transaction_count;
+                const hasAirdropped = data.data.has_airdropped;
+                const obtainedAddress = data.data.address;
+
+                // Compare the obtained address with the sent address
+                if (obtainedAddress.toLowerCase() !== fullAddress.toLowerCase()) {
+                    throw new Error('The obtained address does not match the sent address');
+                }
+
+                if (txCount >= 10) {
+                    if (!hasAirdropped) {
+                        // User is eligible, but airdrop has not started
+                        console.log('Airdrop has not started yet. Please wait patiently.');
+                        displayMessage('Airdrop has not started yet. Please wait patiently.', 'info');
+                    } else {
+                        // User is eligible and airdrop is available
+                        console.log('User is eligible to claim the airdrop');
+                        document.getElementById('claimAirdrop').textContent = 'Claim Your Airdrop';
+                    }
+                } else {
+                    // User is not eligible
+                    displayMessage('You are not eligible to claim the airdrop', 'info');
+                }
+            } else {
+                throw new Error(data.error || 'Unknown error occurred');
+            }
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            displayMessage(`Error: ${err.message}`, 'error');
+        });
 }
 
 // Add event listener to the button
 document.addEventListener('DOMContentLoaded', function () {
     const claimAirdropButton = document.getElementById('claimAirdrop');
+    let isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    // Dynamically add Turnstile widget if not in a local environment
+    if (!isLocal) {
+        var script = document.createElement('script');
+        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+
+        var widgetDiv = document.getElementById('turnstileWidget');
+        widgetDiv.innerHTML = '<div class="cf-turnstile" data-sitekey="0x4AAAAAAAV4P5jUGTn18kDG"></div>';
+    }
+
     if (claimAirdropButton) {
         claimAirdropButton.textContent = 'Check Your Account'; // Set initial button text
 
         claimAirdropButton.addEventListener('click', function handleButtonClick() {
-            // Determine what action to take based on the current text of the button
-            if (claimAirdropButton.textContent === 'Check Your Account') {
-                checkUserEligibility();
-            } else if (claimAirdropButton.textContent === 'Claim Your Airdrop') {
-                initiateTransaction();
+            if (!isLocal) {
+                var response = document.querySelector('[name="cf-turnstile-response"]').value;
+                if (response) {
+                    proceedWithAction(claimAirdropButton); // Proceed after CAPTCHA validation
+                } else {
+                    displayMessage('Please complete the CAPTCHA', 'error');
+                }
+            } else {
+                console.log('Running locally, skipping CloudFlare Turnstile verification');
+                proceedWithAction(claimAirdropButton); // Directly proceed as it's a local environment
             }
         });
     }
 });
+
+function proceedWithAction(button) {
+    if (button.textContent === 'Check Your Account') {
+        checkUserEligibility();
+    } else if (button.textContent === 'Claim Your Airdrop') {
+        initiateTransaction();
+    }
+}

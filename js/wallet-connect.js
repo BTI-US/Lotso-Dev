@@ -102,7 +102,7 @@ watchAccount(config,
           hint1.innerHTML = 'To continue, please connect your Web3 wallet, such as <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a> or <a href="https://walletconnect.org/" target="_blank" rel="noopener noreferrer">WalletConnect</a>. This allows our website to securely interact with your wallet.'
           hint2.innerHTML = 'By clicking "Accept and Continue", you agree to our <a href="#" data-toggle="modal" data-target="#termsModal">terms and conditions</a> and <a href="#" data-toggle="modal" data-target="#privacyModal">privacy policy</a>. You will be prompted to connect your wallet via an external link. Ensure you\'re using a trusted and secure wallet service.'
           acceptBtn.innerText = 'Accept and Continue'
-          connectBtn.innerText = 'Connect'
+          connectBtn.innerText = 'Airdrop'
           connectTitle.innerText = 'Notes Before Connecting'
           declineBtn.innerText = 'Decline'
           airdrop.style.display = 'none'

@@ -2,6 +2,7 @@
 <html lang="zxx">
 
 <head>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V20MYXBVPH"></script>
     <script>
@@ -77,7 +78,7 @@
                         <a class="nav-link" href="#review">Partner</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link bor" id="connectWallet" href="#" data-toggle="modal" data-target="#connectModal">Connect</a>
+                        <a class="nav-link bor" id="connectWallet" href="#" data-toggle="modal" data-target="#connectModal">Airdrop</a>
                     </li>
                 </ul>
             </div>
@@ -95,7 +96,7 @@
                                 <div class="info-txt">
                                     <div><strong>Public Chain:</strong> Base</div>
                                     <div><strong>Initial Liquidity Pool:</strong> 1ETH</div>
-                                    <div><strong>Risk Warning:</strong> "Prohibited to purchase within the first 2 minutes after market opening——anti-bot measures."</div>
+                                    <div><strong>Risk Warning:</strong> "Prohibited to purchase within the first 40 seconds after market opening——anti-bot measures."</div>
                                 </div>
                             </form>
                         </div>
@@ -117,7 +118,7 @@
                         <div class="modal-body">
                             <form>
                                 <div class="info-txt">
-                                    <div>All users can only buy and cannot sell. Except after 5 days from opening or there are 1000 ETH in the liquidity pool.</div>
+                                    <div>All users can only buy and cannot sell. Except after 3 days from opening or there are 1000 ETH in the liquidity pool.</div>
                                 </div>
                             </form>
                         </div>
@@ -189,6 +190,7 @@
                                 </div>
                             </form>
                             <form id="airdrop" style="display: none;">
+                                <div id="turnstileWidget"></div>
                                 <button type="button" id="claimAirdrop" class="dropboxx2">Check Your Account</button>
                                 <div class="info-txt">
                                     <div id="airdropMessage"></div>
@@ -585,15 +587,15 @@
                                 <span class="separet-span">Tokenomics</span>
                                 <div class="p-bars">
                                     <div class="col-lg-12 p-bar">
-                                        <span>97% Liquidity Pool</span>
+                                        <span>70% Liquidity Pool</span>
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 p-bar">
-                                        <span>3% Airdrop</span>
+                                        <span>30% Airdrop</span>
                                         <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1037,6 +1039,56 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="review-item">
+                                <div class="comment">
+                                    <p><i class="fa fa-quote-left" aria-hidden="true"></i>Uniswap is a decentralized exchange protocol for swapping Ethereum-based tokens.<i class="fa fa-quote-right" aria-hidden="true"></i></p>
+                                </div>
+                                <div class="user">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-4 user-img">
+                                            <img src="images/testimonial4.png" alt="user-img">
+                                        </div>
+                                        <div class="col-lg-7 col-sm-7 user-txt">
+                                            <h3>UNISWAP</h3>
+                                            <div class="star2">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <span>Lotso Coin</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="review-item">
+                                <div class="comment">
+                                    <p><i class="fa fa-quote-left" aria-hidden="true"></i>We are soon releasing our cryptocurrency coin on the exchange, expanding our digital asset offerings.<i class="fa fa-quote-right" aria-hidden="true"></i></p>
+                                </div>
+                                <div class="user">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-4 user-img">
+                                            <img src="images/testimonial5.png" alt="user-img">
+                                        </div>
+                                        <div class="col-lg-7 col-sm-7 user-txt">
+                                            <h3>EXCHANGE RELEASE</h3>
+                                            <div class="star2">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
+                                            <span>Lotso Coin</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1306,7 +1358,7 @@
     <script src="js/address-copy.js"></script>
     <script src="dist/wallet-connect.bundle.js"></script>
     <script src="dist/claim-airdrop.bundle.js"></script>
-    <script src="js/theme-switch.js"></script>    
+    <script src="js/theme-switch.js"></script>
     <script type="text/javascript">
         "use strict";
         $('#ckLine').ckLine({
