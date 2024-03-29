@@ -80,7 +80,7 @@ Click [here](https://docs.walletconnect.com/web3modal/javascript/about) to learn
 
 Click [here](https://infura.io/docs) to learn more about Infura API.
 
-# Network for Our Blockchain
+## Network for Our Blockchain
 
 We are using the Base Mainnet network for our blockchain.
 
@@ -88,7 +88,7 @@ Click [here](https://docs.base.org/network-information/) to learn more about the
 
 We use viem library to define the Base network in our project.
 
-## Blockchain Information for Base Network
+### Blockchain Information for Base Network
 
 |Name|Value|
 |-|-|
@@ -101,7 +101,7 @@ We use viem library to define the Base network in our project.
 
 Refer to the [Base Network](https://github.com/wevm/viem/blob/main/src/chains/definitions/base.ts) for the definition of the Base Mainnet network in viem.
 
-## Blockchain Information for Base Goerli Network
+### Blockchain Information for Base Goerli Network
 
 |Name|Value|
 |-|-|
@@ -114,7 +114,7 @@ Refer to the [Base Network](https://github.com/wevm/viem/blob/main/src/chains/de
 
 Refer to the [Base Goerli Network](https://github.com/wevm/viem/blob/main/src/chains/definitions/baseGoerli.ts) for the definition of the Base Mainnet network in viem.
 
-## Supported Blockchain
+### Supported Blockchain
 
 Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORTED_CHAINS.md) to view the supported blockchain for WalletConnect.
 
@@ -199,6 +199,62 @@ Here is an example of what your `contract-config.json` might look like for the B
 ```
 
 Once you have created and configured your `contract-config.json` file, you can proceed with the local deployment of the application.
+
+## Cloud Deployment on GitHub Pages and Cloudflare Pages
+
+This section provides guidance on deploying your project to GitHub Pages and Cloudflare Pages, with specific instructions on setting up required environment variables for each platform.
+
+### GitHub Pages Deployment
+
+GitHub Pages is used for hosting static content. Set the following environment variables in your GitHub repository for deployment:
+
+- **`ACTIVE_NETWORK`**
+- **`CONTRACT_ADDRESS`**
+- **`WEB_ADDRESS`**
+
+#### Setting Environment Variables in GitHub
+
+1. Go to your repository on GitHub.
+2. Navigate to "Settings" > "Secrets".
+3. Click on "New repository secret" and add each environment variable:
+   - Name: Variable name (e.g., `ACTIVE_NETWORK`).
+   - Value: Corresponding value for the variable.
+4. Repeat this process for `CONTRACT_ADDRESS` and `WEB_ADDRESS`.
+
+#### Deploying to GitHub Pages
+
+- Your project should be configured for deployment via GitHub Actions.
+- Push a commit to trigger the GitHub Actions workflow, utilizing the set environment variables.
+
+### Cloudflare Pages Deployment
+
+Cloudflare Pages supports more dynamic sites with advanced features.
+
+#### Required Environment Variables
+
+- **`CLOUDFLARE_ENV`** (Set to `true` in the Cloudflare environment)
+- **`ACTIVE_NETWORK`**
+- **`CONTRACT_ADDRESS`**
+- **`WEB_ADDRESS`**
+
+#### Setting Environment Variables in Cloudflare Pages
+
+1. Log into your Cloudflare account and access the Pages dashboard.
+2. Select your project and go to "Settings" > "Environment variables" (under "Build & deploy").
+3. Add each variable by specifying its Name and Value.
+4. Particularly, ensure `CLOUDFLARE_ENV` is set to `true`.
+
+#### Deploying to Cloudflare Pages
+
+- Cloudflare Pages automatically builds and deploys upon repository updates.
+- Ensure your repository is linked to Cloudflare Pages with correct build commands.
+- The environment variables will be utilized during Cloudflare's build process.
+
+#### Important Notes
+
+- Keep sensitive data such as API keys secure and prevent unnecessary exposure.
+- For local development, replicate the environment variable setup to test the application effectively.
+- Document any unique build steps or configurations specific to your project.
 
 ## Size of Images
 

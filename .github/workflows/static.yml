@@ -36,9 +36,9 @@ jobs:
           cat <<EOF > contract-config.json
           {
               "_comment": "Input base or baseGoerli for mainnet or goerli testnet respectively",
-              "activeNetwork": "${{ secrets.CONTRACT_NETWORK_TYPE }}",
+              "activeNetwork": "${{ secrets.ACTIVE_NETWORK }}",
               "contractAddress": "${{ secrets.CONTRACT_ADDRESS }}",
-              "webAddress": "${{ secrets.AIRDROP_SERVER_ADDRESS }}"
+              "webAddress": "${{ secrets.WEB_ADDRESS }}"
           }
           EOF
       - name: Setup Pages

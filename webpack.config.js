@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     mode: "development",
@@ -23,5 +24,12 @@ module.exports = {
                 }
             },
         ]
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env.ACTIVE_NETWORK': JSON.stringify(process.env.ACTIVE_NETWORK),
+            'process.env.CONTRACT_ADDRESS': JSON.stringify(process.env.CONTRACT_ADDRESS),
+            'process.env.WEB_ADDRESS': JSON.stringify(process.env.WEB_ADDRESS)
+        })
+    ]
 };

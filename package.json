@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "prebuild": "node -e \"if (process.env.CLOUDFLARE_ENV) require('./create-config.js')\"",
     "build": "webpack"
   },
   "dependencies": {
