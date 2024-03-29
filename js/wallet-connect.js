@@ -3,7 +3,31 @@ import { base } from 'viem/chains'
 import { reconnect, watchAccount, disconnect, getAccount } from '@wagmi/core'
 
 // 1. Get a project ID at https://cloud.walletconnect.com
-const projectId = '720d9758b1da51d5e185e7fc3c90b889'
+let projectId;
+
+try {
+  // Attempt to load the configuration file
+  const config = require('../contract-config.json');
+
+  // Extracting values from the config
+  projectId = config.projectId;
+
+  // Validate the required configuration values
+  if (!projectId) {
+    throw new Error("Required configuration value (projectId) is missing.");
+  }
+
+  // Use the projectId as needed
+} catch (error) {
+  // Check if the error is due to a missing file
+  if (error.code === 'MODULE_NOT_FOUND') {
+    console.error("Error: Configuration file not found.");
+    process.exit(1);
+  }
+
+  // Handle other errors
+  console.error("Error loading configuration: ", error.message);
+}
 
 // 2. Create wagmiConfig
 const metadata = {

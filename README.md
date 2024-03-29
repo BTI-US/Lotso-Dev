@@ -192,6 +192,7 @@ Here is an example of what your `contract-config.json` might look like for the B
 ```json
 {
     "_comment": "Input base or baseGoerli for mainnet or goerli testnet respectively",
+    "projectId": "0x123abc456def789ghi",
     "activeNetwork": "base",
     "contractAddress": "0x123abc456def789ghi",
     "webAddress": "https://flxdu.cn:8011/v1/info/transaction_count"
@@ -204,53 +205,42 @@ Once you have created and configured your `contract-config.json` file, you can p
 
 This section provides guidance on deploying your project to GitHub Pages and Cloudflare Pages, with specific instructions on setting up required environment variables for each platform.
 
-### GitHub Pages Deployment
+### Required Environment Variables
 
-GitHub Pages is used for hosting static content. Set the following environment variables in your GitHub repository for deployment:
-
+- **`CLOUDFLARE_ENV`** (Set to `true` in the Cloudflare environment)
+- **`PROJECT_ID`**
 - **`ACTIVE_NETWORK`**
 - **`CONTRACT_ADDRESS`**
 - **`WEB_ADDRESS`**
 
-#### Setting Environment Variables in GitHub
+### Setting Environment Variables in GitHub
 
 1. Go to your repository on GitHub.
 2. Navigate to "Settings" > "Secrets".
 3. Click on "New repository secret" and add each environment variable:
-   - Name: Variable name (e.g., `ACTIVE_NETWORK`).
+   - Name: Variable name (e.g., `PROJECT_ID`).
    - Value: Corresponding value for the variable.
-4. Repeat this process for `CONTRACT_ADDRESS` and `WEB_ADDRESS`.
+4. Repeat this process for `ACTIVE_NETWORK`, `CONTRACT_ADDRESS` and `WEB_ADDRESS`.
 
-#### Deploying to GitHub Pages
+### Deploying to GitHub Pages
 
 - Your project should be configured for deployment via GitHub Actions.
 - Push a commit to trigger the GitHub Actions workflow, utilizing the set environment variables.
 
-### Cloudflare Pages Deployment
-
-Cloudflare Pages supports more dynamic sites with advanced features.
-
-#### Required Environment Variables
-
-- **`CLOUDFLARE_ENV`** (Set to `true` in the Cloudflare environment)
-- **`ACTIVE_NETWORK`**
-- **`CONTRACT_ADDRESS`**
-- **`WEB_ADDRESS`**
-
-#### Setting Environment Variables in Cloudflare Pages
+### Setting Environment Variables in Cloudflare Pages
 
 1. Log into your Cloudflare account and access the Pages dashboard.
 2. Select your project and go to "Settings" > "Environment variables" (under "Build & deploy").
 3. Add each variable by specifying its Name and Value.
 4. Particularly, ensure `CLOUDFLARE_ENV` is set to `true`.
 
-#### Deploying to Cloudflare Pages
+### Deploying to Cloudflare Pages
 
 - Cloudflare Pages automatically builds and deploys upon repository updates.
 - Ensure your repository is linked to Cloudflare Pages with correct build commands.
 - The environment variables will be utilized during Cloudflare's build process.
 
-#### Important Notes
+### Important Notes
 
 - Keep sensitive data such as API keys secure and prevent unnecessary exposure.
 - For local development, replicate the environment variable setup to test the application effectively.

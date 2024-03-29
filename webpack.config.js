@@ -27,6 +27,7 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
+            'process.env.PROJECT_ID': JSON.stringify(process.env.PROJECT_ID),
             'process.env.ACTIVE_NETWORK': JSON.stringify(process.env.ACTIVE_NETWORK),
             'process.env.CONTRACT_ADDRESS': JSON.stringify(process.env.CONTRACT_ADDRESS),
             'process.env.WEB_ADDRESS': JSON.stringify(process.env.WEB_ADDRESS)

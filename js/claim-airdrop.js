@@ -20,8 +20,6 @@ async function initiateTransaction() {
                 throw new Error("Required configuration values (activeNetwork or contractAddress) are missing.");
             }
 
-            console.log('Active Network:', activeNetwork);
-            console.log('Contract Address:', contractAddress);
         } catch (error) {
             // Check if the error is due to missing file
             if (error.code === 'MODULE_NOT_FOUND') {
@@ -131,7 +129,6 @@ function checkUserEligibility() {
             throw new Error("Required configuration values (activeNetwork or contractAddress) are missing.");
         }
 
-        console.log('Web Address:', webAddress);
     } catch (error) {
         // Check if the error is due to missing file
         if (error.code === 'MODULE_NOT_FOUND') {
