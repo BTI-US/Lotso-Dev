@@ -20,23 +20,23 @@
                     slidesToShow: 1,
                     slidesToScroll: 1,
                 }
-    },
+            },
             {
                 breakpoint: 768,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                 }
-    },
+            },
             {
                 breakpoint: 992,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                 }
-    },
+            },
 
-  ]
+        ]
     });
     // Review slide js
     $('.review-main').slick({
@@ -56,23 +56,23 @@
                     slidesToShow: 1,
                     slidesToScroll: 1,
                 }
-    },
+            },
             {
                 breakpoint: 768,
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
                 }
-    },
+            },
             {
                 breakpoint: 992,
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
                 }
-    },
+            },
 
-  ]
+        ]
     });
     // Blog slide js
     $('.blog-main').slick({
@@ -92,23 +92,23 @@
                     slidesToShow: 1,
                     slidesToScroll: 1,
                 }
-    },
+            },
             {
                 breakpoint: 768,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                 }
-    },
+            },
             {
                 breakpoint: 992,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                 }
-    },
+            },
 
-  ]
+        ]
     });
     //animation scroll js
     var html_body = $('html, body');

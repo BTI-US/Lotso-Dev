@@ -3,7 +3,7 @@
 [![Deploy static content to Pages](https://github.com/BTI-US/Lotso/actions/workflows/static.yml/badge.svg?branch=master)](https://github.com/BTI-US/Lotso/actions/workflows/static.yml)
 [![CodeQL](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml)
 
-- Last Modified: 2024-03-30
+- Last Modified: 2024-03-31
 - Author: Saurabh Kumar
 
 ## Introduction
@@ -162,15 +162,17 @@ To successfully deploy and run the project locally, you need to create a `contra
    - Open the file in a text editor and add the following JSON structure:
      ```json
      {
-         "_comment": "Input base or baseGoerli for mainnet or goerli testnet respectively",
+         "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'base' for Base Mainnet or 'baseGoerli' for Goerli Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
          "activeNetwork": "Your_Network_Choice",
          "contractAddress": "Your_Contract_Address",
-         "webAddress": "Your_Web_Address"
+         "webAddress": "Your_Web_Address",
+         "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key"
      }
      ```
    - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
    - Replace `Your_Contract_Address` with the actual contract address you are using.
-   - Replace `Your_Web_Address` with the web address for transaction count (if applicable).
+   - Replace `Your_Web_Address` with the web address for airdrop eligibility check.
+   - Replace `Your_CloudFlare_Turnstile_Site_Key` with the site key for the Cloudflare Turnstile widget.
 
 3. **Save the File:**
    - Save your changes to `contract-config.json`.
@@ -191,7 +193,7 @@ Here is an example of what your `contract-config.json` might look like for the B
 
 ```json
 {
-    "_comment": "Input base or baseGoerli for mainnet or goerli testnet respectively",
+    "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'base' for Base Mainnet or 'baseGoerli' for Goerli Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
     "projectId": "0x123abc456def789ghi",
     "activeNetwork": "base",
     "contractAddress": "0x123abc456def789ghi",

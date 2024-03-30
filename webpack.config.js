@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     mode: "development",
@@ -32,6 +33,13 @@ module.exports = {
             'process.env.CONTRACT_ADDRESS': JSON.stringify(process.env.CONTRACT_ADDRESS),
             'process.env.WEB_ADDRESS': JSON.stringify(process.env.WEB_ADDRESS),
             'process.env.TURNSTILE_SITE_KEY': JSON.stringify(process.env.TURNSTILE_SITE_KEY),
-        })
+        }),
+        new ESLintPlugin({
+            // Plugin options
+            extensions: ['js', 'jsx'], // file extensions to lint
+            context: 'js', // files to lint
+            failOnWarning: false,
+            failOnError: true,
+        }),
     ]
 };
