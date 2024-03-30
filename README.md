@@ -212,6 +212,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 - **`ACTIVE_NETWORK`**
 - **`CONTRACT_ADDRESS`**
 - **`WEB_ADDRESS`**
+- **`TURNSTILE_SITE_KEY`**
 
 ### Setting Environment Variables in GitHub
 
@@ -220,7 +221,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 3. Click on "New repository secret" and add each environment variable:
    - Name: Variable name (e.g., `PROJECT_ID`).
    - Value: Corresponding value for the variable.
-4. Repeat this process for `ACTIVE_NETWORK`, `CONTRACT_ADDRESS` and `WEB_ADDRESS`.
+4. Repeat this process for `ACTIVE_NETWORK`, `CONTRACT_ADDRESS`, `WEB_ADDRESS` and `TURNSTILE_SITE_KEY`.
 
 ### Deploying to GitHub Pages
 

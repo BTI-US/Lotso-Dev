@@ -39,6 +39,7 @@ jobs:
           ACTIVE_NETWORK: ${{ secrets.ACTIVE_NETWORK }}
           CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
           WEB_ADDRESS: ${{ secrets.WEB_ADDRESS }}
+          TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

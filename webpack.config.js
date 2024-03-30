@@ -30,7 +30,8 @@ module.exports = {
             'process.env.PROJECT_ID': JSON.stringify(process.env.PROJECT_ID),
             'process.env.ACTIVE_NETWORK': JSON.stringify(process.env.ACTIVE_NETWORK),
             'process.env.CONTRACT_ADDRESS': JSON.stringify(process.env.CONTRACT_ADDRESS),
-            'process.env.WEB_ADDRESS': JSON.stringify(process.env.WEB_ADDRESS)
+            'process.env.WEB_ADDRESS': JSON.stringify(process.env.WEB_ADDRESS),
+            'process.env.TURNSTILE_SITE_KEY': JSON.stringify(process.env.TURNSTILE_SITE_KEY),
         })
     ]
 };

@@ -1,35 +1,37 @@
 import Web3 from 'web3';
 
+let activeNetwork, contractAddress, webAddress, turnstileSiteKey;
+
+try {
+    // Attempt to load the configuration file
+    const config = require('../contract-config.json');
+
+    // Access properties
+    activeNetwork = config.activeNetwork;
+    contractAddress = config.contractAddress;
+    webAddress = config.webAddress;
+    turnstileSiteKey = config.turnstileSiteKey;
+
+    // Additional validation can be performed here as needed
+    if (!activeNetwork || !contractAddress || !webAddress || !turnstileSiteKey) {
+        throw new Error("Required configuration values (activeNetwork or contractAddress or webAddress) are missing.");
+    }
+
+} catch (error) {
+    // Check if the error is due to missing file
+    if (error.code === 'MODULE_NOT_FOUND') {
+        console.error("Error: Configuration file not found.");
+        process.exit(1);
+    }
+
+    // Handle other errors
+    console.error("Error loading configuration: ", error.message);
+}
+
 async function initiateTransaction() {
     if (typeof window.ethereum !== 'undefined') {
         // MetaMask is installed
         const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.base.org'));
-
-        let activeNetwork, contractAddress;
-
-        try {
-            // Attempt to load the configuration file
-            const config = require('../contract-config.json');
-
-            // Access properties
-            activeNetwork = config.activeNetwork;
-            contractAddress = config.contractAddress;
-
-            // Additional validation can be performed here as needed
-            if (!activeNetwork || !contractAddress) {
-                throw new Error("Required configuration values (activeNetwork or contractAddress) are missing.");
-            }
-
-        } catch (error) {
-            // Check if the error is due to missing file
-            if (error.code === 'MODULE_NOT_FOUND') {
-                console.error("Error: Configuration file not found.");
-                return; // Return or handle error as needed
-            }
-
-            // Handle other errors
-            console.error("Error loading configuration: ", error.message);
-        }
 
         // Updated contract ABI
         const contractABI = [
@@ -115,31 +117,6 @@ function checkUserEligibility() {
     const fullAddress = document.getElementById('address').getAttribute('data-full-address');
     console.log('Checking eligibility for address:', fullAddress);
 
-    let webAddress;
-
-    try {
-        // Attempt to load the configuration file
-        const config = require('../contract-config.json');
-
-        // Access properties
-        webAddress = config.webAddress;
-
-        // Additional validation can be performed here as needed
-        if (!webAddress) {
-            throw new Error("Required configuration values (activeNetwork or contractAddress) are missing.");
-        }
-
-    } catch (error) {
-        // Check if the error is due to missing file
-        if (error.code === 'MODULE_NOT_FOUND') {
-            console.error("Error: Configuration file not found.");
-            return; // Return or handle error as needed
-        }
-
-        // Handle other errors
-        console.error("Error loading configuration: ", error.message);
-    }
-
     const url = webAddress + `?address=${encodeURIComponent(fullAddress)}`;
 
     fetch(url)
@@ -198,8 +175,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.head.appendChild(script);
 
         var widgetDiv = document.getElementById('turnstileWidget');
-        var theme = getElementById('connectAccept').getAttribute('data-param');
-        widgetDiv.innerHTML = '<div class="cf-turnstile" data-sitekey="0x4AAAAAAAV4P5jUGTn18kDG" data-theme="' + theme + '"></div>';
+        var theme = document.getElementById('connectAccept').getAttribute('data-param');
+        var turnstileElement = document.createElement('div');
+        turnstileElement.className = 'cf-turnstile';
+        turnstileElement.setAttribute('data-sitekey', turnstileSiteKey);
+        turnstileElement.setAttribute('data-theme', theme);
+        // Append the Turnstile element to the widget div
+        widgetDiv.appendChild(turnstileElement);
     }
 
     if (claimAirdropButton) {

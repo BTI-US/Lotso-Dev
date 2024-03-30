@@ -58,6 +58,7 @@ jobs:
         ACTIVE_NETWORK: ${{ secrets.ACTIVE_NETWORK }}
         CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
         WEB_ADDRESS: ${{ secrets.WEB_ADDRESS }}
+        TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
