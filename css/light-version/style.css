@@ -103,7 +103,7 @@ p {
 
 /* model */
 .modal-content {
-    background: #121212;
+    background: #ffffff;
 }
 
 .modal-title {
@@ -119,11 +119,9 @@ p {
 
 .modal-body {
     padding: 42px 30px 30px;
-    background-color: white;
 }
 
 .dropboxx {
-    background: white;
     color: #151515;
 }
 
@@ -160,7 +158,6 @@ p {
 .modal-footer {
     border-top: 1px dashed #222;
     padding: 25px;
-    background-color: white;
 }
 
 

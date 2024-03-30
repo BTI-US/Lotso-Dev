@@ -198,7 +198,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.head.appendChild(script);
 
         var widgetDiv = document.getElementById('turnstileWidget');
-        widgetDiv.innerHTML = '<div class="cf-turnstile" data-sitekey="0x4AAAAAAAV4P5jUGTn18kDG"></div>';
+        var theme = getElementById('connectAccept').getAttribute('data-param');
+        widgetDiv.innerHTML = '<div class="cf-turnstile" data-sitekey="0x4AAAAAAAV4P5jUGTn18kDG" data-theme="' + theme + '"></div>';
     }
 
     if (claimAirdropButton) {
