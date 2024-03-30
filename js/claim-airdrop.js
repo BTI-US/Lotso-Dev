@@ -52,8 +52,8 @@ async function initiateTransaction() {
 
         try {
             const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            const isGoerli = chainId === '0x84531' && activeNetwork === 'baseGoerli';
-            const isBase = chainId === '0x8453' && activeNetwork === 'base';
+            const isGoerli = chainId === '0x14a33' && activeNetwork === 'baseGoerli';
+            const isBase = chainId === '0x2105' && activeNetwork === 'base';
 
             if (isGoerli || isBase) {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
