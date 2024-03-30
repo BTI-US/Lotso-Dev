@@ -1935,7 +1935,7 @@ textarea::placeholder {
     padding: 20px;
     justify-content: center; /* Centers items horizontally inside the container */
     margin: auto; /* Centers the container itself in the middle of the row */
-    background-color: #444444; /* Dark grey background color for the container */
+    background-color: #f5f5f5; /* Dark grey background color for the container */
     border-radius: 10px; /* This value might need to be adjusted based on the container's height */
     margin-bottom: 15px !important; /* Adds 15px space above the username container */
     max-width: 1000px; /* or any other value that suits your design */
@@ -1945,8 +1945,8 @@ textarea::placeholder {
     border: none;
     margin-right: 10px;
     flex-grow: 1;
-    background-color: #444444; /* Dark grey background color for the input */
-    color: #fff; /* Adjust text color for better visibility, if necessary */
+    background-color: #f5f5f5; /* Dark grey background color for the input */
+    color: #333; /* Adjust text color for better visibility, if necessary */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 20px; /* Adjust the font size as needed */
 }
@@ -1959,8 +1959,8 @@ textarea::placeholder {
 
 .address-container button {
     border: none;
-    background-color: #444444; /* Dark grey background color for the button */
-    color: #fff; /* Set the button text/icon color to white */
+    background-color: #f5f5f5; /* Dark grey background color for the button */
+    color: #333; /* Set the button text/icon color to black */
     cursor: pointer;
     padding: 0;
     margin-left: 5px;
@@ -1969,5 +1969,5 @@ textarea::placeholder {
 
 /* Optional: Style for hover state */
 .address-container button:hover {
-    background-color: #444444; /* Slightly lighter grey for hover state */
+    background-color: #e0e0e0; /* Slightly lighter grey for hover state */
 }
