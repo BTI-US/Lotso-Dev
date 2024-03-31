@@ -46,7 +46,7 @@ async function initiateTransaction() {
         }
 
         // Updated contract ABI to include getAirdropAmount function
-        const contractABI = [
+        const airdropAcquireABI = [
             {
                 "inputs": [
                     {
@@ -88,14 +88,15 @@ async function initiateTransaction() {
 
             if (isBaseSepolia || isMainnet || isSepolia) {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                const contract = new web3.eth.Contract(contractABI, contractAddress);
+                const contract = new web3.eth.Contract(airdropAcquireABI, contractAddress);
                 const userAccount = accounts[0];
 
                 // Call the getAirdropAmount method with the user's account address
                 contract.methods.getAirdropAmount(userAccount).call()
                     .then(amount => {
                         console.log('Airdrop Amount:', amount);
-                        displayMessage(`Your airdrop amount is: ${amount}`, 'success');
+                        displayMessage(`Your airdrop amount is: ${amount}, press the button above to confirm your airdrop.`, 'success');
+                        document.getElementById('claimAirdrop').textContent = 'Confirm Your Airdrop';
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -108,6 +109,61 @@ async function initiateTransaction() {
         } catch (error) {
             console.error('Unable to get the current chain ID:', error);
             displayMessage('Error in retrieving chain ID', 'error');
+        }
+    } else {
+        console.log('MetaMask is not installed');
+        displayMessage('MetaMask is not installed', 'error');
+    }
+}
+
+async function confirmTransaction() {
+    if (typeof window.ethereum !== 'undefined') {
+        // MetaMask is installed and can handle transactions
+        const web3 = new Web3(window.ethereum);
+
+        displayMessage('Processing airdrop claim...', 'info');
+
+        try {
+            // Request account access
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const userAccount = accounts[0];
+
+            // Contract ABI for claimAirdrop
+            const airdropContractABI = [
+                {
+                    "inputs": [],
+                    "name": "claimAirdrop",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                }
+            ];
+
+            const contract = new web3.eth.Contract(airdropContractABI, contractAddress);
+
+            // Call the claimAirdrop method
+            contract.methods.claimAirdrop().send({ from: userAccount })
+                .on('transactionHash', hash => {
+                    console.log('Transaction Hash:', hash);
+                    displayMessage('Transaction sent. Waiting for confirmation...', 'info');
+                })
+                .on('receipt', receipt => {
+                    console.log('Transaction Receipt:', receipt);
+                    displayMessage('Airdrop claimed successfully!', 'success');
+                })
+                .catch(error => {
+                    console.error('Transaction Error:', error);
+                    displayMessage(error.message, 'error');
+                });
+        } catch (error) {
+            console.error('Error in transaction:', error);
+            displayMessage('Error in claiming airdrop', 'error');
         }
     } else {
         console.log('MetaMask is not installed');
@@ -236,5 +292,7 @@ function proceedWithAction(button) {
         checkUserEligibility();
     } else if (button.textContent === 'Claim Your Airdrop') {
         initiateTransaction();
+    } else if (button.textContent === 'Confirm Your Airdrop') {
+        confirmTransaction();
     }
 }
