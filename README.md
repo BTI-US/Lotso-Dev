@@ -131,7 +131,8 @@ Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORT
         "address": "0xbA6a68677e0A16dcB1ff4BDDF613563133201280",
         "transaction_count": 8552,
         "airdrop_count": 1000000000,
-        "has_airdropped": false
+        "has_airdropped": false,
+        "scheduled_delivery": "2024-03-31T11:00:00Z"
     }
 }
 ```
@@ -148,6 +149,7 @@ Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORT
 | `data.transaction_count` | Integer | The number of transactions associated with the address.                                     |
 | `data.airdrop_count`| Integer | The airdrop count for the address, which is either `0` or `1000000000`.                           |
 | `data.has_airdropped` | Boolean | Indicates if the airdrop has occurred. `false` means airdrop has not started; `true` means airdrop has occurred, and the user cannot claim it again if already claimed. |
+| `data.scheduled_delivery` | String | The next available time for claiming the airdrop. If it cannot be claimed (transaction_count <= 10), it will be set to 0000-12-31T00:00:00Z in UTC+0 timezone. |
 
 ## Setting Up `contract-config.json` for Local Deployment
 

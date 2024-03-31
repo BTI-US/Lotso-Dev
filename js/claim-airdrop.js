@@ -131,25 +131,31 @@ function checkUserEligibility() {
                 const txCount = data.data.transaction_count;
                 const hasAirdropped = data.data.has_airdropped;
                 const obtainedAddress = data.data.address;
+                const scheduledDelivery = new Date(data.data.scheduled_delivery);
+                const now = new Date();
 
                 // Compare the obtained address with the sent address
                 if (obtainedAddress.toLowerCase() !== fullAddress.toLowerCase()) {
-                    throw new Error('The obtained address does not match the sent address');
+                    throw new Error('The obtained address does not match the sent address, please refresh the browser cache and retry.');
                 }
 
-                if (txCount >= 10) {
+                if (scheduledDelivery.toISOString() === "0000-12-31T00:00:00Z" || txCount <= 10) {
+                    displayMessage('You do not have the eligibility to claim the airdrop', 'info');
+                } else if (scheduledDelivery > now) {
+                    // Calculate time difference and display countdown
+                    let timeDiff = scheduledDelivery.getTime() - now.getTime();
+                    let days = Math.floor(timeDiff / (1000 * 3600 * 24));
+                    let hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600));
+                    let minutes = Math.floor((timeDiff % (1000 * 3600)) / (1000 * 60));
+                    displayMessage(`Please wait: ${days} days, ${hours} hours, ${minutes} minutes for available airdrop`, 'info');
+                } else {
                     if (!hasAirdropped) {
-                        // User is eligible, but airdrop has not started
                         console.log('Airdrop has not started yet. Please wait patiently.');
                         displayMessage('Airdrop has not started yet. Please wait patiently.', 'info');
                     } else {
-                        // User is eligible and airdrop is available
                         console.log('User is eligible to claim the airdrop');
                         document.getElementById('claimAirdrop').textContent = 'Claim Your Airdrop';
                     }
-                } else {
-                    // User is not eligible
-                    displayMessage('You are not eligible to claim the airdrop', 'info');
                 }
             } else {
                 throw new Error(data.error || 'Unknown error occurred');
