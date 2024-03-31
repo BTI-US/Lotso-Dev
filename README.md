@@ -101,18 +101,18 @@ We use viem library to define the Base network in our project.
 
 Refer to the [Base Network](https://github.com/wevm/viem/blob/main/src/chains/definitions/base.ts) for the definition of the Base Mainnet network in viem.
 
-### Blockchain Information for Base Goerli Network
+### Blockchain Information for Base Sepolia Network
 
 |Name|Value|
 |-|-|
-|Network Name|Base Goerli Testnet|
+|Network Name|Base Sepolia Testnet|
 |Description|The public testnet for Base.|
-|RPC Endpoint|https://goerli.base.org|
+|RPC Endpoint|https://sepolia.base.org|
 |Chain ID|84531|
 |Currency Symbol|ETH|
-|Block Explorer|https://goerli.basescan.org|
+|Block Explorer|https://sepolia.basescan.org|
 
-Refer to the [Base Goerli Network](https://github.com/wevm/viem/blob/main/src/chains/definitions/baseGoerli.ts) for the definition of the Base Mainnet network in viem.
+Refer to the [Base Sepolia Network](https://github.com/wevm/viem/blob/main/src/chains/definitions/baseSepolia.ts) for the definition of the Base Mainnet network in viem.
 
 ### Supported Blockchain
 
@@ -164,7 +164,7 @@ To successfully deploy and run the project locally, you need to create a `contra
    - Open the file in a text editor and add the following JSON structure:
      ```json
      {
-         "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'base' for Base Mainnet or 'baseGoerli' for Goerli Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
+         "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
          "activeNetwork": "Your_Network_Choice",
          "contractAddress": "Your_Contract_Address",
          "webAddress": "Your_Web_Address",
@@ -195,7 +195,7 @@ Here is an example of what your `contract-config.json` might look like for the B
 
 ```json
 {
-    "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'base' for Base Mainnet or 'baseGoerli' for Goerli Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
+    "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
     "projectId": "0x123abc456def789ghi",
     "activeNetwork": "base",
     "contractAddress": "0x123abc456def789ghi",

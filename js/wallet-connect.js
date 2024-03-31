@@ -1,20 +1,21 @@
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
-import { base } from 'viem/chains';
+import { base, baseSepolia } from 'viem/chains';
 import { reconnect, watchAccount, disconnect, getAccount } from '@wagmi/core';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
-let projectId;
+let activeNetwork, projectId;
 
 try {
   // Attempt to load the configuration file
   const config = require('../contract-config.json');
 
   // Extracting values from the config
+  activeNetwork = config.activeNetwork;
   projectId = config.projectId;
 
   // Validate the required configuration values
-  if (!projectId) {
-    throw new Error("Required configuration value (projectId) is missing.");
+  if (!activeNetwork || !projectId) {
+    throw new Error("Required configuration value (activeNetwork or projectId) is missing.");
   }
 
   // Use the projectId as needed
@@ -37,7 +38,7 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 };
 
-const chains = [base];
+const chains = activeNetwork === 'baseMainnet' ? [base] : [baseSepolia];
 export const config = defaultWagmiConfig({
   chains,
   projectId,

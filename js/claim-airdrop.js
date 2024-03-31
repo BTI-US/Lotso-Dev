@@ -31,7 +31,16 @@ try {
 async function initiateTransaction() {
     if (typeof window.ethereum !== 'undefined') {
         // MetaMask is installed
-        const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.base.org'));
+        let web3;
+        if (activeNetwork === 'baseSepolia') {
+            web3 = new Web3(new Web3.providers.HttpProvider('https://sepolia.base.org'));
+        } else if (activeNetwork === 'baseMainnet') {
+            web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.base.org'));
+        } else {
+            console.log('Invalid network selection');
+            displayMessage('Invalid network selection', 'error');
+            return;
+        }
 
         // Updated contract ABI
         const contractABI = [
@@ -54,10 +63,10 @@ async function initiateTransaction() {
 
         try {
             const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            const isGoerli = chainId === '0x14a33' && activeNetwork === 'baseGoerli';
-            const isBase = chainId === '0x2105' && activeNetwork === 'base';
+            const isSepolia = chainId === '0x14a34' && activeNetwork === 'baseSepolia';
+            const isMainnet = chainId === '0x2105' && activeNetwork === 'baseMainnet';
 
-            if (isGoerli || isBase) {
+            if (isSepolia || isMainnet) {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 const contract = new web3.eth.Contract(contractABI, contractAddress);
                 const userAccount = accounts[0];
@@ -82,7 +91,7 @@ async function initiateTransaction() {
                     });
             } else {
                 console.log('Incorrect network:', chainId);
-                displayMessage(`Please switch to the ${activeNetwork === 'baseGoerli' ? 'Goerli Test Network' : 'Base Network'} in your MetaMask wallet.`, 'info');
+                displayMessage(`Please switch to the ${activeNetwork === 'baseSepolia' ? 'Sepolia Test Network' : 'Mainnet Network'} in your MetaMask wallet.`, 'info');
             }
         } catch (error) {
             console.error('Unable to get the current chain ID:', error);
