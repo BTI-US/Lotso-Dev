@@ -40,6 +40,7 @@ jobs:
           CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
           WEB_ADDRESS: ${{ secrets.WEB_ADDRESS }}
           TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
+          INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

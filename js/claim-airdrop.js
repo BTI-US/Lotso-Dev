@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 
-let activeNetwork, contractAddress, webAddress, turnstileSiteKey;
+let activeNetwork, contractAddress, webAddress, turnstileSiteKey, infuraApiKey;
 
 try {
     // Attempt to load the configuration file
@@ -11,10 +11,11 @@ try {
     contractAddress = config.contractAddress;
     webAddress = config.webAddress;
     turnstileSiteKey = config.turnstileSiteKey;
+    infuraApiKey = config.infuraApiKey;
 
     // Additional validation can be performed here as needed
-    if (!activeNetwork || !contractAddress || !webAddress || !turnstileSiteKey) {
-        throw new Error("Required configuration values (activeNetwork or contractAddress or webAddress) are missing.");
+    if (!activeNetwork || !contractAddress || !webAddress || !turnstileSiteKey || !infuraApiKey) {
+        throw new Error("Required configuration values (activeNetwork or contractAddress or webAddress or turnstileSiteKey or infuraApiKey) are missing.");
     }
 
 } catch (error) {
@@ -36,17 +37,25 @@ async function initiateTransaction() {
             web3 = new Web3(new Web3.providers.HttpProvider('https://sepolia.base.org'));
         } else if (activeNetwork === 'baseMainnet') {
             web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.base.org'));
+        } else if (activeNetwork === 'sepolia') {
+            web3 = new Web3(new Web3.providers.HttpProvider('https://sepolia.infura.io/v3/' + infuraApiKey));
         } else {
             console.log('Invalid network selection');
             displayMessage('Invalid network selection', 'error');
             return;
         }
 
-        // Updated contract ABI
+        // Updated contract ABI to include getAirdropAmount function
         const contractABI = [
             {
-                "inputs": [],
-                "name": "claimAirdrop",
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "account",
+                        "type": "address"
+                    }
+                ],
+                "name": "getAirdropAmount",
                 "outputs": [
                     {
                         "internalType": "uint256",
@@ -54,7 +63,7 @@ async function initiateTransaction() {
                         "type": "uint256"
                     }
                 ],
-                "stateMutability": "nonpayable",
+                "stateMutability": "view",
                 "type": "function"
             }
         ];
@@ -63,38 +72,32 @@ async function initiateTransaction() {
 
         try {
             const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            const isSepolia = chainId === '0x14a34' && activeNetwork === 'baseSepolia';
+            const isBaseSepolia = chainId === '0x14a34' && activeNetwork === 'baseSepolia';
             const isMainnet = chainId === '0x2105' && activeNetwork === 'baseMainnet';
+            const isSepolia = chainId === '0xaa36a7' && activeNetwork === 'sepolia';
 
-            if (isSepolia || isMainnet) {
+            if (isBaseSepolia || isMainnet || isSepolia) {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 const contract = new web3.eth.Contract(contractABI, contractAddress);
                 const userAccount = accounts[0];
 
-                contract.methods.claimAirdrop().send({ from: userAccount })
-                    .on('transactionHash', hash => {
-                        console.log('Transaction Hash:', hash);
-                        displayMessage('Transaction sent. Waiting for confirmation...', 'info');
-                    })
-                    .on('receipt', receipt => {
-                        console.log('Transaction Receipt:', receipt);
-                        displayMessage('Transaction successful!', 'success');
+                // Call the getAirdropAmount method with the user's account address
+                contract.methods.getAirdropAmount(userAccount).call()
+                    .then(amount => {
+                        console.log('Airdrop Amount:', amount);
+                        displayMessage(`Your airdrop amount is: ${amount}`, 'success');
                     })
                     .catch(error => {
-                        if (error.code === 4001) {
-                            console.log('User denied transaction signature.');
-                            displayMessage(error.message, 'info');
-                        } else {
-                            console.error('Transaction Error:', error);
-                            displayMessage(error.message, 'error');
-                        }
+                        console.error('Error:', error);
+                        displayMessage(error.message, 'error');
                     });
             } else {
                 console.log('Incorrect network:', chainId);
-                displayMessage(`Please switch to the ${activeNetwork === 'baseSepolia' ? 'Sepolia Test Network' : 'Mainnet Network'} in your MetaMask wallet.`, 'info');
+                displayMessage(`Please switch to the ${activeNetwork === 'baseSepolia' ? 'Sepolia Base Test Network' : activeNetwork === 'baseMainnet' ? 'Base Mainnet Network' : 'Sepolia Test Network'} in your MetaMask wallet.`, 'info');
             }
         } catch (error) {
             console.error('Unable to get the current chain ID:', error);
+            displayMessage('Error in retrieving chain ID', 'error');
         }
     } else {
         console.log('MetaMask is not installed');
@@ -156,7 +159,7 @@ function checkUserEligibility() {
                     let days = Math.floor(timeDiff / (1000 * 3600 * 24));
                     let hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600));
                     let minutes = Math.floor((timeDiff % (1000 * 3600)) / (1000 * 60));
-                    displayMessage(`Please wait: ${days} days, ${hours} hours, ${minutes} minutes for available airdrop`, 'info');
+                    displayMessage(`Congratulations! You have been allocated 1,000,000 Lotso tokens for the airdrop. We have recorded your address and will distribute the airdrop to you in ${days} days, ${hours} hours, and ${minutes} minutes. You can come and claim the airdrop after we distribute it.`, 'info');
                 } else {
                     if (!hasAirdropped) {
                         console.log('Airdrop has not started yet. Please wait patiently.');

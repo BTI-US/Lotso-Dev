@@ -80,6 +80,8 @@ Click [here](https://docs.walletconnect.com/web3modal/javascript/about) to learn
 
 Click [here](https://infura.io/docs) to learn more about Infura API.
 
+Click [here](https://infura.io/docs/gettingStarted/chooseaNetwork) to choose a network for Infura API.
+
 ## Network for Our Blockchain
 
 We are using the Base Mainnet network for our blockchain.
@@ -149,7 +151,7 @@ Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORT
 | `data.transaction_count` | Integer | The number of transactions associated with the address.                                     |
 | `data.airdrop_count`| Integer | The airdrop count for the address, which is either `0` or `1000000000`.                           |
 | `data.has_airdropped` | Boolean | Indicates if the airdrop has occurred. `false` means airdrop has not started; `true` means airdrop has occurred, and the user cannot claim it again if already claimed. |
-| `data.scheduled_delivery` | String | The next available time for claiming the airdrop. If it cannot be claimed (transaction_count <= 10), it will be set to 0000-12-31T00:00:00Z in UTC+0 timezone. |
+| `data.scheduled_delivery` | String | The next available time for claiming the airdrop. If it cannot be claimed (transaction_count <= 10), it will be set to 1970-01-01T08:00:00Z in UTC+0 timezone. |
 
 ## Setting Up `contract-config.json` for Local Deployment
 
@@ -164,11 +166,12 @@ To successfully deploy and run the project locally, you need to create a `contra
    - Open the file in a text editor and add the following JSON structure:
      ```json
      {
-         "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
+         "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Base Testnet or 'sepolia' for Sepolia Main Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
          "activeNetwork": "Your_Network_Choice",
          "contractAddress": "Your_Contract_Address",
          "webAddress": "Your_Web_Address",
-         "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key"
+         "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
+         "infuraApiKey": "Your_Infura_API_Key"
      }
      ```
    - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
@@ -195,11 +198,13 @@ Here is an example of what your `contract-config.json` might look like for the B
 
 ```json
 {
-    "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
+    "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Base Testnet or 'sepolia' for Sepolia Main Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
     "projectId": "0x123abc456def789ghi",
-    "activeNetwork": "base",
+    "activeNetwork": "baseMainnet",
     "contractAddress": "0x123abc456def789ghi",
-    "webAddress": "https://flxdu.cn:8011/v1/info/transaction_count"
+    "webAddress": "https://flxdu.cn:8011/v1/info/transaction_count",
+    "turnstileSiteKey": "0x123abc456def789ghi",
+    "infuraApiKey": "0x123abc456def789ghi"
 }
 ```
 

@@ -1,5 +1,5 @@
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
-import { base, baseSepolia } from 'viem/chains';
+import { base, baseSepolia, sepolia } from 'viem/chains';
 import { reconnect, watchAccount, disconnect, getAccount } from '@wagmi/core';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
@@ -38,7 +38,19 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 };
 
-const chains = activeNetwork === 'baseMainnet' ? [base] : [baseSepolia];
+let chains;
+
+if (activeNetwork === 'baseMainnet') {
+  chains = [base];
+} else if (activeNetwork === 'baseSepolia') {
+  chains = [baseSepolia];
+} else if (activeNetwork === 'sepolia') {
+  chains = [sepolia];
+} else {
+  console.log('Invalid network selection');
+  process.exit(1);
+}
+
 export const config = defaultWagmiConfig({
   chains,
   projectId,
