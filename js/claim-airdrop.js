@@ -148,7 +148,7 @@ function checkUserEligibility() {
                     throw new Error('The obtained address does not match the sent address, please refresh the browser cache and retry.');
                 }
 
-                if (scheduledDelivery.toISOString() === "0000-12-31T00:00:00Z" || txCount <= 10) {
+                if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z" || txCount <= 10) {
                     displayMessage('You do not have the eligibility to claim the airdrop', 'info');
                 } else if (scheduledDelivery > now) {
                     // Calculate time difference and display countdown
