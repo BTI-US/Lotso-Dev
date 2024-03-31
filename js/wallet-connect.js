@@ -61,6 +61,9 @@ console.log("Wagmi Config is:" + config);
 
 // 3. Create modal
 const modal = createWeb3Modal({
+  includeWalletIds: [
+    'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
+  ],
   wagmiConfig: config,
   projectId,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration

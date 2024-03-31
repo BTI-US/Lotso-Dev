@@ -117,7 +117,7 @@ async function initiateTransaction() {
 }
 
 async function confirmTransaction() {
-    if (typeof window.ethereum !== 'undefined') {
+    if (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask) {
         // MetaMask is installed and can handle transactions
         const web3 = new Web3(window.ethereum);
 
