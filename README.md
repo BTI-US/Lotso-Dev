@@ -222,6 +222,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 - **`CONTRACT_ADDRESS`**
 - **`WEB_ADDRESS`**
 - **`TURNSTILE_SITE_KEY`**
+- **`INFURA_API_KEY`**
 
 ### Setting Environment Variables in GitHub
 

@@ -71,10 +71,20 @@ async function initiateTransaction() {
         displayMessage('Waiting for user confirmation', 'info');
 
         try {
-            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            const isBaseSepolia = chainId === '0x14a34' && activeNetwork === 'baseSepolia';
-            const isMainnet = chainId === '0x2105' && activeNetwork === 'baseMainnet';
-            const isSepolia = chainId === '0xaa36a7' && activeNetwork === 'sepolia';
+            let chainId;
+            try {
+                chainId = await web3.eth.getChainId();
+                // Convert BigInt to Number
+                chainId = Number(chainId);
+            } catch (error) {
+                console.error("Error fetching chain ID with web3:", error);
+                // Fallback: Try MetaMask's eth_chainId
+                chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            }
+
+            const isBaseSepolia = chainId === parseInt('0x14a34', 16) && activeNetwork === 'baseSepolia';
+            const isMainnet = chainId === parseInt('0x2105', 16) && activeNetwork === 'baseMainnet';
+            const isSepolia = chainId === parseInt('0xaa36a7', 16) && activeNetwork === 'sepolia';
 
             if (isBaseSepolia || isMainnet || isSepolia) {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
