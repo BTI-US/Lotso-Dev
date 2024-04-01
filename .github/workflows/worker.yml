@@ -24,7 +24,7 @@ jobs:
       - name: Replace Port in worker.js
         run: |
           PORT=${{ secrets.SERVER_HTTP_PORT }} || "8080"
-          sed -i "s/__SERVER_HTTP_PORT__/$PORT/g" worker/worker.js
+          sed -i "s/__SERVER_HTTP_PORT__/$PORT/g" worker.js
 
       - name: Publish the Worker
         run: wrangler deploy --env production
