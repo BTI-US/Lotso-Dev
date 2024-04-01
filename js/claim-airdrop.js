@@ -296,6 +296,21 @@ function updateProgressBar(percentage, color) {
     }
 }
 
+function addCommasToBigInt(bigIntStr) {
+    let result = '';
+    let length = bigIntStr.length;
+    let counter = 0;
+
+    for (let i = length - 1; i >= 0; i--) {
+        counter++;
+        result = bigIntStr.charAt(i) + result;
+        if (counter % 3 === 0 && i !== 0) {
+            result = ',' + result;
+        }
+    }
+    return result;
+}
+
 function checkUserEligibility() {
     const fullAddress = document.getElementById('address').getAttribute('data-full-address');
     console.log('Checking eligibility for address:', fullAddress);
@@ -315,7 +330,7 @@ function checkUserEligibility() {
                 const hasAirdropped = data.data.has_airdropped;
                 const obtainedAddress = data.data.address;
                 const airdropCount = BigInt(data.data.airdrop_count);
-                const divisor = BigInt(10) ** BigInt(18);
+                const divisor = BigInt("1000000000000000000");
                 const scheduledDelivery = new Date(data.data.scheduled_delivery);
                 const now = new Date();
 
@@ -328,7 +343,7 @@ function checkUserEligibility() {
                     updateProgressBar(100, 'red');
                     displayMessage('You do not have the eligibility to claim the airdrop', 'info');
                 } else if (scheduledDelivery > now) {
-                    let airdropCnt = (airdropCount / divisor).toLocaleString();
+                    let airdropCnt = addCommasToBigInt(((airdropCount / divisor) + (airdropCount % divisor > 0 ? 1n : 0n)).toString());
                     // Calculate time difference and display countdown
                     let timeDiff = scheduledDelivery.getTime() - now.getTime();
                     let days = Math.floor(timeDiff / (1000 * 3600 * 24));
