@@ -991,6 +991,7 @@ over-btn a i {
 
 .progress-bar {
     background: #ff7657;
+    transition: width 0.5s ease-in-out;
 }
 
 .progress {

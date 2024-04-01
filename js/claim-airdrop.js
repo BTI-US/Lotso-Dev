@@ -196,10 +196,12 @@ async function initiateTransaction() {
         });
 
         console.log('Airdrop Amount:', contractReadResult);
+        updateProgressBar(50, 'green');
         displayMessage(`Your airdrop amount is: ${contractReadResult}, press the button above to confirm your airdrop.`, 'success');
         document.getElementById('claimAirdrop').textContent = 'Confirm Your Airdrop';
     } catch (error) {
         console.error('Unable to get the current chain ID:', error);
+        updateProgressBar(100, 'red');
         displayMessage('Error in retrieving chain ID', 'error');
     }
 }
@@ -234,6 +236,7 @@ async function confirmTransaction() {
 
         const txHash = transactionResponse;
         console.log('Transaction Hash:', txHash);
+        updateProgressBar(75, 'green');
         displayMessage('Transaction sent. Waiting for confirmation...', 'info');
 
         // Wait for the transaction receipt
@@ -241,9 +244,12 @@ async function confirmTransaction() {
 
         console.log('Transaction Receipt:', transactionReceipt);
         if (transactionReceipt && transactionReceipt.status === 'success') {
-            displayMessage('Transaction successful!', 'success');
+            displayMessage('Transaction successful! You can close this window now.', 'success');
+            updateProgressBar(100, 'green');
+            document.getElementById('claimAirdrop').textContent = 'Check Your Account';
         } else {
             displayMessage('Transaction failed', 'error');
+            updateProgressBar(100, 'red');
         }
     } catch (error) {
         console.error('Error in transaction:', error);
@@ -269,6 +275,19 @@ function displayMessage(message, type) {
         } else if (type === 'error') {
             messageElement.classList.add('error-message');
         }
+    }
+}
+
+function updateProgressBar(percentage, color) {
+    // Select the progress bar element
+    const progressBar = document.querySelector('.progress-bar');
+    
+    if (progressBar) {
+        // Update the width, aria-valuenow, and text content
+        progressBar.style.width = percentage + '%';
+        progressBar.style.backgroundColor = color;
+        progressBar.setAttribute('aria-valuenow', percentage);
+        progressBar.textContent = percentage + '%';
     }
 }
 
@@ -299,6 +318,7 @@ function checkUserEligibility() {
                 }
 
                 if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z" || txCount <= 10) {
+                    updateProgressBar(100, 'red');
                     displayMessage('You do not have the eligibility to claim the airdrop', 'info');
                 } else if (scheduledDelivery > now) {
                     // Calculate time difference and display countdown
@@ -310,9 +330,11 @@ function checkUserEligibility() {
                 } else {
                     if (!hasAirdropped) {
                         console.log('Airdrop has not started yet. Please wait patiently.');
+                        updateProgressBar(100, 'red');
                         displayMessage('Airdrop has not started yet. Please wait patiently.', 'info');
                     } else {
                         console.log('User is eligible to claim the airdrop');
+                        updateProgressBar(25, 'green');
                         displayMessage('You are eligible to claim the airdrop. Press the button above to check your airdrop amount.', 'info');
                         document.getElementById('claimAirdrop').textContent = 'Claim Your Airdrop';
                     }
@@ -323,6 +345,7 @@ function checkUserEligibility() {
         })
         .catch(err => {
             console.error('Error:', err);
+            updateProgressBar(100, 'red');
             displayMessage(`Error: ${err.message}`, 'error');
         });
 }
@@ -351,7 +374,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (claimAirdropButton) {
-        claimAirdropButton.textContent = 'Check Your Account'; // Set initial button text
+        if (claimAirdropButton.textContent === 'Check Your Account') {
+            document.getElementById('airdropMessage').innerText = 'Press the button above to check for airdrop.';
+        } else if (claimAirdropButton.textContent === 'Claim Your Airdrop') {
+            document.getElementById('airdropMessage').innerText = 'Press the button above to claim your airdrop.';
+        } else if (claimAirdropButton.textContent === 'Confirm Your Airdrop') {
+            document.getElementById('airdropMessage').innerText = 'Press the button above to confirm your airdrop.';
+        }
 
         claimAirdropButton.addEventListener('click', function handleButtonClick() {
             if (!isLocal) {
