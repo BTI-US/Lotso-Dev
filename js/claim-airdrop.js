@@ -75,6 +75,10 @@ const modal = createWeb3Modal({
 function connect(param = 'dark') {
     if (getAccount(config).isConnected) {
         disconnect(config);
+
+        // Clear the display information
+        document.getElementById('claimAirdrop').innerText = 'Check Your Account';
+        document.getElementById('airdropMessage').innerText = 'Press the button above to check for airdrop.';
     } else {
         modal.setThemeMode(param);
         modal.open();
