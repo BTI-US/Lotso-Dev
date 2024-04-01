@@ -9,7 +9,9 @@
 
 ## Introduction
 
-Lotso Coins is a decentralized application (dApp) designed for player-versus-player (PvP) gaming, where participants can earn rewards in cryptocurrency. This dApp operates on the **Base** blockchain, leveraging its capabilities to enhance the gaming experience through smart contracts. Players have the opportunity to connect their digital wallets to the dApp, engaging in an array of games with the potential to win Lotso Coins (LTC). Additionally, the dApp showcases a leaderboard, highlighting top players based on their gaming achievements. By merging entertainment with the practical use of digital currencies, Lotso Coins aspires to offer an engaging, rewarding gaming environment, simultaneously fostering the broader integration of cryptocurrencies.
+Lotso Coins is a decentralized platform for non-fungible tokens (NFTs), where users can buy, sell, and trade unique digital assets. Our platform operates on the **Base** blockchain, utilizing its capabilities to ensure secure ownership and provenance of NFTs through smart contracts. Users have the opportunity to connect their digital wallets to the platform, exploring a diverse collection of NFTs across various categories such as art, collectibles, and virtual real estate. Additionally, Lotso Coins provides a marketplace for creators to showcase and monetize their digital creations. By embracing the world of NFTs, Lotso Coins aims to empower artists, collectors, and enthusiasts, fostering creativity and innovation in the digital realm.
+
+**Co-Branding with Disney**: We are proud to announce our collaboration with Disney, bringing beloved characters and iconic moments to the world of NFTs. Stay tuned for exclusive Disney-themed NFT collections and experiences on Lotso Coins!
 
 ## Requirements
 
@@ -127,7 +129,7 @@ Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORT
     "data": {
         "address": "0xbA6a68677e0A16dcB1ff4BDDF613563133201280",
         "transaction_count": 8552,
-        "airdrop_count": 1000000000,
+        "airdrop_count": 100000000000000000000000,
         "has_airdropped": false,
         "scheduled_delivery": "2024-03-31T11:00:00Z"
     }
@@ -144,7 +146,7 @@ Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORT
 | `data`             | Object  | A container for the data payload of the response.                                                 |
 | `data.address`     | String  | The blockchain address associated with the query.                                                 |
 | `data.transaction_count` | Integer | The number of transactions associated with the address.                                     |
-| `data.airdrop_count`| Integer | The airdrop count for the address, which is either `0` or `1000000000`.                           |
+| `data.airdrop_count`| Integer | The airdrop count for the address, which is either `0` or `100000000000000000000000` (100000 * 10^18).                           |
 | `data.has_airdropped` | Boolean | Indicates if the airdrop has occurred. `false` means airdrop has not started; `true` means airdrop has occurred, and the user cannot claim it again if already claimed. |
 | `data.scheduled_delivery` | String | The next available time for claiming the airdrop. If it cannot be claimed (transaction_count <= 10), it will be set to 1970-01-01T08:00:00Z in UTC+0 timezone. |
 
@@ -209,12 +211,25 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 
 ### Required Environment Variables
 
-- **`CLOUDFLARE_ENV`** (Set to `true` in the Cloudflare environment)
-- **`PROJECT_ID`**
-- **`ACTIVE_NETWORK`**
-- **`CONTRACT_ADDRESS`**
-- **`WEB_ADDRESS`**
-- **`TURNSTILE_SITE_KEY`**
+1. Used for Website:
+
+   |Env Name|Ignorable|Description|
+   |-|-|-|
+   |**`ACTIVE_NETWORK`**|Essential|Specifies the blockchain network the application should connect to (e.g., baseMainnet, baseSepolia, sepolia).|
+   |**`CLOUDFLARE_ENV`** (Set to `true` for cloud building)|Essential|Indicates if the build process is running in a cloud environment, often used for specific configurations or optimizations for automated CI for cloud hosting.|
+   |**`CONTRACT_ADDRESS`**|Essential|The Ethereum smart contract address the web application interacts with.|
+   |**`PROJECT_ID`**|Essential|A unique identifier obtained from WalletConnect, used for WalletConnect API calls.|
+   |**`TURNSTILE_SITE_KEY`**|Essential|The site key for Cloudflare's Turnstile service, used for bot protection and CAPTCHA verification.|
+   |**`WEB_ADDRESS`**|Essential|The backend URL of the airdrop function, better to use the specified domain for the project for clearer identification. |
+
+2. Used for Reverse Proxy
+
+   |Env Name|Ignorable|Description|
+   |-|-|-|
+   |**`CLOUDFLARE_ACCOUNT_ID`**|Essential|The account ID for Cloudflare, used to authenticate and manage resources via Cloudflare APIs.|
+   |**`CLOUDFLARE_API_TOKEN`**|Essential|A token used to authenticate API requests to Cloudflare, allowing to interact with Cloudflare worker services.|
+   |**`CLOUDFLARE_WORKER_NAME`**|Optional|The name of a Cloudflare Worker, if used, which can execute serverless code at the edge for tasks like routing or custom caching, "api" by default|
+   |**`SERVER_HTTP_PORT`**|Optional|The port number on which the reverse proxy server listens for HTTP traffic, "8080" by default|
 
 ### Setting Environment Variables in GitHub
 
@@ -223,7 +238,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 3. Click on "New repository secret" and add each environment variable:
    - Name: Variable name (e.g., `PROJECT_ID`).
    - Value: Corresponding value for the variable.
-4. Repeat this process for `ACTIVE_NETWORK`, `CONTRACT_ADDRESS`, `WEB_ADDRESS` and `TURNSTILE_SITE_KEY`.
+4. Repeat this process for `ACTIVE_NETWORK`, `CONTRACT_ADDRESS`, `WEB_ADDRESS` and `TURNSTILE_SITE_KEY` and others.
 
 ### Deploying to GitHub Pages
 
