@@ -7,7 +7,7 @@ async function handleRequest(request) {
     const url = new URL(request.url);
     url.protocol = 'http:';
     url.hostname = 'host.btiplatform.com';
-    url.port = '8080';
+    url.port = process.env.SERVER_HTTP_PORT || '8080';
 
     // Fetch the data from the modified URL
     const response = await fetch(url.toString(), request);
