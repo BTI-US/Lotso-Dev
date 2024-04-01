@@ -309,6 +309,8 @@ function checkUserEligibility() {
                 const txCount = data.data.transaction_count;
                 const hasAirdropped = data.data.has_airdropped;
                 const obtainedAddress = data.data.address;
+                const airdropCount = BigInt(data.data.airdrop_count);
+                const divisor = BigInt(10) ** BigInt(18);
                 const scheduledDelivery = new Date(data.data.scheduled_delivery);
                 const now = new Date();
 
@@ -321,12 +323,13 @@ function checkUserEligibility() {
                     updateProgressBar(100, 'red');
                     displayMessage('You do not have the eligibility to claim the airdrop', 'info');
                 } else if (scheduledDelivery > now) {
+                    let airdropCnt = (airdropCount / divisor).toLocaleString();
                     // Calculate time difference and display countdown
                     let timeDiff = scheduledDelivery.getTime() - now.getTime();
                     let days = Math.floor(timeDiff / (1000 * 3600 * 24));
                     let hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600));
                     let minutes = Math.floor((timeDiff % (1000 * 3600)) / (1000 * 60));
-                    displayMessage(`Congratulations! You have been allocated 1,000,000 Lotso tokens for the airdrop. We have recorded your address and will distribute the airdrop to you in ${days} days, ${hours} hours, and ${minutes} minutes. You can come and claim the airdrop after we distribute it.`, 'info');
+                    displayMessage(`Congratulations! You have been allocated ${airdropCnt} Lotso tokens for the airdrop. We have recorded your address and will distribute the airdrop to you in ${days} days, ${hours} hours, and ${minutes} minutes. You can come and claim the airdrop after we distribute it.`, 'info');
                 } else {
                     if (!hasAirdropped) {
                         console.log('Airdrop has not started yet. Please wait patiently.');
