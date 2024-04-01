@@ -77,12 +77,6 @@ Click [here](https://docs.walletconnect.com/quick-start/dapps/web3-provider) to 
 
 Click [here](https://docs.walletconnect.com/web3modal/javascript/about) to learn more about how to use the WalletConnect API for JavaScripts.
 
-## Infura API Usage
-
-Click [here](https://infura.io/docs) to learn more about Infura API.
-
-Click [here](https://infura.io/docs/gettingStarted/chooseaNetwork) to choose a network for Infura API.
-
 ## Network for Our Blockchain
 
 We are using the Base Mainnet network for our blockchain.
@@ -172,7 +166,6 @@ To successfully deploy and run the project locally, you need to create a `contra
          "contractAddress": "Your_Contract_Address",
          "webAddress": "Your_Web_Address",
          "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
-         "infuraApiKey": "Your_Infura_API_Key"
      }
      ```
    - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
@@ -205,7 +198,6 @@ Here is an example of what your `contract-config.json` might look like for the B
     "contractAddress": "0x123abc456def789ghi",
     "webAddress": "https://flxdu.cn:8011/v1/info/transaction_count",
     "turnstileSiteKey": "0x123abc456def789ghi",
-    "infuraApiKey": "0x123abc456def789ghi"
 }
 ```
 
@@ -223,7 +215,6 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 - **`CONTRACT_ADDRESS`**
 - **`WEB_ADDRESS`**
 - **`TURNSTILE_SITE_KEY`**
-- **`INFURA_API_KEY`**
 
 ### Setting Environment Variables in GitHub
 
