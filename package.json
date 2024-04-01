@@ -13,7 +13,7 @@
     "@wagmi/connectors": "^4.1.18",
     "@wagmi/core": "^2.6.9",
     "@web3modal/wagmi": "^4.1.1",
-    "viem": "^2.8.18",
+    "viem": "^2.9.6",
     "web3": "^4.6.0",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4"
