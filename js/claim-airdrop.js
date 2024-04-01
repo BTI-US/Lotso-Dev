@@ -1,21 +1,24 @@
-import Web3 from 'web3';
+import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
+import { base, baseSepolia, sepolia } from 'viem/chains';
+import { reconnect, watchAccount, disconnect, getAccount, readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core';
 
-let activeNetwork, contractAddress, webAddress, turnstileSiteKey, infuraApiKey;
+// 1. Get a project ID at https://cloud.walletconnect.com
+let projectId, activeNetwork, contractAddress, webAddress, turnstileSiteKey;
 
 try {
     // Attempt to load the configuration file
-    const config = require('../contract-config.json');
+    const jsonConfig = require('../contract-config.json');
 
     // Access properties
-    activeNetwork = config.activeNetwork;
-    contractAddress = config.contractAddress;
-    webAddress = config.webAddress;
-    turnstileSiteKey = config.turnstileSiteKey;
-    infuraApiKey = config.infuraApiKey;
+    activeNetwork = jsonConfig.activeNetwork;
+    contractAddress = jsonConfig.contractAddress;
+    webAddress = jsonConfig.webAddress;
+    turnstileSiteKey = jsonConfig.turnstileSiteKey;
+    projectId = jsonConfig.projectId;
 
     // Additional validation can be performed here as needed
-    if (!activeNetwork || !contractAddress || !webAddress || !turnstileSiteKey || !infuraApiKey) {
-        throw new Error("Required configuration values (activeNetwork or contractAddress or webAddress or turnstileSiteKey or infuraApiKey) are missing.");
+    if (!activeNetwork || !contractAddress || !webAddress || !turnstileSiteKey || !projectId) {
+        throw new Error("Required configuration values (activeNetwork or contractAddress or webAddress or turnstileSiteKey or projectId) are missing.");
     }
 
 } catch (error) {
@@ -29,145 +32,223 @@ try {
     console.error("Error loading configuration: ", error.message);
 }
 
+// 2. Create wagmiConfig
+const metadata = {
+    name: 'Lotso',
+    description: 'Web3Modal for Lotso',
+    url: 'https://lotso.org', // origin must match your domain & subdomain.
+    icons: ['https://avatars.githubusercontent.com/u/37784886']
+};
+
+let chains;
+
+if (activeNetwork === 'baseMainnet') {
+    chains = [base];
+} else if (activeNetwork === 'baseSepolia') {
+    chains = [baseSepolia];
+} else if (activeNetwork === 'sepolia') {
+    chains = [sepolia];
+} else {
+    console.log('Invalid network selection');
+    process.exit(1);
+}
+
+export const config = defaultWagmiConfig({
+    chains,
+    projectId,
+    metadata,
+});
+reconnect(config);
+console.log("Wagmi Config is:" + config);
+
+// 3. Create modal
+const modal = createWeb3Modal({
+    wagmiConfig: config,
+    projectId,
+    enableAnalytics: true, // Optional - defaults to your Cloud configuration
+    enableOnramp: true, // Optional - false as default
+    themeVariables: {
+        '--w3m-z-index': 999
+    }
+});
+
+function connect(param = 'dark') {
+    if (getAccount(config).isConnected) {
+        disconnect(config);
+    } else {
+        modal.setThemeMode(param);
+        modal.open();
+    }
+}
+
+const connectBtn = document.getElementById('connectWallet');
+const hint1 = document.getElementById('walletAddressHint1');
+const hint2 = document.getElementById('walletAddressHint2');
+const acceptBtn = document.getElementById('connectAccept');
+const declineBtn = document.getElementById('connectDecline');
+const connectTitle = document.getElementById('walletAddressTitle');
+const airdrop = document.getElementById('airdrop');
+
+if (acceptBtn) {
+    acceptBtn.addEventListener('click', function() {
+        // Get the responsive menu element
+        var responsiveMenu = document.querySelector('.navbar-collapse');
+
+        // Close the responsive menu if it's open
+        if (responsiveMenu.classList.contains('show')) {
+            responsiveMenu.classList.remove('show');
+            responsiveMenu.setAttribute('aria-expanded', 'false');
+        }
+
+        // Get the data-param attribute and proceed with the connect function
+        var param = this.getAttribute('data-param');
+        connect(param);
+    });
+}
+
+function escapeHtml(str) {
+return str.replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+}
+
+// listening for account changes
+watchAccount(config,
+    {
+        onChange(account) {
+            if (hint2) {
+                let address = account.address ?? '';
+                let truncatedAddress = address; // Adjust this if you want to show a truncated address
+
+                let addressHtml = '<div class="address-container">';
+                addressHtml += '<input id="address" type="text" value="' + escapeHtml(truncatedAddress) + '" readonly data-full-address="' + escapeHtml(address) + '">';
+                addressHtml += '<button onclick="copyAddress(event)"><i class="fa fa-copy"></i></button>';
+                addressHtml += '</div>';
+
+                hint2.innerHTML = addressHtml;
+            }
+            if (acceptBtn) {
+                if (account.isConnected) {
+                    hint1.innerText = 'Your wallet address is:';
+                    acceptBtn.innerText = 'Disconnect';
+                    connectBtn.innerText = 'Airdrop';
+                    connectTitle.innerText = 'Account Information';
+                    declineBtn.innerText = 'Close';
+                    airdrop.style.display = 'block';
+                } else {
+                    hint1.innerHTML = 'To continue, please connect your Web3 wallet, such as <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a> or <a href="https://walletconnect.org/" target="_blank" rel="noopener noreferrer">WalletConnect</a>. This allows our website to securely interact with your wallet.';
+                    hint2.innerHTML = 'By clicking "Accept and Continue", you agree to our <a href="#" data-toggle="modal" data-target="#termsModal">terms and conditions</a> and <a href="#" data-toggle="modal" data-target="#privacyModal">privacy policy</a>. You will be prompted to connect your wallet via an external link. Ensure you\'re using a trusted and secure wallet service.';
+                    acceptBtn.innerText = 'Accept and Continue';
+                    connectBtn.innerText = 'Airdrop';
+                    connectTitle.innerText = 'Notes Before Connecting';
+                    declineBtn.innerText = 'Decline';
+                    airdrop.style.display = 'none';
+                }
+            }
+        }
+    }
+);
+
 async function initiateTransaction() {
-    if (typeof window.ethereum !== 'undefined') {
-        // MetaMask is installed
-        let web3;
-        if (activeNetwork === 'baseSepolia') {
-            web3 = new Web3(new Web3.providers.HttpProvider('https://sepolia.base.org'));
-        } else if (activeNetwork === 'baseMainnet') {
-            web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.base.org'));
-        } else if (activeNetwork === 'sepolia') {
-            web3 = new Web3(new Web3.providers.HttpProvider('https://sepolia.infura.io/v3/' + infuraApiKey));
-        } else {
+    // Updated contract ABI to include getAirdropAmount function
+    const airdropAcquireABI = [
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "account",
+                    "type": "address"
+                }
+            ],
+            "name": "getAirdropAmount",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ];
+
+    displayMessage('Waiting for user confirmation', 'info');
+
+    try {
+        // Ensuring activeNetwork is valid
+        if (!['baseSepolia', 'baseMainnet', 'sepolia'].includes(activeNetwork)) {
             console.log('Invalid network selection');
             displayMessage('Invalid network selection', 'error');
             return;
         }
 
-        // Updated contract ABI to include getAirdropAmount function
-        const airdropAcquireABI = [
-            {
-                "inputs": [
-                    {
-                        "internalType": "address",
-                        "name": "account",
-                        "type": "address"
-                    }
-                ],
-                "name": "getAirdropAmount",
-                "outputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            }
-        ];
+        // Acquire full address from the DOM element
+        const fullAddress = document.getElementById('address').getAttribute('data-full-address');
 
-        displayMessage('Waiting for user confirmation', 'info');
+        const contractReadResult = await readContract(config, {
+            abi: airdropAcquireABI,
+            address: contractAddress, // Replace with your contract address
+            functionName: 'getAirdropAmount',
+            args: [fullAddress] // Use the fullAddress here
+        });
 
-        try {
-            let chainId;
-            try {
-                chainId = await web3.eth.getChainId();
-                // Convert BigInt to Number
-                chainId = Number(chainId);
-            } catch (error) {
-                console.error("Error fetching chain ID with web3:", error);
-                // Fallback: Try MetaMask's eth_chainId
-                chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            }
-
-            const isBaseSepolia = chainId === parseInt('0x14a34', 16) && activeNetwork === 'baseSepolia';
-            const isMainnet = chainId === parseInt('0x2105', 16) && activeNetwork === 'baseMainnet';
-            const isSepolia = chainId === parseInt('0xaa36a7', 16) && activeNetwork === 'sepolia';
-
-            if (isBaseSepolia || isMainnet || isSepolia) {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                const contract = new web3.eth.Contract(airdropAcquireABI, contractAddress);
-                const userAccount = accounts[0];
-
-                // Call the getAirdropAmount method with the user's account address
-                contract.methods.getAirdropAmount(userAccount).call()
-                    .then(amount => {
-                        console.log('Airdrop Amount:', amount);
-                        displayMessage(`Your airdrop amount is: ${amount}, press the button above to confirm your airdrop.`, 'success');
-                        document.getElementById('claimAirdrop').textContent = 'Confirm Your Airdrop';
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        displayMessage(error.message, 'error');
-                    });
-            } else {
-                console.log('Incorrect network:', chainId);
-                displayMessage(`Please switch to the ${activeNetwork === 'baseSepolia' ? 'Sepolia Base Test Network' : activeNetwork === 'baseMainnet' ? 'Base Mainnet Network' : 'Sepolia Test Network'} in your MetaMask wallet.`, 'info');
-            }
-        } catch (error) {
-            console.error('Unable to get the current chain ID:', error);
-            displayMessage('Error in retrieving chain ID', 'error');
-        }
-    } else {
-        console.log('MetaMask is not installed');
-        displayMessage('MetaMask is not installed', 'error');
+        console.log('Airdrop Amount:', contractReadResult);
+        displayMessage(`Your airdrop amount is: ${contractReadResult}, press the button above to confirm your airdrop.`, 'success');
+        document.getElementById('claimAirdrop').textContent = 'Confirm Your Airdrop';
+    } catch (error) {
+        console.error('Unable to get the current chain ID:', error);
+        displayMessage('Error in retrieving chain ID', 'error');
     }
 }
 
-async function confirmTransaction() {
-    if (typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask) {
-        // MetaMask is installed and can handle transactions
-        const web3 = new Web3(window.ethereum);
-
-        displayMessage('Processing airdrop claim...', 'info');
-
-        try {
-            // Request account access
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const userAccount = accounts[0];
-
-            // Contract ABI for claimAirdrop
-            const airdropContractABI = [
+async function confirmTransaction() {    
+    // Contract ABI for claimAirdrop
+    const airdropContractABI = [
+        {
+            "inputs": [],
+            "name": "claimAirdrop",
+            "outputs": [
                 {
-                    "inputs": [],
-                    "name": "claimAirdrop",
-                    "outputs": [
-                        {
-                            "internalType": "uint256",
-                            "name": "",
-                            "type": "uint256"
-                        }
-                    ],
-                    "stateMutability": "nonpayable",
-                    "type": "function"
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
                 }
-            ];
-
-            const contract = new web3.eth.Contract(airdropContractABI, contractAddress);
-
-            // Call the claimAirdrop method
-            contract.methods.claimAirdrop().send({ from: userAccount })
-                .on('transactionHash', hash => {
-                    console.log('Transaction Hash:', hash);
-                    displayMessage('Transaction sent. Waiting for confirmation...', 'info');
-                })
-                .on('receipt', receipt => {
-                    console.log('Transaction Receipt:', receipt);
-                    displayMessage('Airdrop claimed successfully!', 'success');
-                })
-                .catch(error => {
-                    console.error('Transaction Error:', error);
-                    displayMessage(error.message, 'error');
-                });
-        } catch (error) {
-            console.error('Error in transaction:', error);
-            displayMessage('Error in claiming airdrop', 'error');
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
         }
-    } else {
-        console.log('MetaMask is not installed');
-        displayMessage('MetaMask is not installed', 'error');
+    ];
+
+    displayMessage('Processing airdrop claim...', 'info');
+
+    try {
+        const transactionResponse = await writeContract(config, {
+            abi: airdropContractABI,
+            address: contractAddress, // Your contract's address
+            functionName: 'claimAirdrop',
+            args: [] // If the function requires arguments, list them here
+        });
+
+        const txHash = transactionResponse;
+        console.log('Transaction Hash:', txHash);
+        displayMessage('Transaction sent. Waiting for confirmation...', 'info');
+
+        // Wait for the transaction receipt
+        const transactionReceipt = await waitForTransactionReceipt(config, { hash: txHash });
+
+        console.log('Transaction Receipt:', transactionReceipt);
+        if (transactionReceipt && transactionReceipt.status === 'success') {
+            displayMessage('Transaction successful!', 'success');
+        } else {
+            displayMessage('Transaction failed', 'error');
+        }
+    } catch (error) {
+        console.error('Error in transaction:', error);
+        let errorMessage = error.reason || 'Error in claiming airdrop';
+        displayMessage(errorMessage, 'error');
     }
 }
 
@@ -232,6 +313,7 @@ function checkUserEligibility() {
                         displayMessage('Airdrop has not started yet. Please wait patiently.', 'info');
                     } else {
                         console.log('User is eligible to claim the airdrop');
+                        displayMessage('You are eligible to claim the airdrop. Press the button above to check your airdrop amount.', 'info');
                         document.getElementById('claimAirdrop').textContent = 'Claim Your Airdrop';
                     }
                 }

@@ -5,7 +5,6 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 module.exports = {
     mode: "development",
     entry: {
-        'wallet-connect': path.join(__dirname, 'js', 'wallet-connect.js'),
         'claim-airdrop': path.join(__dirname, 'js', 'claim-airdrop.js')
     },
     output: {
