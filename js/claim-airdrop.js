@@ -197,8 +197,13 @@ async function initiateTransaction() {
 
         console.log('Airdrop Amount:', contractReadResult);
         updateProgressBar(50, 'green');
-        displayMessage(`Your airdrop amount is: ${contractReadResult}, press the button above to confirm your airdrop.`, 'success');
-        document.getElementById('claimAirdrop').textContent = 'Confirm Your Airdrop';
+        if (contractReadResult === 0) {
+            displayMessage('You have already claimed your airdrop.', 'info');
+            updateProgressBar(100, 'red');
+        } else {
+            displayMessage(`Your airdrop amount is: ${contractReadResult}, press the button above to confirm your airdrop.`, 'success');
+            document.getElementById('claimAirdrop').textContent = 'Confirm Your Airdrop';
+        }
     } catch (error) {
         console.error('Unable to get the current chain ID:', error);
         updateProgressBar(100, 'red');
