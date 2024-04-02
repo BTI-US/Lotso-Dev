@@ -76,7 +76,7 @@
     });
     // Blog slide js
     $('.blog-main').slick({
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
@@ -96,14 +96,14 @@
             {
                 breakpoint: 768,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 1,
                     slidesToScroll: 1,
                 }
             },
             {
                 breakpoint: 992,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 1,
                     slidesToScroll: 1,
                 }
             },

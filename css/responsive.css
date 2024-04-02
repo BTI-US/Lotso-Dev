@@ -251,6 +251,24 @@
         padding-top: 45px;
     }
 
+    .claim-airdrop {
+        border-radius: 2px;
+    }
+
+    .claim-airdrop h3 {
+        padding-left: 0px;
+        font-size: 21px;
+        text-align: center;
+        padding-bottom: 30px;
+    }
+    
+    .claim-airdrop a {
+        background: white;
+        padding: 14px 20px;
+        font-size: 16px;
+        margin-left: 10px;
+    }
+
     .sub-main {
         border-radius: 2px;
     }
@@ -284,6 +302,10 @@
 }
 
 @media(min-width:480px) and (max-width:575px) {
+    .claim-airdrop h3 {
+        font-size: 25px;
+    }
+
     .sub-main h3 {
         font-size: 25px;
     }
@@ -434,6 +456,17 @@
 
     .tags {
         padding-top: 45px;
+    }
+
+    .claim-airdrop h3 {
+        padding-left: 0;
+        text-align: center;
+        padding-bottom: 30px;
+    }
+
+    .claim-airdrop a {
+        padding: 15px 20px;
+        font-size: 16px;
     }
 
     .sub-main h3 {
@@ -625,6 +658,11 @@
 
     .blog-item-txt {
         padding-left: 13px;
+    }
+
+    .claim-airdrop a {
+        padding: 15px 19px;
+        font-size: 15px;
     }
 
     .sub-main a {

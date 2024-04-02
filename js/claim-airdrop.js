@@ -122,12 +122,20 @@ return str.replace(/&/g, "&amp;")
 watchAccount(config,
     {
         onChange(account) {
+            let truncatedAddress;
             if (hint2) {
                 let address = account.address ?? '';
-                let truncatedAddress = address; // Adjust this if you want to show a truncated address
+                // Check if the username length exceeds 15 characters
+                if (address.length > 15) {
+                    // Truncate the username to the first 5 characters, an ellipsis, and the last 5 characters
+                    truncatedAddress = address.substring(0, 5) + '...' + address.substring(address.length - 5);
+                } else {
+                    // If the username is 15 characters or less, use it as is
+                    truncatedAddress = address;
+                }
 
                 let addressHtml = '<div class="address-container">';
-                addressHtml += '<input id="address" type="text" value="' + escapeHtml(truncatedAddress) + '" readonly data-full-address="' + escapeHtml(address) + '">';
+                addressHtml += '<input id="address" type="text" value="' + escapeHtml(address) + '" readonly data-full-address="' + escapeHtml(address) + '">';
                 addressHtml += '<button onclick="copyAddress(event)"><i class="fa fa-copy"></i></button>';
                 addressHtml += '</div>';
 
@@ -137,7 +145,7 @@ watchAccount(config,
                 if (account.isConnected) {
                     hint1.innerText = 'Your wallet address is:';
                     acceptBtn.innerText = 'Disconnect';
-                    connectBtn.innerText = 'Airdrop';
+                    connectBtn.innerText = truncatedAddress;
                     connectTitle.innerText = 'Account Information';
                     declineBtn.innerText = 'Close';
                     airdrop.style.display = 'block';

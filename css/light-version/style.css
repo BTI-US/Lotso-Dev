@@ -1643,11 +1643,26 @@ textarea::placeholder {
     padding-bottom: 25px;
 }
 
-.search-btn {
-    width: 60px;
+.claim-airdrop {
+    padding: 30px 0;
     background: #ff7657;
+    border-radius: 50px;
+}
+
+.claim-airdrop h3 {
+    padding-left: 60px;
+    font-size: 26px;
     color: white;
-    border: 1px solid #ff7657;
+    font-family: pb;
+}
+
+.claim-airdrop a {
+    background: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-family: pb;
+    color: #ff7657;
+    font-size: 18px;
 }
 
 /*===========================

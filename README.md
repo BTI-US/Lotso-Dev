@@ -292,3 +292,4 @@ Replaced Image Sizes:
 - testimonial1.png - 90x89
 - testimonial2.png - 90x89
 - testimonial3.png - 90x89
+- blog1.jpg - 620x420
