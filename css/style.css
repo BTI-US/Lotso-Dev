@@ -1598,7 +1598,7 @@ textarea::placeholder {
 /*===========================
 11.0 *** BLOG AREA START ***
 =============================*/
-#blog {
+#airdrop {
     padding: 80px 0;
 }
 
@@ -1662,9 +1662,11 @@ textarea::placeholder {
 }
 
 .claim-airdrop {
+    margin-top: 20px;
     padding: 30px 0;
     background: #ff7657;
     border-radius: 50px;
+    margin-bottom: 20px;
 }
 
 .claim-airdrop h3 {
