@@ -205,7 +205,9 @@ async function initiateTransaction() {
             displayMessage('You have already claimed your airdrop.', 'info');
             updateProgressBar(100, 'red');
         } else {
-            displayMessage(`Your airdrop amount is: ${contractReadResult}, press the button above to confirm your airdrop.`, 'success');
+            const divisor = BigInt("1000000000000000000");
+            let airdropAmount = addCommasToBigInt(((contractReadResult / divisor) + (contractReadResult % divisor > 0 ? 1n : 0n)).toString());
+            displayMessage(`Your airdrop amount is: ${airdropAmount}, press the button above to confirm your airdrop.`, 'success');
             document.getElementById('claimAirdrop').textContent = 'Confirm Your Airdrop';
         }
     } catch (error) {
