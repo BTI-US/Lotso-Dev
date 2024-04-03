@@ -81,7 +81,7 @@
                         <a class="nav-link" href="#review">Partner</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link bor" id="connectWallet" href="#" data-toggle="modal" data-target="#connectModal">Airdrop</a>
+                        <a class="nav-link bor" id="connectWallet" href="#" data-toggle="modal" data-target="#connectModal">Connect</a>
                     </li>
                 </ul>
             </div>
@@ -199,40 +199,6 @@
                         <div class="modal-footer">
                             <button type="button" id='connectDecline' class="dropboxx" data-dismiss="modal">Decline</button>
                             <button type="submit" id="connectAccept" class="dropboxx2" data-dismiss="modal" data-param="dark">Accept and Continue</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="connectModal2" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="walletAddressTitle2">Connect Your Wallet</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="info-txt">
-                                    <div id="airdropHint1">You need to connect your wallet first!</div>
-                                    <div id="airdropHint2">Click 'Airdrop' on the right top of the view.</div>
-                                </div>
-                            </form>
-                            <div id="airdropSection" style="display: none;">
-                                <div id="turnstileWidget"></div>
-                                <button type="button" id="claimAirdrop" class="dropboxx2">Claim Your Airdrop</button>
-                                <div class="info-txt">
-                                    <div id="airdropMessage">Press the button above to claim your airdrop.</div>
-                                </div>
-                                <div id="current-progress" class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" id='connectDecline2' class="dropboxx" data-dismiss="modal">Close</button>
-                            <button type="submit" id="connectAccept2" class="dropboxx2" data-dismiss="modal" data-target="#connectModal">Continue</button>
                         </div>
                     </div>
                 </div>
@@ -620,8 +586,20 @@
                                 <h3>Claim Your Airdrop Now!</h3>
                             </div>
                             <div class="col-lg-4 col-md-5 subscripe-btn">
-                                <a id="claimAirdropBtn" href="#" data-toggle="modal" data-target="#connectModal2">Check Your Account</a>
+                                <a id="claimAirdrop" href="javascript:void(0);">Check Your Eligibility</a>
                             </div>
+                        </div>
+                    </div>
+                    <div class="info-txt">
+                        <div id="airdropHint1"></div>
+                    </div>
+                    <div id="airdropSection" style="display: none;">
+                        <div id="turnstileWidget"></div>
+                        <div class="info-txt">
+                            <div id="airdropMessage">Press the button above to claim your airdrop.</div>
+                        </div>
+                        <div id="current-progress" class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                         </div>
                     </div>
                 </div>
