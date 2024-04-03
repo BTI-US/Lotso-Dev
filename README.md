@@ -79,6 +79,12 @@ Click [here](https://docs.walletconnect.com/quick-start/dapps/web3-provider) to 
 
 Click [here](https://docs.walletconnect.com/web3modal/javascript/about) to learn more about how to use the WalletConnect API for JavaScripts.
 
+## Infura API Usage
+
+Click [here](https://infura.io/docs) to learn more about Infura API.
+
+Click [here](https://infura.io/docs/gettingStarted/chooseaNetwork) to choose a network for Infura API.
+
 ## Network for Our Blockchain
 
 We are using the Base Mainnet network for our blockchain.
@@ -168,6 +174,7 @@ To successfully deploy and run the project locally, you need to create a `contra
          "contractAddress": "Your_Contract_Address",
          "webAddress": "Your_Web_Address",
          "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
+         "infuraApiKey": "Your_Infura_API_Key"
      }
      ```
    - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
@@ -200,6 +207,7 @@ Here is an example of what your `contract-config.json` might look like for the B
     "contractAddress": "0x123abc456def789ghi",
     "webAddress": "https://flxdu.cn:8011/v1/info/transaction_count",
     "turnstileSiteKey": "0x123abc456def789ghi",
+    "infuraApiKey": "0x123abc456def789ghi"
 }
 ```
 
@@ -220,7 +228,8 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`CONTRACT_ADDRESS`**|Essential|The Ethereum smart contract address the web application interacts with.|
    |**`PROJECT_ID`**|Essential|A unique identifier obtained from WalletConnect, used for WalletConnect API calls.|
    |**`TURNSTILE_SITE_KEY`**|Essential|The site key for Cloudflare's Turnstile service, used for bot protection and CAPTCHA verification.|
-   |**`WEB_ADDRESS`**|Essential|The backend URL of the airdrop function, better to use the specified domain for the project for clearer identification. |
+   |**`WEB_ADDRESS`**|Essential|The backend URL of the airdrop function, better to use the specified domain for the project for clearer identification.|
+   |**INFURA_API_KEY**|Essential|The API key for Infura, used to interact with the Ethereum network.|
 
 2. Used for Reverse Proxy
 

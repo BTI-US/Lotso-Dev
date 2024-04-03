@@ -81,7 +81,7 @@
                         <a class="nav-link" href="#review">Partner</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link bor" id="connectWallet" href="#" data-toggle="modal" data-target="#connectModal">Airdrop</a>
+                        <a class="nav-link bor" id="connectWallet" href="#" data-toggle="modal" data-target="#connectModal">Connect</a>
                     </li>
                 </ul>
             </div>
@@ -207,7 +207,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="walletAddressTitle2">Connect Your Wallet</h5>
+                            <h5 class="modal-title" id="walletAddressTitle2">Congratulations</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -215,24 +215,12 @@
                         <div class="modal-body">
                             <form>
                                 <div class="info-txt">
-                                    <div id="airdropHint1">You need to connect your wallet first!</div>
-                                    <div id="airdropHint2">Click 'Airdrop' on the right top of the view.</div>
+                                    <div>Congratulations!You have claimed xxxx Lotso, check on your wallet/div>
                                 </div>
                             </form>
-                            <div id="airdropSection" style="display: none;">
-                                <div id="turnstileWidget"></div>
-                                <button type="button" id="claimAirdrop" class="dropboxx2">Claim Your Airdrop</button>
-                                <div class="info-txt">
-                                    <div id="airdropMessage">Press the button above to claim your airdrop.</div>
-                                </div>
-                                <div id="current-progress" class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                                </div>
-                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" id='connectDecline2' class="dropboxx" data-dismiss="modal">Close</button>
-                            <button type="submit" id="connectAccept2" class="dropboxx2" data-dismiss="modal" data-target="#connectModal">Continue</button>
                         </div>
                     </div>
                 </div>
@@ -594,7 +582,7 @@
                 </div>
             </div>
             <div class="row blog-pa">
-                <div class="col-lg-12">
+                <div class="col-lg-10 col-md-12 m-auto">
                     <div class="blog-main">
                         <div class="col-lg-12 blog-item">
                             <div class="blog-shadow">
@@ -602,10 +590,7 @@
                                 <div class="blog-item-txt">
                                     <h3>Available Airdrops for Eligible Users</h3>
                                     <p>Join our $Lotso Airdrop and get a chance to receive 100,000 tokens - a unique opportunity to be a part of our growing digital ecosystem!</p>
-                                    <h3>Airdrop Claimed:</h3>
-                                    <div id="airdrop-progress" class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">0%</div>
-                                    </div>
+                                    <h3>Remaining Airdrops: <span id="airdropCount" class="airdropNumber">300,000</span> / <span class="airdropNumber2">2,500,000,000</span></h3>
                                 </div>
                             </div>
                         </div>
@@ -613,15 +598,27 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 m-auto">
+                <div class="col-lg-9 m-auto">
                     <div class="claim-airdrop">
                         <div class="row">
                             <div class="col-lg-8 col-md-7">
                                 <h3>Claim Your Airdrop Now!</h3>
                             </div>
                             <div class="col-lg-4 col-md-5 subscripe-btn">
-                                <a id="claimAirdropBtn" href="#" data-toggle="modal" data-target="#connectModal2">Check Your Account</a>
+                                <a id="claimAirdrop" href="javascript:void(0);">Check Your Eligibility</a>
                             </div>
+                        </div>
+                    </div>
+                    <div class="info-txt">
+                        <div id="airdropHint1"></div>
+                    </div>
+                    <div id="airdropSection" style="display: none;">
+                        <div id="turnstileWidget"></div>
+                        <div class="info-txt">
+                            <div id="airdropMessage">Press the button above to claim your airdrop.</div>
+                        </div>
+                        <div id="current-progress" class="progress" style="display: none;">
+                            <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                         </div>
                     </div>
                 </div>
@@ -1366,6 +1363,7 @@
     <script src="js/address-copy.js"></script>
     <script src="dist/claim-airdrop.bundle.js"></script>
     <script src="js/theme-switch.js"></script>
+    <script src="js/airdrop-update.js"></script>
     <script type="text/javascript">
         "use strict";
         $('#ckLine').ckLine({
@@ -1374,22 +1372,6 @@
             leftRight: true,
             easing: 'swing',
             interval: 80,
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#connectAccept2').click(function() {
-                // Close the current modal
-                $('#connectModal2').modal('hide');
-
-                // Optional: wait for the first modal to be completely hidden before showing the new one
-                $('#connectModal2').on('hidden.bs.modal', function() {
-                    // Open the new modal
-                    $('#connectModal').modal('show');
-                    // Make sure to unbind the event so it doesn't trigger multiple times
-                    $(this).off('hidden.bs.modal');
-                });
-            });
         });
     </script>
     <script>

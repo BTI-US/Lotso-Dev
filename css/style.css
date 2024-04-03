@@ -2009,3 +2009,19 @@ textarea::placeholder {
 .address-container button:hover {
     background-color: #444444; /* Slightly lighter grey for hover state */
 }
+
+.airdropNumber, .airdropNumber2 {
+    font-weight: bold;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.airdropNumber {
+    color: #ff7657;
+    font-size: 1.5em;
+}
+
+.airdropNumber2 {
+    color: #e0e0e0;
+    font-size: 1em;
+}
