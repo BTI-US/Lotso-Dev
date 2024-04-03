@@ -1,7 +1,7 @@
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
 import { base, baseSepolia, sepolia } from 'viem/chains';
 import { reconnect, watchAccount, disconnect, getAccount, readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core';
-// import $ from 'jquery';
+import $ from 'jquery';
 // import { Fireworks } from 'fireworks-js';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
@@ -91,14 +91,11 @@ const connectBtn = document.getElementById('connectWallet');
 const hint1 = document.getElementById('walletAddressHint1');
 const hint2 = document.getElementById('walletAddressHint2');
 const airdropHint1 = document.getElementById('airdropHint1');
-//const airdropHint2 = document.getElementById('airdropHint2');
 const acceptBtn = document.getElementById('connectAccept');
 const declineBtn = document.getElementById('connectDecline');
 const connectTitle = document.getElementById('walletAddressTitle');
-const connectTitle2 = document.getElementById('walletAddressTitle2');
 const airdrop = document.getElementById('airdropSection');
 const gotoAirdrop = document.getElementById('gotoSection');
-const continueBtn = document.getElementById('connectAccept2');
 
 if (acceptBtn) {
     acceptBtn.addEventListener('click', function() {
@@ -154,29 +151,22 @@ watchAccount(config,
                     acceptBtn.innerText = 'Disconnect';
                     connectBtn.innerText = truncatedAddress;
                     connectTitle.innerText = 'Account Information';
-                    connectTitle2.innerText = 'Airdrop Information';
                     declineBtn.innerText = 'Close';
                     airdrop.style.display = 'block';
                     // TODO: Temporarily disable this button
                     gotoAirdrop.style.display = 'none';
                     // Hide the continue button after connecting the wallet
-                    continueBtn.style.display = 'none';
                     airdropHint1.style.display = 'none';
-                    //airdropHint2.innerHTML = '';
                 } else {
-                    //airdropHint1.innerHTML = 'You need to connect your wallet first!';
-                    //airdropHint2.innerHTML = 'Click \'Airdrop\' on the right top of the view.';
                     hint1.innerHTML = 'To continue, please connect your Web3 wallet, such as <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a> or <a href="https://walletconnect.org/" target="_blank" rel="noopener noreferrer">WalletConnect</a>. This allows our website to securely interact with your wallet.';
                     hint2.innerHTML = 'By clicking "Accept and Continue", you agree to our <a href="#" data-toggle="modal" data-target="#termsModal">terms and conditions</a> and <a href="#" data-toggle="modal" data-target="#privacyModal">privacy policy</a>. You will be prompted to connect your wallet via an external link. Ensure you\'re using a trusted and secure wallet service.';
                     acceptBtn.innerText = 'Accept and Continue';
                     connectBtn.innerText = 'Connect';
                     connectTitle.innerText = 'Notes Before Connecting';
-                    connectTitle2.innerText = 'Connect Your Wallet';
                     declineBtn.innerText = 'Decline';
                     airdrop.style.display = 'none';
                     gotoAirdrop.style.display = 'none';
                     // Show the continue button before connecting the wallet
-                    continueBtn.style.display = 'block';
                     airdropHint1.style.display = 'block';
                 }
             }
@@ -289,10 +279,11 @@ async function confirmTransaction() {
             updateProgressBar(100, 'green');
             document.getElementById('claimAirdrop').textContent = 'Check Your Eligibility';
 
+            $('#connectModal2').modal('show');
             // Set a timeout to close the modal after 5 seconds (5000 milliseconds)
-            // setTimeout(function() {
-            //     $('#connectModal2').modal('hide'); // Using jQuery to close the modal
-            // }, 5000);
+            setTimeout(function() {
+                $('#connectModal2').modal('hide'); // Using jQuery to close the modal
+            }, 5000);
             // TODO: Show fireworks animation for 10 seconds
             //startFireworksForDuration(10000);
         } else {
@@ -447,7 +438,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         claimAirdropButton.addEventListener('click', function handleButtonClick() {
-            if (connectBtn.innerText === 'Connect') {
+            if (connectBtn.textContent === 'Connect') {
                 airdropHint1.innerText = 'You need to connect your wallet first!';
             } else {
                 if (!isLocal) {

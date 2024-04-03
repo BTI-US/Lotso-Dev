@@ -203,6 +203,28 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="connectModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="walletAddressTitle2">Congratulations</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="info-txt">
+                                    <div>Congratulations!You have claimed xxxx Lotso, check on your wallet/div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id='connectDecline2' class="dropboxx" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -1353,22 +1375,6 @@
             leftRight: true,
             easing: 'swing',
             interval: 80,
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#connectAccept2').click(function() {
-                // Close the current modal
-                $('#connectModal2').modal('hide');
-
-                // Optional: wait for the first modal to be completely hidden before showing the new one
-                $('#connectModal2').on('hidden.bs.modal', function() {
-                    // Open the new modal
-                    $('#connectModal').modal('show');
-                    // Make sure to unbind the event so it doesn't trigger multiple times
-                    $(this).off('hidden.bs.modal');
-                });
-            });
         });
     </script>
     <script>
