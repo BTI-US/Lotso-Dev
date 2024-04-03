@@ -27,11 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
         // Access properties
         API_KEY = jsonConfig.etherscanApiKey;
-        CONTRACT_ADDRESS = jsonConfig.contractAddress;
+        CONTRACT_ADDRESS = jsonConfig.mainContractAddress;
     
         // Additional validation can be performed here as needed
         if (!API_KEY || !CONTRACT_ADDRESS) {
-            throw new Error("Required configuration values (API_KEY or CONTRACT_ADDRESS) are missing.");
+            throw new Error("Required configuration values (API_KEY or MAIN_CONTRACT_ADDRESS) are missing.");
         }
     
     } catch (error) {
@@ -51,17 +51,41 @@ document.addEventListener('DOMContentLoaded', function() {
     const methodSignature = methodSignatureHash.slice(0, 10).toString('hex');
     console.log(`Method signature: ${methodSignature}`);
     
-    const url = `https://api.etherscan.io/api?module=logs&action=getLogs&address=${CONTRACT_ADDRESS}&topic0=0x${methodSignature}&apikey=${API_KEY}`;
+    const url = `https://api.basescan.org/api?module=logs&action=getLogs&address=${CONTRACT_ADDRESS}&apikey=${API_KEY}`;
     
     axios.get(url)
         .then(response => {
-            const transactionCount = response.data.result.length;
+            console.log(response.data);
+            const transactions = response.data.result;
             const airdropPerTransaction = 100000;
-            const remainingAirdrops = airdropPerTransaction * transactionCount;
-            
-            const formattedCount = addCommasToBigInt(remainingAirdrops.toString());
-            document.getElementById('airdropCount').innerText = formattedCount;
-            console.log(`Airdrops Claimed: ${formattedCount}`);
+
+            let successfulTransactions = 0;
+
+            // Process each transaction
+            console.log(`Number of transactions: ${transactions.length}`);
+            const transactionPromises = transactions.map(tx => {
+                const txHash = tx.transactionHash;
+                const txReceiptUrl = `https://api.basescan.org/api?module=transaction&action=getstatus&txhash=${txHash}&apikey=${API_KEY}`;
+                return axios.get(txReceiptUrl)
+                    .then(receiptResponse => {
+                        console.log(`Transaction ${txHash}: isError = ${receiptResponse.data.result.isError}`);
+                        if (receiptResponse.data.result.isError === '0') {
+                            successfulTransactions++;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching transaction receipt:', error);
+                    });
+            });
+
+            // After all transactions have been processed
+            Promise.all(transactionPromises).then(() => {
+                const airdropsClaimed = airdropPerTransaction * successfulTransactions;
+
+                const formattedCount = addCommasToBigInt(airdropsClaimed.toString());
+                document.getElementById('airdropCount').innerText = formattedCount;
+                console.log(`Airdrops Claimed: ${formattedCount}`);
+            });
         })
         .catch(error => {
             console.error('Error fetching data:', error);

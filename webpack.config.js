@@ -40,6 +40,7 @@ module.exports = {
             'process.env.WEB_ADDRESS': JSON.stringify(process.env.WEB_ADDRESS),
             'process.env.TURNSTILE_SITE_KEY': JSON.stringify(process.env.TURNSTILE_SITE_KEY),
             'process.env.ETHERSCAN_API_KEY': JSON.stringify(process.env.ETHERSCAN_API_KEY),
+            'process.env.MAIN_CONTRACT_ADDRESS': JSON.stringify(process.env.MAIN_CONTRACT_ADDRESS),
         }),
         new ESLintPlugin({
             // Plugin options

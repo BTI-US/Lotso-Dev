@@ -64,6 +64,7 @@ jobs:
         WEB_ADDRESS: ${{ secrets.WEB_ADDRESS }}
         TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
         ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+        MAIN_CONTRACT_ADDRESS: ${{ secrets.MAIN_CONTRACT_ADDRESS }}
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL

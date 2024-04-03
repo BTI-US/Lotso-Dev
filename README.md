@@ -230,6 +230,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`TURNSTILE_SITE_KEY`**|Essential|The site key for Cloudflare's Turnstile service, used for bot protection and CAPTCHA verification.|
    |**`WEB_ADDRESS`**|Essential|The backend URL of the airdrop function, better to use the specified domain for the project for clearer identification.|
    |**ETHERSCAN_API_KEY**|Essential|The API key for Etherscan, used to interact with the Ethereum network.|
+   |**MAIN_CONTRACT_ADDRESS**|Essential|The main contract of the $Lotso NFT|
 
 2. Used for Reverse Proxy
 
