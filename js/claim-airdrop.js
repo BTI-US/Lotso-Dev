@@ -157,7 +157,8 @@ watchAccount(config,
                     connectTitle2.innerText = 'Airdrop Information';
                     declineBtn.innerText = 'Close';
                     airdrop.style.display = 'block';
-                    gotoAirdrop.style.display = 'block';
+                    // TODO: Temporarily disable this button
+                    gotoAirdrop.style.display = 'none';
                     // Hide the continue button after connecting the wallet
                     continueBtn.style.display = 'none';
                     airdropHint1.innerHTML = 'You can check your eligibility for the airdrop by clicking the button below.';
@@ -170,7 +171,7 @@ watchAccount(config,
                     acceptBtn.innerText = 'Accept and Continue';
                     connectBtn.innerText = 'Airdrop';
                     connectTitle.innerText = 'Notes Before Connecting';
-                    connectTitle2.innerText = 'NConnect Your Wallet';
+                    connectTitle2.innerText = 'Connect Your Wallet';
                     declineBtn.innerText = 'Decline';
                     airdrop.style.display = 'none';
                     gotoAirdrop.style.display = 'none';
@@ -218,6 +219,7 @@ async function initiateTransaction() {
 
         // Acquire full address from the DOM element
         const fullAddress = document.getElementById('address').getAttribute('data-full-address');
+        console.log('Full Address:', fullAddress);
 
         const contractReadResult = await readContract(config, {
             abi: airdropAcquireABI,
