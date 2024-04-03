@@ -1,7 +1,7 @@
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
 import { base, baseSepolia, sepolia } from 'viem/chains';
 import { reconnect, watchAccount, disconnect, getAccount, readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core';
-import $ from 'jquery';
+import bootstrap from 'bootstrap';
 // import { Fireworks } from 'fireworks-js';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
@@ -279,10 +279,17 @@ async function confirmTransaction() {
             updateProgressBar(100, 'green');
             document.getElementById('claimAirdrop').textContent = 'Check Your Eligibility';
 
-            $('#connectModal2').modal('show');
-            // Set a timeout to close the modal after 5 seconds (5000 milliseconds)
+            var modal = document.getElementById('connectModal2');
+
+            // Show the modal
+            var bootstrapModal = new bootstrap.Modal(modal, {
+                keyboard: false
+            });
+            bootstrapModal.show();
+
+            // Set a timeout to close the modal after 5 seconds
             setTimeout(function() {
-                $('#connectModal2').modal('hide'); // Using jQuery to close the modal
+                bootstrapModal.hide();
             }, 5000);
             // TODO: Show fireworks animation for 10 seconds
             //startFireworksForDuration(10000);
