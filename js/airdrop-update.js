@@ -57,12 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => {
             const transactionCount = response.data.result.length;
             const airdropPerTransaction = 100000;
-            const totalAirdrops = 2500000000;
-            const remainingAirdrops = totalAirdrops - (airdropPerTransaction * transactionCount);
+            const remainingAirdrops = airdropPerTransaction * transactionCount;
             
             const formattedCount = addCommasToBigInt(remainingAirdrops.toString());
             document.getElementById('airdropCount').innerText = formattedCount;
-            console.log(`Remaining airdrops: ${formattedCount}`);
+            console.log(`Airdrops Claimed: ${formattedCount}`);
         })
         .catch(error => {
             console.error('Error fetching data:', error);
