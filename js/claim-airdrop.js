@@ -37,7 +37,7 @@ try {
 // 2. Create wagmiConfig
 const metadata = {
     name: 'Lotso',
-    description: 'Web3Modal for Lotso',
+    description: 'Lotso NFT Website',
     url: 'https://lotso.org', // origin must match your domain & subdomain.
     icons: ['https://avatars.githubusercontent.com/u/37784886']
 };
