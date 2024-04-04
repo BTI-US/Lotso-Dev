@@ -426,12 +426,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Dynamically add Turnstile widget if not in a local environment
     if (!isLocal) {
-        var script = document.createElement('script');
-        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
-
         var widgetDiv = document.getElementById('turnstileWidget');
         var theme = document.getElementById('connectAccept').getAttribute('data-param');
         var turnstileElement = document.createElement('div');

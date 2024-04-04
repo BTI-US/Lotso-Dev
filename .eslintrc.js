@@ -14,5 +14,8 @@ module.exports = {
         "linebreak-style": "off",
         "quotes": "off",
         "semi": ["error", "always"]
+    },
+    "globals": {
+        "turnstile": "readonly"
     }
 };
