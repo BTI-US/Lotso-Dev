@@ -1,8 +1,8 @@
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
 import { base, baseSepolia, sepolia } from 'viem/chains';
 import { reconnect, watchAccount, disconnect, getAccount, readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core';
-import bootstrap from 'bootstrap';
-// import { Fireworks } from 'fireworks-js';
+import { Modal } from 'bootstrap';
+import { Fireworks } from 'fireworks-js';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
 let projectId, activeNetwork, contractAddress, webAddress, turnstileSiteKey;
@@ -174,6 +174,8 @@ watchAccount(config,
     }
 );
 
+let airdropAmount = 0;
+
 async function initiateTransaction() {
     // Updated contract ABI to include getAirdropAmount function
     const airdropAcquireABI = [
@@ -226,7 +228,7 @@ async function initiateTransaction() {
             updateProgressBar(100, 'red');
         } else {
             const divisor = BigInt("1000000000000000000");
-            let airdropAmount = addCommasToBigInt(((contractReadResult / divisor) + (contractReadResult % divisor > 0 ? 1n : 0n)).toString());
+            airdropAmount = addCommasToBigInt(((contractReadResult / divisor) + (contractReadResult % divisor > 0 ? 1n : 0n)).toString());
             displayMessage(`Your airdrop amount is: ${airdropAmount}, press the button above to confirm your airdrop.`, 'success');
             document.getElementById('claimAirdrop').textContent = 'Confirm Your Airdrop';
         }
@@ -279,20 +281,23 @@ async function confirmTransaction() {
             updateProgressBar(100, 'green');
             document.getElementById('claimAirdrop').textContent = 'Check Your Eligibility';
 
-            var modal = document.getElementById('connectModal2');
+            var modalElement = document.getElementById('connectModal2');
+            document.getElementById('congratulation-message').innerText = airdropAmount;
 
-            // Show the modal
-            var bootstrapModal = new bootstrap.Modal(modal, {
+            // Initialize the Bootstrap Modal
+            var bootstrapModal = new Modal(modalElement, {
                 keyboard: false
             });
+
+            // Show the modal
             bootstrapModal.show();
 
             // Set a timeout to close the modal after 5 seconds
             setTimeout(function() {
                 bootstrapModal.hide();
             }, 5000);
-            // TODO: Show fireworks animation for 10 seconds
-            //startFireworksForDuration(10000);
+            // Show fireworks animation for 10 seconds
+            startFireworksForDuration(10000);
         } else {
             displayMessage('Transaction failed', 'error');
             updateProgressBar(100, 'red');
@@ -474,14 +479,31 @@ function proceedWithAction(button) {
     }
 }
 
-// function startFireworksForDuration(duration) {
-//     const container = document.querySelector('.container');
-//     const options = { /* Customize options for fireworks */ };
-//     const fireworks = new Fireworks(container, options);
-//     fireworks.start();
+function startFireworksForDuration(duration) {
+    const container = document.getElementById('fireworks-container'); // Use the body as the container
+    container.style.display = 'block'; // Show the container
+    const width = window.innerWidth; // Use the full viewport width
+    const height = window.innerHeight; // Use the full viewport height
 
-//     // Stop fireworks after the specified duration
-//     setTimeout(() => {
-//         fireworks.stop();
-//     }, duration);
-// }
+    const options = {
+        maxRockets: 3, // max # of rockets to spawn
+        rocketSpawnInterval: 150, // milliseconds to check if new rockets should spawn
+        numParticles: 100, // number of particles to spawn when rocket explodes (+0-10)
+        explosionMinHeight: 0.2, // percentage. min height at which rockets can explode
+        explosionMaxHeight: 0.9, // percentage. max height before a particle is exploded
+        explosionChance: 0.08, // chance in each tick the rocket will explode
+        width: width, // override the width, defaults to container width
+        height: height, // override the height, defaults to container height
+        
+        cannons: [{ x: width * 0.2 }, { x: width * 0.8 }],
+        rocketInitialPoint: width * 0.5,
+    };
+    const fireworks = new Fireworks(container, options);
+    fireworks.start();
+
+    // Stop fireworks after the specified duration
+    setTimeout(() => {
+        fireworks.stop();
+        container.style.display = 'none'; // Hide the container again
+    }, duration);
+}

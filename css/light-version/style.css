@@ -2008,3 +2008,14 @@ textarea::placeholder {
     color: #151515;
     font-size: 1em;
 }
+
+#fireworks-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999; /* high z-index to ensure it's on top */
+    display: none; /* initially hidden */
+    background: transparent; /* ensures the background is transparent */
+}
