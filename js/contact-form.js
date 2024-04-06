@@ -39,6 +39,7 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         var successMessageDiv = document.getElementById('messageSuccess');
         successMessageDiv.textContent = "Your action was successfully completed! We'll reply to you soon.";
         successMessageDiv.style.display = 'block';
+        document.getElementById('contactForm').submit();
 
         setTimeout(function() {
             successMessageDiv.style.display = 'none';
@@ -53,18 +54,14 @@ document.getElementById('subscriptionForm').addEventListener('submit', function(
     document.getElementById('subscriptionEmailError').textContent = '';
     document.getElementById('subscriptionSuccess').textContent = '';
 
-    let hasError = false;
-
     var email = document.getElementById('subscriptionEmail').value;
     var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     
     if (email.trim() === '') {
         document.getElementById('subscriptionEmailError').textContent = 'Please enter your email address.';
-        hasError = true;
     }
     else if (!emailRegex.test(email)) {
         document.getElementById('subscriptionEmailError').textContent = 'Please enter a valid email address.';
-        hasError = true;
     }
     else {
         // If email is valid
