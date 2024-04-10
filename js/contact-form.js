@@ -40,9 +40,14 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         successMessageDiv.textContent = "Your action was successfully completed! We'll reply to you soon.";
         successMessageDiv.style.display = 'block';
         // Email sending for subscription
-        sendSubscriptionEmail(userEmail);
-        // Submit the form after sending the email
-        document.getElementById('contactForm').submit();
+        sendSubscriptionEmail(userEmail)
+            .then(() => {
+                console.log('Email sent successfully');
+                document.getElementById('contactForm').submit(); // Submit the form after the email is sent
+            })
+            .catch(error => {
+                console.log('Failed to send email: ' + error);
+            });
 
         setTimeout(function() {
             successMessageDiv.style.display = 'none';
@@ -70,9 +75,14 @@ document.getElementById('subscriptionForm').addEventListener('submit', function(
         // If email is valid
         document.getElementById('subscriptionSuccess').textContent = 'Email is valid! Proceeding with subscription.';
         // Email sending for subscription
-        sendSubscriptionEmail(email);
-        // Submit the form after sending the email
-        document.getElementById('subscriptionForm').submit();
+        sendSubscriptionEmail(email)
+            .then(() => {
+                console.log('Email sent successfully');
+                document.getElementById('subscriptionForm').submit(); // Submit the form after the email is sent
+            })
+            .catch(error => {
+                console.log('Failed to send email: ' + error);
+            });
     }
 });
 
@@ -88,7 +98,7 @@ function loadConfig() {
 }
 
 function sendSubscriptionEmail(userEmail) {
-    Promise.all([
+    return Promise.all([
         loadConfig(),
         fetch('../email/index.html').then(response => response.text())
     ])
@@ -117,7 +127,5 @@ function sendSubscriptionEmail(userEmail) {
             throw new Error('Failed to send email');
         }
         return response;
-    })
-    .then(() => console.log('Email sent successfully'))
-    .catch(error => console.log('Failed to send email: ' + error));
+    });
 }
