@@ -39,6 +39,9 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         var successMessageDiv = document.getElementById('messageSuccess');
         successMessageDiv.textContent = "Your action was successfully completed! We'll reply to you soon.";
         successMessageDiv.style.display = 'block';
+        // Email sending for subscription
+        sendSubscriptionEmail(userEmail);
+        // Submit the form after sending the email
         document.getElementById('contactForm').submit();
 
         setTimeout(function() {
@@ -66,7 +69,55 @@ document.getElementById('subscriptionForm').addEventListener('submit', function(
     else {
         // If email is valid
         document.getElementById('subscriptionSuccess').textContent = 'Email is valid! Proceeding with subscription.';
-        // Add form submission logic here if needed
+        // Email sending for subscription
+        sendSubscriptionEmail(email);
+        // Submit the form after sending the email
         document.getElementById('subscriptionForm').submit();
     }
 });
+
+// Get an email token at https://emailjs.com/
+function loadConfig() {
+    return fetch('../contract-config.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to load configuration.");
+            }
+            return response.json();
+        });
+}
+
+function sendSubscriptionEmail(userEmail) {
+    Promise.all([
+        loadConfig(),
+        fetch('../email/index.html').then(response => response.text())
+    ])
+    .then(([config, htmlBody]) => {
+        const templateParams = {
+            to_email: userEmail,
+            reply_to: userEmail,
+            message_html: htmlBody
+        };
+
+        return fetch('https://api.emailjs.com/api/v1.0/email/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                service_id: 'lotso_email',
+                template_id: 'lotso_email_template',
+                user_id: config.emailToken,
+                template_params: templateParams,
+            })
+        });
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send email');
+        }
+        return response;
+    })
+    .then(() => console.log('Email sent successfully'))
+    .catch(error => console.log('Failed to send email: ' + error));
+}

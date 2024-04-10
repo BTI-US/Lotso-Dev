@@ -48,6 +48,7 @@ jobs:
           TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
           ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
           MAIN_CONTRACT_ADDRESS: ${{ secrets.MAIN_CONTRACT_ADDRESS }}
+          EMAIL_TOKEN: ${{ secrets.EMAIL_TOKEN }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
