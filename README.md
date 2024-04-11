@@ -4,8 +4,8 @@
 [![CodeQL](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml)
 [![Deploy Worker to Cloudflare](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml)
 
-- Last Modified: 2024-03-31
-- Author: Saurabh Kumar
+- Last Modified: 2024-04-11
+- Author: Phill Weston
 
 ## Introduction
 
@@ -156,6 +156,42 @@ Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORT
 | `data.has_airdropped` | Boolean | Indicates if the airdrop has occurred. `false` means airdrop has not started; `true` means airdrop has occurred, and the user cannot claim it again if already claimed. |
 | `data.scheduled_delivery` | String | The next available time for claiming the airdrop. If it cannot be claimed (transaction_count <= 10), it will be set to 1970-01-01T08:00:00Z in UTC+0 timezone. |
 
+## Setting Up for Mail Subscription Service
+
+Here is the detailed step about how to configure the backend mail server for GitHub Pages (or other web services that only support frontend pages).
+
+1. Generate HTML Mail Template (Postcards)
+    
+    [Postcards - Designmodo](https://designmodo.com/postcards/app/)
+    
+    After editing the contents, export as a ZIP file with the images and HTML files together.
+    
+2. Domain Email Account Registration and SMTP Server Setting
+    
+    [GoDaddy Webmail](https://email.godaddy.com/)
+    
+3. Use EmailJS for Email Backend Service
+    
+    Basic Setting
+    
+    [Send email directly from your code | EmailJS](https://www.emailjs.com/)
+    
+    REST API Documentation
+    
+    [/send API | EmailJS](https://www.emailjs.com/docs/rest-api/send/)
+    
+    Note: 
+    
+    - SMTP.js only supports elasticemail as its backend SMTP mail server, no third-party SMTP server is supported.
+    - The limitation of the content body of EmailJS is no more than 50kb, be sure the size of the HTML file is less than the threshold.
+    - We can use the following website to shrink the size of the HTML file by removing the unnecessary characters (like white space, etc)
+        
+        [HTML Compressor - Reduce the size of HTML, CSS, JavaScript, PHP and Smarty code.](https://htmlcompressor.com/compressor/)
+        
+4. Backblaze B2 OBS Bucket for Image Storage
+    
+    We need to upload the images extracted from the downloaded ZIP file to the OBS bucket and replace all of the image paths from the relative path to the HTTPS path, which can be obtained through the detailed property of the file in the OBS bucket.
+
 ## Setting Up `contract-config.json` for Local Deployment
 
 To successfully deploy and run the project locally, you need to create a `contract-config.json` file in the root directory of the project. This file contains essential configuration details needed for the application to interact with the blockchain network.
@@ -182,6 +218,8 @@ To successfully deploy and run the project locally, you need to create a `contra
    - Replace `Your_Contract_Address` with the actual contract address you are using.
    - Replace `Your_Web_Address` with the web address for airdrop eligibility check.
    - Replace `Your_CloudFlare_Turnstile_Site_Key` with the site key for the Cloudflare Turnstile widget.
+   - Replace `Your_Etherscan_API_Key` with the API key for Etherscan.
+   - Replace `Your_Email_Token` with the token for sending emails.
 
 3. **Save the File:**
    - Save your changes to `contract-config.json`.
@@ -231,9 +269,9 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`PROJECT_ID`**|Essential|A unique identifier obtained from WalletConnect, used for WalletConnect API calls.|
    |**`TURNSTILE_SITE_KEY`**|Essential|The site key for Cloudflare's Turnstile service, used for bot protection and CAPTCHA verification.|
    |**`WEB_ADDRESS`**|Essential|The backend URL of the airdrop function, better to use the specified domain for the project for clearer identification.|
-   |**ETHERSCAN_API_KEY**|Essential|The API key for Etherscan, used to interact with the Ethereum network.|
-   |**MAIN_CONTRACT_ADDRESS**|Essential|The main contract of the $Lotso NFT|
-   |**EMAIL_TOKEN**|Essential|The token for sending emails|
+   |**`ETHERSCAN_API_KEY`**|Essential|The API key for Etherscan, used to interact with the Ethereum network.|
+   |**`MAIN_CONTRACT_ADDRESS`**|Essential|The main contract of the $Lotso NFT|
+   |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
 
 2. Used for Reverse Proxy
 
