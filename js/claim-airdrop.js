@@ -326,6 +326,12 @@ function displayMessage(message, type) {
         } else if (type === 'error') {
             messageElement.classList.add('error-message');
         }
+
+        // Clear the message after 10 seconds
+        setTimeout(() => {
+            messageElement.innerText = ''; // Clear the text
+            messageElement.className = ''; // Also clear any class that was added
+        }, 10000);
     }
 }
 

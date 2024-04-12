@@ -1505,6 +1505,12 @@ over-btn a i {
     font-size: larger;
 }
 
+.info-txt.middle-align {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .info-txt:focus {
     color: #ffffff;
     background: #151515;
@@ -2035,4 +2041,10 @@ textarea::placeholder {
     z-index: 9999; /* high z-index to ensure it's on top */
     display: none; /* initially hidden */
     background: transparent; /* ensures the background is transparent */
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.4; /* Grey out the container */
+    filter: grayscale(100%); /* Optional: adds a grayscale effect */
 }
