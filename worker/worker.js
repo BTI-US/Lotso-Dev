@@ -11,9 +11,12 @@ async function handleRequest(request) {
     if (url.hostname === 'oauth.btiplatform.com') {
         url.hostname = 'host.btiplatform.com';
         url.port = '5000';
-    } else if (url.hostname === '__SERVER_DOMAIN__.btiplatform.com') {
+    } else if (url.hostname === 'api.btiplatform.com') {
         url.hostname = 'host.btiplatform.com';
         url.port = '__SERVER_HTTP_PORT__';
+    } else if (url.hostname === 'api-dev.btiplatform.com') {
+        url.hostname = 'host.btiplatform.com';
+        url.port = '__SERVER_HTTP_PORT2__';
     }
 
     // Fetch the data from the modified URL
