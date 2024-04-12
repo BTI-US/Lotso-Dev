@@ -6,8 +6,15 @@ async function handleRequest(request) {
     // Modify the request URL
     const url = new URL(request.url);
     url.protocol = 'http:';
-    url.hostname = 'host.btiplatform.com';
-    url.port = '__SERVER_HTTP_PORT__';
+
+    // Check the request hostname and set the corresponding backend host and port
+    if (url.hostname === 'oauth.btiplatform.com') {
+        url.hostname = 'host.btiplatform.com';
+        url.port = '5000';
+    } else if (url.hostname === '__SERVER_DOMAIN__.btiplatform.com') {
+        url.hostname = 'host.btiplatform.com';
+        url.port = '__SERVER_HTTP_PORT__';
+    }
 
     // Fetch the data from the modified URL
     const response = await fetch(url.toString(), request);

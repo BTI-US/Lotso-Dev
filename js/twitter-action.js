@@ -1,5 +1,4 @@
 const backendUrl = 'https://oauth.btiplatform.com';
-const tweetId = 'test'; // Replace with the tweet ID you want to perform actions on
 
 document.addEventListener('DOMContentLoaded', function () {
     console.log('Twitter action script loaded');
@@ -113,25 +112,38 @@ function handleAction(action) {
     }
 }
 
-function performAction(action, accessToken, accessTokenSecret) {
-    fetch(`${backendUrl}/${action}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            accessToken: accessToken,
-            accessTokenSecret: accessTokenSecret,
-            tweetId: tweetId
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
+async function performAction(action, accessToken, accessTokenSecret) {
+    try {
+        // Fetch the tweetId from the configuration file
+        const response = await fetch('../contract-config.json');
+        if (!response.ok) {
+            throw new Error("Failed to load configuration file.");
+        }
+        const jsonConfig = await response.json();
+        const tweetId = jsonConfig.tweetId;
+
+        if (!tweetId) {
+            throw new Error("Required configuration value (tweetId) is missing.");
+        }
+
+        // If tweetId is fetched successfully, perform the action
+        const actionResponse = await fetch(`${backendUrl}/${action}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                accessToken: accessToken,
+                accessTokenSecret: accessTokenSecret,
+                tweetId: tweetId
+            })
+        });
+
+        const data = await actionResponse.json();
         console.log(`${action} action response:`, data);
         displayInfo(action, data.message, 'info');
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error performing action:', error);
-        displayInfo(action, 'Error performing action');
-    });
+        displayInfo(action, error.message, 'error');
+    }
 }

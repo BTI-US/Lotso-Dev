@@ -212,6 +212,7 @@ To successfully deploy and run the project locally, you need to create a `contra
          "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
          "etherscanApiKey": "Your_Etherscan_API_Key",
          "emailToken": "Your_Email_Token",
+         "tweetId": "Your_Tweet_Id"
      }
      ```
    - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
@@ -247,7 +248,8 @@ Here is an example of what your `contract-config.json` might look like for the B
     "webAddress": "https://flxdu.cn:8011/v1/info/transaction_count",
     "turnstileSiteKey": "0x123abc456def789ghi",
     "etherscanApiKey": "0x123abc456def789ghi",
-    "emailToken": "0x123abc456def789ghi"
+    "emailToken": "0x123abc456def789ghi",
+    "tweetId": "0x123abc456def789ghi"
 }
 ```
 
@@ -272,6 +274,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`ETHERSCAN_API_KEY`**|Essential|The API key for Etherscan, used to interact with the Ethereum network.|
    |**`MAIN_CONTRACT_ADDRESS`**|Essential|The main contract of the $Lotso NFT|
    |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
+   |**`TWEET_ID`**|Essential|The tweet ID for the target tweet|
 
 2. Used for Reverse Proxy
 

@@ -9,7 +9,8 @@ const config = {
   "turnstileSiteKey": process.env.TURNSTILE_SITE_KEY,
   "etherscanApiKey": process.env.ETHERSCAN_API_KEY,
   "mainContractAddress": process.env.MAIN_CONTRACT_ADDRESS,
-  "emailToken": process.env.EMAIL_TOKEN
+  "emailToken": process.env.EMAIL_TOKEN,
+  "tweetId": process.env.TWEET_ID,
 };
 
 fs.writeFileSync('contract-config.json', JSON.stringify(config, null, 2));

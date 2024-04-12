@@ -49,6 +49,7 @@ jobs:
           ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
           MAIN_CONTRACT_ADDRESS: ${{ secrets.MAIN_CONTRACT_ADDRESS }}
           EMAIL_TOKEN: ${{ secrets.EMAIL_TOKEN }}
+          TWEET_ID: ${{ secrets.TWEET_ID }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
