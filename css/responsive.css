@@ -103,7 +103,7 @@
     .mob-img-hide,
     #team::before,
     #team::after,
-    #review::after,
+    #partner::after,
     .design-layer {
         display: none;
     }
@@ -200,8 +200,8 @@
         padding-top: 45px;
     }
 
-    #price,
-    #review,
+    #follow,
+    #partner,
     #contact,
     #airdrop {
         padding: 60px 0;
@@ -402,7 +402,7 @@
         margin-top: 30px;
     }
 
-    #price {
+    #follow {
         padding: 50px 0;
     }
 
@@ -434,7 +434,7 @@
         margin-top: 30px;
     }
 
-    #review::after {
+    #partner::after {
         display: none;
     }
 
@@ -576,7 +576,7 @@
         margin-top: 35px;
     }
 
-    #review::after {
+    #partner::after {
         display: none;
     }
 
@@ -648,7 +648,7 @@
         padding-left: 20px;
     }
 
-    #review::after {
+    #partner::after {
         display: none;
     }
 

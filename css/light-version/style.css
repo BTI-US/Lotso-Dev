@@ -1256,9 +1256,9 @@ over-btn a i {
 }
 
 /*===========================
-8.0 *** PRICE AREA START ***
+8.0 *** FOLLOW AREA START ***
 =============================*/
-#price {
+#follow {
     padding: 80px 0;
 }
 
@@ -1345,14 +1345,14 @@ over-btn a i {
 }
 
 /*===========================
-9.0 *** REVIEW AREA START ***
+9.0 *** PARTNER AREA START ***
 =============================*/
-#review {
+#partner {
     padding: 80px 0;
     position: relative;
 }
 
-#review:after {
+#partner:after {
     position: absolute;
     content: '';
     top: -40px;
