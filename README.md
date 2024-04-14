@@ -37,6 +37,7 @@
     - [Deploying to Cloudflare Pages](#deploying-to-cloudflare-pages)
     - [Important Notes](#important-notes)
   - [Size of Images](#size-of-images)
+  - [License](#license)
 
 ## Introduction
 
@@ -393,3 +394,6 @@ Replaced Image Sizes:
 - testimonial2.png - 90x89
 - testimonial3.png - 90x89
 - blog1.jpg - 620x420
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

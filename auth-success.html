@@ -47,7 +47,7 @@
                 window.opener.postMessage({
                     type: 'SESSION_UPDATE',
                     sessionId: sessionId
-                }, window.location.origin);  // Only send the message to the parent window's origin
+                }, '*');
 
                 console.log('Session ID sent to parent window:', sessionId);
 

@@ -1,8 +1,8 @@
 const backendUrl = 'https://oauth.btiplatform.com';
 
 window.addEventListener('message', function(event) {
-    // Validate the origin to ensure security
-    if (event.origin !== window.location.origin) {
+    // Validate the origin to ensure security (skip for localhost testing)
+    if (event.origin !== window.location.origin && !event.origin.startsWith('http://localhost')) {
         console.error("Received message from unauthorized origin:", event.origin);
         return;
     }
