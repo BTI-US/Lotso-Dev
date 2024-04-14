@@ -40,20 +40,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const sessionId = urlParams.get('session_id');
-
-            if (sessionId) {
-                // Use postMessage to send the session ID back to the parent window
-                window.opener.postMessage({
-                    type: 'SESSION_UPDATE',
-                    sessionId: sessionId
-                }, '*');
-
-                console.log('Session ID sent to parent window:', sessionId);
-
-                // Optionally, remove the session ID from the URL for security.
-                window.history.replaceState(null, null, window.location.pathname);
-            }
+            // Use postMessage to send the message back to the parent window
+            window.opener.postMessage({
+                type: 'redirected',
+                status: true
+            }, '*');
         });
     </script>
 </head>

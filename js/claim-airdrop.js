@@ -6,7 +6,7 @@ import { Fireworks } from 'fireworks-js';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
 let projectId, activeNetwork, contractAddress, webAddress, turnstileSiteKey;
-let tweetId, userId;
+let tweetId, userName;
 const backendUrl = 'https://oauth.btiplatform.com';
 
 try {
@@ -20,15 +20,15 @@ try {
     turnstileSiteKey = jsonConfig.turnstileSiteKey;
     projectId = jsonConfig.projectId;
     tweetId = jsonConfig.tweetId;
-    userId = jsonConfig.userId;
+    userName = jsonConfig.userName;
 
     // Additional validation can be performed here as needed
     if (!activeNetwork || !contractAddress || !webAddress || !turnstileSiteKey || !projectId) {
         throw new Error("Required configuration values (activeNetwork or contractAddress or webAddress or turnstileSiteKey or projectId) are missing.");
     }
 
-    if (!tweetId || !userId) {
-        throw new Error("Required configuration values (tweetId or userId) are missing.");
+    if (!tweetId || !userName) {
+        throw new Error("Required configuration values (tweetId or userName) are missing.");
     }
 } catch (error) {
     // Check if the error is due to missing file
@@ -395,7 +395,7 @@ async function checkUserEligibility() {
             }
 
             // Awaiting the result of Twitter interaction checks
-            const twitterCheck = await checkTwitterInteractions(tweetId, userId);
+            const twitterCheck = await checkTwitterInteractions(tweetId, userName);
             if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z" || !twitterCheck.success) {
                 updateProgressBar(100, 'red');
                 displayMessage('You do not have the eligibility to claim the airdrop', 'info');
@@ -512,9 +512,9 @@ function startFireworksForDuration(duration) {
     }, duration);
 }
 
-async function checkTwitterInteractions(tweetId, targetUserId) {
+async function checkTwitterInteractions(tweetId, targetUserName) {
     try {
-        const isFollowed = await checkFollow(targetUserId);
+        const isFollowed = await checkFollow(targetUserName);
         console.log('Follow check:', isFollowed);
         if (!isFollowed) {
             throw new Error('User is not following the target user.');
@@ -540,8 +540,8 @@ async function checkTwitterInteractions(tweetId, targetUserId) {
     }
 }
 
-function checkFollow(targetUserId) {
-    return fetch(`${backendUrl}/check-follow?targetUserId=${targetUserId}`, { credentials: 'include' })
+function checkFollow(targetUserName) {
+    return fetch(`${backendUrl}/check-follow?targetUserId=${targetUserName}`, { credentials: 'include' })
         .then(handleResponse)
         .then(data => data.isFollowed);
 }

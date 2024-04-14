@@ -50,7 +50,7 @@ jobs:
           MAIN_CONTRACT_ADDRESS: ${{ secrets.MAIN_CONTRACT_ADDRESS }}
           EMAIL_TOKEN: ${{ secrets.EMAIL_TOKEN }}
           TWEET_ID: ${{ secrets.TWEET_ID }}
-          USER_ID: ${{ secrets.USER_ID }}
+          USER_NAME: ${{ secrets.USER_NAME }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

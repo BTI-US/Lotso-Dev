@@ -5,7 +5,7 @@ addEventListener('fetch', event => {
 async function handleRequest(request) {
     // Modify the request URL
     const url = new URL(request.url);
-    url.protocol = 'http:';
+    url.protocol = 'https:';
 
     // Check the request hostname and set the corresponding backend host and port
     if (url.hostname === 'oauth.btiplatform.com') {

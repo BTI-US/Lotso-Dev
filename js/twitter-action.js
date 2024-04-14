@@ -1,16 +1,10 @@
 const backendUrl = 'https://oauth.btiplatform.com';
 
 window.addEventListener('message', function(event) {
-    // Validate the origin to ensure security (skip for localhost testing)
-    if (event.origin !== window.location.origin && !event.origin.startsWith('http://localhost')) {
-        console.error("Received message from unauthorized origin:", event.origin);
-        return;
-    }
-
     // Process the message data
-    if (event.data.type === 'SESSION_UPDATE' && event.data.sessionId) {
-        console.log('Received session update:', event.data.sessionId);
-        sessionStorage.setItem('sessionId', event.data.sessionId);
+    if (event.data.type === 'redirected' && event.data.status) {
+        console.log('Received redirected status: ', event.data.status);
+        //sessionStorage.setItem('sessionId', event.data.sessionId);
         checkAuthStatus();
     }
 });
@@ -38,47 +32,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// TODO: Need to be tested
+// Check the authentication status when the page loads
 async function checkAuthStatus() {
     console.log('Checking authentication status...');
-    const sessionId = sessionStorage.getItem('sessionId');
-    // Print the session items
-    console.log('Session items:', sessionStorage);
-    if (sessionId) {
-        console.log('Sending session ID:', sessionId);
-        try {
-            // Fetch authentication status from a secure backend endpoint
-            const response = await fetch(`${backendUrl}/check-auth-status?session_id=${encodeURIComponent(sessionId)}`, {
-                method: 'GET',
-                credentials: 'include' // Ensures cookies or auth headers are sent with the request
-            });
+    try {
+        // Fetch authentication status from a secure backend endpoint
+        const response = await fetch(`${backendUrl}/check-auth-status`, {
+            method: 'GET',
+            credentials: 'include' // Ensures cookies or auth headers are sent with the request
+        });
 
-            if (!response.ok) {
-                throw new Error(`Failed to fetch authentication status. Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log('Received authentication status:', data);
-
-            if (data.isAuthenticated) {
-                // Perform actions based on authentication success
-                document.querySelectorAll('.price-table.disabled').forEach(element => {
-                    element.classList.remove('disabled');
-                });
-                console.log('View unlocked successfully.');
-
-                // Hide the `twitterAuth` container
-                document.getElementById('twitterAuth').style.display = 'none';
-            } else {
-                console.error('Authentication failed or was not completed.');
-                displayInfo('authentication', 'Please authorize the app first.', 'error');
-            }
-        } catch (error) {
-            console.error('Failed to check authentication status:', error);
-            displayInfo('authentication', 'Error checking authentication status.', 'error');
+        if (!response.ok) {
+            throw new Error(`Failed to fetch authentication status. Status: ${response.status}`);
         }
-    } else {
-        console.warn('No session ID found in sessionStorage.');
+
+        const data = await response.json();
+        console.log('Received authentication status:', data);
+
+        if (data.isAuthenticated) {
+            // Remove the disabled class from the action buttons
+            document.getElementById('retweet-section').classList.remove('disabled');
+            document.getElementById('bookmark-section').classList.remove('disabled');
+            document.getElementById('like-section').classList.remove('disabled');
+            document.getElementById('follow-section').classList.remove('disabled');
+            console.log('View unlocked successfully.');
+
+            // Hide the `twitterAuth` container
+            document.getElementById('twitterAuth').style.display = 'none';
+        } else {
+            console.error('Authentication failed or was not completed.');
+            displayInfo('authentication', 'Please authorize the app first.', 'error');
+        }
+    } catch (error) {
+        console.error('Failed to check authentication status:', error);
+        displayInfo('authentication', 'Error checking authentication status.', 'error');
     }
 }
 
@@ -93,7 +80,7 @@ function displayInfo(action, message, type) {
         elementId = 'likeMessage';
     } else if (action === 'bookmark') {
         elementId = 'bookmarkMessage';
-    } else if (action === 'follow') {
+    } else if (action === 'follow-us') {
         elementId = 'followMessage';
     }
 
@@ -131,10 +118,10 @@ async function handleAction(action) {
         const jsonConfig = await configResponse.json();
         // Determine which identifier to use based on the action
         if (action === 'follow-us') {
-            identifierKey = 'userId';
-            identifierValue = jsonConfig.userId; // Assuming userId is also stored in the config
+            identifierKey = 'userName';
+            identifierValue = jsonConfig.userName; // Assuming userName is also stored in the config
             if (!identifierValue) {
-                throw new Error("Required configuration value 'userId' is missing.");
+                throw new Error("Required configuration value 'userName' is missing.");
             }
         } else {
             identifierKey = 'tweetId';

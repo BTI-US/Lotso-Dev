@@ -245,7 +245,7 @@ To successfully deploy and run the project locally, you need to create a `contra
          "etherscanApiKey": "Your_Etherscan_API_Key",
          "emailToken": "Your_Email_Token",
          "tweetId": "Your_Tweet_Id",
-         "userId": "Your_User_Id"
+         "userName": "Your_User_Name"
      }
      ```
    - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
@@ -255,7 +255,7 @@ To successfully deploy and run the project locally, you need to create a `contra
    - Replace `Your_Etherscan_API_Key` with the API key for Etherscan.
    - Replace `Your_Email_Token` with the token for sending emails.
    - Replace `Your_Tweet_Id` with the tweet ID for the target tweet.
-   - Replace `Your_User_Id` with the user ID for the target user.
+   - Replace `Your_User_Name` with the user ID for the target user.
 
 3. **Save the File:**
    - Save your changes to `contract-config.json`.
@@ -285,7 +285,7 @@ Here is an example of what your `contract-config.json` might look like for the B
     "etherscanApiKey": "0x123abc456def789ghi",
     "emailToken": "0x123abc456def789ghi",
     "tweetId": "0x123abc456def789ghi",
-    "userId": "0x123abc456def789ghi"
+    "userName": "0x123abc456def789ghi"
 }
 ```
 
@@ -311,7 +311,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`MAIN_CONTRACT_ADDRESS`**|Essential|The main contract of the $Lotso NFT|
    |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
    |**`TWEET_ID`**|Essential|The tweet ID for the target tweet|
-   |**`USER_ID`**|Essential|The user ID for the target user|
+   |**`USER_NAME`**|Essential|The user name for the target user|
 
 2. Used for Reverse Proxy
 
