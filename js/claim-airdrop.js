@@ -6,6 +6,8 @@ import { Fireworks } from 'fireworks-js';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
 let projectId, activeNetwork, contractAddress, webAddress, turnstileSiteKey;
+let tweetId, userId;
+const backendUrl = 'https://oauth.btiplatform.com';
 
 try {
     // Attempt to load the configuration file
@@ -17,12 +19,17 @@ try {
     webAddress = jsonConfig.webAddress;
     turnstileSiteKey = jsonConfig.turnstileSiteKey;
     projectId = jsonConfig.projectId;
+    tweetId = jsonConfig.tweetId;
+    userId = jsonConfig.userId;
 
     // Additional validation can be performed here as needed
     if (!activeNetwork || !contractAddress || !webAddress || !turnstileSiteKey || !projectId) {
         throw new Error("Required configuration values (activeNetwork or contractAddress or webAddress or turnstileSiteKey or projectId) are missing.");
     }
 
+    if (!tweetId || !userId) {
+        throw new Error("Required configuration values (tweetId or userId) are missing.");
+    }
 } catch (error) {
     // Check if the error is due to missing file
     if (error.code === 'MODULE_NOT_FOUND') {
@@ -363,66 +370,63 @@ function addCommasToBigInt(bigIntStr) {
     return result;
 }
 
-function checkUserEligibility() {
-    const fullAddress = document.getElementById('address').getAttribute('data-full-address');
-    console.log('Checking eligibility for address:', fullAddress);
+async function checkUserEligibility() {
+    try {
+        const fullAddress = document.getElementById('address').getAttribute('data-full-address');
+        console.log('Checking eligibility for address:', fullAddress);
 
-    const url = webAddress + `?address=${encodeURIComponent(fullAddress)}`;
+        const url = webAddress + `?address=${encodeURIComponent(fullAddress)}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (data.code === 0 && data.message === 'Success' && !data.error) {
+            const hasAirdropped = data.data.has_airdropped;
+            const obtainedAddress = data.data.address;
+            const airdropCount = BigInt(data.data.airdrop_count);
+            const divisor = BigInt("1000000000000000000");
+            const scheduledDelivery = new Date(data.data.scheduled_delivery);
+            const now = new Date();
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            // Compare the obtained address with the sent address
+            if (obtainedAddress.toLowerCase() !== fullAddress.toLowerCase()) {
+                throw new Error('The obtained address does not match the sent address, please refresh the browser cache and retry.');
             }
-            return response.json();
-        })
-        .then(data => {
-            if (data.code === 0 && data.message === 'Success' && !data.error) {
-                const txCount = data.data.transaction_count;
-                const hasAirdropped = data.data.has_airdropped;
-                const obtainedAddress = data.data.address;
-                const airdropCount = BigInt(data.data.airdrop_count);
-                const divisor = BigInt("1000000000000000000");
-                const scheduledDelivery = new Date(data.data.scheduled_delivery);
-                const now = new Date();
 
-                // Compare the obtained address with the sent address
-                if (obtainedAddress.toLowerCase() !== fullAddress.toLowerCase()) {
-                    throw new Error('The obtained address does not match the sent address, please refresh the browser cache and retry.');
-                }
-
-                if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z" || txCount <= 10) {
-                    updateProgressBar(100, 'red');
-                    displayMessage('You do not have the eligibility to claim the airdrop', 'info');
-                } else if (scheduledDelivery > now) {
-                    let airdropCnt = addCommasToBigInt(((airdropCount / divisor) + (airdropCount % divisor > 0 ? 1n : 0n)).toString());
-                    // Calculate time difference and display countdown
-                    let timeDiff = scheduledDelivery.getTime() - now.getTime();
-                    let days = Math.floor(timeDiff / (1000 * 3600 * 24));
-                    let hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600));
-                    let minutes = Math.floor((timeDiff % (1000 * 3600)) / (1000 * 60));
-                    displayMessage(`Congratulations! You have been allocated ${airdropCnt} Lotso tokens for the airdrop. We have recorded your address and will distribute the airdrop to you in ${days} days, ${hours} hours, and ${minutes} minutes. You can come and claim the airdrop after we distribute it.`, 'info');
-                } else {
-                    if (!hasAirdropped) {
-                        console.log('Airdrop has not started yet. Please wait patiently.');
-                        updateProgressBar(100, 'red');
-                        displayMessage('Airdrop has not started yet. Please wait patiently.', 'info');
-                    } else {
-                        console.log('User is eligible to claim the airdrop');
-                        updateProgressBar(25, 'green');
-                        displayMessage('You are eligible to claim the airdrop. Press the button above to check your airdrop amount.', 'info');
-                        document.getElementById('claimAirdrop').textContent = 'Claim Your Airdrop';
-                    }
-                }
+            // Awaiting the result of Twitter interaction checks
+            const twitterCheck = await checkTwitterInteractions(tweetId, userId);
+            if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z" || !twitterCheck.success) {
+                updateProgressBar(100, 'red');
+                displayMessage('You do not have the eligibility to claim the airdrop', 'info');
+            } else if (scheduledDelivery > now) {
+                let airdropCnt = addCommasToBigInt(((airdropCount / divisor) + (airdropCount % divisor > 0n ? 1n : 0n)).toString());
+                // Calculate time difference and display countdown
+                let timeDiff = scheduledDelivery.getTime() - now.getTime();
+                let days = Math.floor(timeDiff / (1000 * 3600 * 24));
+                let hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600));
+                let minutes = Math.floor((timeDiff % (1000 * 3600)) / (1000 * 60));
+                displayMessage(`Congratulations! You have been allocated ${airdropCnt} Lotso tokens for the airdrop. We have recorded your address and will distribute the airdrop to you in ${days} days, ${hours} hours, and ${minutes} minutes. You can come and claim the airdrop after we distribute it.`, 'info');
             } else {
-                throw new Error(data.error || 'Unknown error occurred');
+                if (!hasAirdropped) {
+                    console.log('Airdrop has not started yet. Please wait patiently.');
+                    updateProgressBar(100, 'red');
+                    displayMessage('Airdrop has not started yet. Please wait patiently.', 'info');
+                } else {
+                    console.log('User is eligible to claim the airdrop');
+                    updateProgressBar(25, 'green');
+                    displayMessage('You are eligible to claim the airdrop. Press the button above to check your airdrop amount.', 'info');
+                    document.getElementById('claimAirdrop').textContent = 'Claim Your Airdrop';
+                }
             }
-        })
-        .catch(err => {
-            console.error('Error:', err);
-            updateProgressBar(100, 'red');
-            displayMessage(`Error: ${err.message}`, 'error');
-        });
+        } else {
+            throw new Error(data.error || 'Unknown error occurred');
+        }
+    } catch (err) {
+        console.error('Error:', err);
+        updateProgressBar(100, 'red');
+        displayMessage(`Error: ${err.message}`, 'error');
+    }
 }
 
 // Add event listener to the button
@@ -506,4 +510,61 @@ function startFireworksForDuration(duration) {
         fireworks.stop();
         container.style.display = 'none'; // Hide the container again
     }, duration);
+}
+
+async function checkTwitterInteractions(tweetId, targetUserId) {
+    try {
+        const isFollowed = await checkFollow(targetUserId);
+        console.log('Follow check:', isFollowed);
+        if (!isFollowed) {
+            throw new Error('User is not following the target user.');
+        }
+
+        const isLiked = await checkLike(tweetId);
+        console.log('Like check:', isLiked);
+        if (!isLiked) {
+            throw new Error('Tweet is not liked by the user.');
+        }
+
+        const isRetweeted = await checkRetweet(tweetId);
+        console.log('Retweet check:', isRetweeted);
+        if (!isRetweeted) {
+            throw new Error('Tweet has not been retweeted by the user.');
+        }
+
+        console.log('All checks passed!');
+        return { success: true, message: 'All checks passed!'};
+    } catch (error) {
+        console.error('Failed:', error.message);
+        return { success: false, message: error.message };
+    }
+}
+
+function checkFollow(targetUserId) {
+    return fetch(`${backendUrl}/check-follow?targetUserId=${targetUserId}`, { credentials: 'include' })
+        .then(handleResponse)
+        .then(data => data.isFollowed);
+}
+
+function checkLike(tweetId) {
+    return fetch(`${backendUrl}/check-like?tweetId=${tweetId}`, { credentials: 'include' })
+        .then(handleResponse)
+        .then(data => data.isLiked);
+}
+
+function checkRetweet(tweetId) {
+    return fetch(`${backendUrl}/check-retweet?tweetId=${tweetId}`, { credentials: 'include' })
+        .then(handleResponse)
+        .then(data => data.isRetweeted);
+}
+
+function handleResponse(response) {
+    if (response.status === 401) {
+        // Throw an error that specifically handles 401 Unauthorized
+        throw new Error('Authorization required: Please authorize the application first.');
+    }
+    if (!response.ok) {
+        throw new Error('Failed to fetch data from the server');
+    }
+    return response.json();
 }

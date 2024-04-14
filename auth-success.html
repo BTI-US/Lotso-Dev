@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Successful</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .message-box {
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: #fff;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ff7657;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #ff7657;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+
+            if (sessionId) {
+                // Use postMessage to send the session ID back to the parent window
+                window.opener.postMessage({
+                    type: 'SESSION_UPDATE',
+                    sessionId: sessionId
+                }, window.location.origin);  // Only send the message to the parent window's origin
+
+                console.log('Session ID sent to parent window:', sessionId);
+
+                // Optionally, remove the session ID from the URL for security.
+                window.history.replaceState(null, null, window.location.pathname);
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="message-box">
+        <h1>Authentication Successful</h1>
+        <p>You can now close this popup window.</p>
+        <button onclick="window.close();">Close Window</button>
+    </div>
+</body>
+</html>

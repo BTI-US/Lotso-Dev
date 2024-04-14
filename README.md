@@ -4,8 +4,39 @@
 [![CodeQL](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml)
 [![Deploy Worker to Cloudflare](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml)
 
-- Last Modified: 2024-04-11
+- Last Modified: 2024-04-13
 - Author: Phill Weston
+
+## Table of Contents
+
+- [Lotso Coins - Leading the PvP Mode](#lotso-coins---leading-the-pvp-mode)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Requirements](#requirements)
+  - [How to Use Webpack to Bundle the Project](#how-to-use-webpack-to-bundle-the-project)
+  - [How to Obtain the Airdrop](#how-to-obtain-the-airdrop)
+  - [WalletConnect API Usage](#walletconnect-api-usage)
+  - [Infura API Usage](#infura-api-usage)
+  - [Network for Our Blockchain](#network-for-our-blockchain)
+    - [Blockchain Information for Base Network](#blockchain-information-for-base-network)
+    - [Blockchain Information for Base Sepolia Network](#blockchain-information-for-base-sepolia-network)
+    - [Supported Blockchain](#supported-blockchain)
+  - [JSON Protocol](#json-protocol)
+    - [Body Parameters](#body-parameters)
+    - [Description](#description)
+  - [Setting Up for Mail Subscription Service](#setting-up-for-mail-subscription-service)
+  - [Setting Up `contract-config.json` for Local Deployment](#setting-up-contract-configjson-for-local-deployment)
+    - [Step-by-Step Guide](#step-by-step-guide)
+    - [Example File](#example-file)
+  - [Cloud Deployment on GitHub Pages and Cloudflare Pages](#cloud-deployment-on-github-pages-and-cloudflare-pages)
+    - [Required Environment Variables](#required-environment-variables)
+    - [Setting Environment Variables in GitHub](#setting-environment-variables-in-github)
+    - [Deploying to GitHub Pages](#deploying-to-github-pages)
+    - [Setting Environment Variables in Cloudflare Pages](#setting-environment-variables-in-cloudflare-pages)
+    - [Setting Custom Domains in Cloudflare Workers](#setting-custom-domains-in-cloudflare-workers)
+    - [Deploying to Cloudflare Pages](#deploying-to-cloudflare-pages)
+    - [Important Notes](#important-notes)
+  - [Size of Images](#size-of-images)
 
 ## Introduction
 
@@ -69,9 +100,9 @@ Lotso Coins is a decentralized platform for non-fungible tokens (NFTs), where us
    ```
 Note: After running the command, a `dist` folder will be created in the root directory of the project, and the bundled JavaScript file `bundle.js` will be generated in the `dist` folder. Remember to perform a production build before deploying the project to GitHub Pages.
 
-## Documentation
+## How to Obtain the Airdrop
 
-Click [here](https://lotso.org/documentation/index.html) to view the documentation.
+Click [here](https://lotso.org/documentation/index.html) to view the detailed documentation on how to obtain the airdrop.
 
 ## WalletConnect API Usage
 
@@ -212,7 +243,8 @@ To successfully deploy and run the project locally, you need to create a `contra
          "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
          "etherscanApiKey": "Your_Etherscan_API_Key",
          "emailToken": "Your_Email_Token",
-         "tweetId": "Your_Tweet_Id"
+         "tweetId": "Your_Tweet_Id",
+         "userId": "Your_User_Id"
      }
      ```
    - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
@@ -221,6 +253,8 @@ To successfully deploy and run the project locally, you need to create a `contra
    - Replace `Your_CloudFlare_Turnstile_Site_Key` with the site key for the Cloudflare Turnstile widget.
    - Replace `Your_Etherscan_API_Key` with the API key for Etherscan.
    - Replace `Your_Email_Token` with the token for sending emails.
+   - Replace `Your_Tweet_Id` with the tweet ID for the target tweet.
+   - Replace `Your_User_Id` with the user ID for the target user.
 
 3. **Save the File:**
    - Save your changes to `contract-config.json`.
@@ -249,7 +283,8 @@ Here is an example of what your `contract-config.json` might look like for the B
     "turnstileSiteKey": "0x123abc456def789ghi",
     "etherscanApiKey": "0x123abc456def789ghi",
     "emailToken": "0x123abc456def789ghi",
-    "tweetId": "0x123abc456def789ghi"
+    "tweetId": "0x123abc456def789ghi",
+    "userId": "0x123abc456def789ghi"
 }
 ```
 
@@ -275,6 +310,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`MAIN_CONTRACT_ADDRESS`**|Essential|The main contract of the $Lotso NFT|
    |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
    |**`TWEET_ID`**|Essential|The tweet ID for the target tweet|
+   |**`USER_ID`**|Essential|The user ID for the target user|
 
 2. Used for Reverse Proxy
 
@@ -283,7 +319,8 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`CLOUDFLARE_ACCOUNT_ID`**|Essential|The account ID for Cloudflare, used to authenticate and manage resources via Cloudflare APIs.|
    |**`CLOUDFLARE_API_TOKEN`**|Essential|A token used to authenticate API requests to Cloudflare, allowing to interact with Cloudflare worker services.|
    |**`CLOUDFLARE_WORKER_NAME`**|Optional|The name of a Cloudflare Worker, if used, which can execute serverless code at the edge for tasks like routing or custom caching, "api" by default|
-   |**`SERVER_HTTP_PORT`**|Optional|The port number on which the reverse proxy server listens for HTTP traffic, "8080" by default|
+   |**`SERVER_HTTP_PORT`**|Essential|The port number on which the reverse proxy server listens for HTTP traffic of production website, "8080" by default|
+   |**`SERVER_HTTP_PORT2`**|Essential|The second port number on which the reverse proxy server listens for HTTP traffic of test website, "8081" by default|
 
 ### Setting Environment Variables in GitHub
 
@@ -292,7 +329,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 3. Click on "New repository secret" and add each environment variable:
    - Name: Variable name (e.g., `PROJECT_ID`).
    - Value: Corresponding value for the variable.
-4. Repeat this process for `ACTIVE_NETWORK`, `CONTRACT_ADDRESS`, `WEB_ADDRESS` and `TURNSTILE_SITE_KEY` and others.
+4. Repeat this process for `ACTIVE_NETWORK`, `CONTRACT_ADDRESS`, `WEB_ADDRESS`, `TURNSTILE_SITE_KEY` and others.
 
 ### Deploying to GitHub Pages
 
@@ -305,6 +342,15 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 2. Select your project and go to "Settings" > "Environment variables" (under "Build & deploy").
 3. Add each variable by specifying its Name and Value.
 4. Particularly, ensure `CLOUDFLARE_ENV` is set to `true`.
+
+### Setting Custom Domains in Cloudflare Workers
+
+1. Go to your Cloudflare account and access the Workers dashboard.
+2. Select your worker (by default the worker name is set to 'api') and go to "Settings" > "Triggers".
+3. Add the following custom domains for the worker to route traffic accordingly.
+   - `api.btiplatform.com`
+   - `api-dev.btiplatform.com`
+   - `oauth.btiplatform.com`
 
 ### Deploying to Cloudflare Pages
 

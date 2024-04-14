@@ -11,6 +11,7 @@ const config = {
   "mainContractAddress": process.env.MAIN_CONTRACT_ADDRESS,
   "emailToken": process.env.EMAIL_TOKEN,
   "tweetId": process.env.TWEET_ID,
+  "userId": process.env.USER_ID
 };
 
 fs.writeFileSync('contract-config.json', JSON.stringify(config, null, 2));

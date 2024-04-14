@@ -24,9 +24,10 @@ async function handleRequest(request) {
 
     // Create a new response with CORS headers
     const newHeaders = new Headers(response.headers);
-    newHeaders.set("Access-Control-Allow-Origin", "*"); // Adjust as needed for security
+    newHeaders.set("Access-Control-Allow-Origin", request.headers.get("Origin")); // Adjust as needed for security
     newHeaders.set("Access-Control-Allow-Methods", "GET, POST");
     newHeaders.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    newHeaders.set("Access-Control-Allow-Credentials", "true"); // Allow sending session cookie
 
     // Return the response with the new headers
     return new Response(response.body, {
