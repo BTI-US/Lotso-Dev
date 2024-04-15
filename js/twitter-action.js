@@ -108,7 +108,6 @@ function displayInfo(action, message, type) {
 }
 
 async function handleAction(action) {
-    let identifierKey, identifierValue;
     try {
         // Fetch the tweetId from the configuration file
         const configResponse = await fetch('../contract-config.json');
@@ -116,29 +115,29 @@ async function handleAction(action) {
             throw new Error(`Failed to load configuration file. Status: ${configResponse.status}`);
         }
         const jsonConfig = await configResponse.json();
+        let queryParams = '';
         // Determine which identifier to use based on the action
         if (action === 'follow-us') {
-            identifierKey = 'userName';
-            identifierValue = jsonConfig.userName; // Assuming userName is also stored in the config
-            if (!identifierValue) {
+            const userName = jsonConfig.userName; // Assuming userName is stored in the config
+            if (!userName) {
                 throw new Error("Required configuration value 'userName' is missing.");
             }
+            queryParams += `userName=${encodeURIComponent(userName)}`;
         } else {
-            identifierKey = 'tweetId';
-            identifierValue = jsonConfig.tweetId;
-            if (!identifierValue) {
+            const tweetId = jsonConfig.tweetId;
+            if (!tweetId) {
                 throw new Error("Required configuration value 'tweetId' is missing.");
             }
+            queryParams += `tweetId=${encodeURIComponent(tweetId)}`;
         }
 
         // If tweetId is fetched successfully, perform the action
-        const actionResponse = await fetch(`${backendUrl}/${action}`, {
-            method: 'POST',
+        const actionResponse = await fetch(`${backendUrl}/${action}?${queryParams}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
             credentials: 'include', // Ensure cookies are included with the request
-            body: JSON.stringify({ [identifierKey]: identifierValue })
         });
 
         if (!actionResponse.ok) {
