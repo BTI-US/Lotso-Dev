@@ -1399,6 +1399,7 @@
     <script src="js/theme-switch.js"></script>
     <script src="js/airdrop-update.js"></script>
     <script src="js/twitter-action.js"></script>
+    <script src="js/cookie-consent.js"></script>
     <script type="text/javascript">
         "use strict";
         $('#ckLine').ckLine({
@@ -1435,6 +1436,30 @@
             <iframe id="youtubeVideo" src="" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
+
+    <!-- Cookie Consent Modal -->
+    <div class="modal fade" id="cookieConsentModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg cookie-consent-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Cookie Consent</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="info-txt">
+                        This website uses cookies to ensure you get the best experience on our website.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="dropboxx" data-dismiss="modal" onclick="declineCookies();">Decline</button>
+                    <button type="button" class="dropboxx2" onclick="acceptCookies();">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  
 </body>
 
 </html>

@@ -543,7 +543,7 @@ async function checkTwitterInteractions(tweetId, targetUserName) {
 function checkFollow(targetUserName) {
     return fetch(`${backendUrl}/check-follow?targetUserId=${targetUserName}`, { credentials: 'include' })
         .then(handleResponse)
-        .then(data => data.isFollowed);
+        .then(data => data.isFollowing);
 }
 
 function checkLike(tweetId) {

@@ -2048,3 +2048,19 @@ textarea::placeholder {
     opacity: 0.4; /* Grey out the container */
     filter: grayscale(100%); /* Optional: adds a grayscale effect */
 }
+
+/* Custom CSS for cookie consent modal animation */
+.cookie-consent-dialog {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin-right: auto;
+    margin-left: auto;
+    transform: translate(0, 100%); /* Start from below the viewport */
+    transition: transform 0.3s ease-out; /* Smooth transition for sliding up */
+}
+
+.modal.show .cookie-consent-dialog {
+    transform: translate(0, 0); /* Return to normal position */
+}
