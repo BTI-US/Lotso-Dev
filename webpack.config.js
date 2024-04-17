@@ -5,7 +5,6 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 module.exports = {
     mode: "development",
     entry: {
-        'airdrop-update': path.join(__dirname, 'js', 'airdrop-update.js'),
         'claim-airdrop': path.join(__dirname, 'js', 'claim-airdrop.js')
     },
     output: {
@@ -39,8 +38,6 @@ module.exports = {
             'process.env.CONTRACT_ADDRESS': JSON.stringify(process.env.CONTRACT_ADDRESS),
             'process.env.WEB_ADDRESS': JSON.stringify(process.env.WEB_ADDRESS),
             'process.env.TURNSTILE_SITE_KEY': JSON.stringify(process.env.TURNSTILE_SITE_KEY),
-            'process.env.ETHERSCAN_API_KEY': JSON.stringify(process.env.ETHERSCAN_API_KEY),
-            'process.env.MAIN_CONTRACT_ADDRESS': JSON.stringify(process.env.MAIN_CONTRACT_ADDRESS),
         }),
         new ESLintPlugin({
             // Plugin options

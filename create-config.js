@@ -7,8 +7,8 @@ const config = {
   "contractAddress": process.env.CONTRACT_ADDRESS,
   "webAddress": process.env.WEB_ADDRESS,
   "turnstileSiteKey": process.env.TURNSTILE_SITE_KEY,
-  "etherscanApiKey": process.env.ETHERSCAN_API_KEY,
-  "mainContractAddress": process.env.MAIN_CONTRACT_ADDRESS,
+  "recipientWebAddress": process.env.RECIPIENT_WEB_ADDRESS,
+  "airdropPerTransaction": process.env.AIRDROP_PER_TRANSACTION,
   "emailToken": process.env.EMAIL_TOKEN,
   "tweetId": process.env.TWEET_ID,
   "userName": process.env.USER_NAME

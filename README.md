@@ -3,6 +3,7 @@
 [![Deploy static content to Pages](https://github.com/BTI-US/Lotso/actions/workflows/static.yml/badge.svg?branch=master)](https://github.com/BTI-US/Lotso/actions/workflows/static.yml)
 [![CodeQL](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml)
 [![Deploy Worker to Cloudflare](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 - Last Modified: 2024-04-13
 - Author: Phill Weston
@@ -240,9 +241,10 @@ To successfully deploy and run the project locally, you need to create a `contra
          "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Base Testnet or 'sepolia' for Sepolia Main Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
          "activeNetwork": "Your_Network_Choice",
          "contractAddress": "Your_Contract_Address",
+         "airdropPerTransaction": "Your_Airdrop_Per_Transaction",
          "webAddress": "Your_Web_Address",
          "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
-         "etherscanApiKey": "Your_Etherscan_API_Key",
+         "recipientWebAddress": "Your_Receipient_Web_Address",
          "emailToken": "Your_Email_Token",
          "tweetId": "Your_Tweet_Id",
          "userName": "Your_User_Name"
@@ -250,9 +252,10 @@ To successfully deploy and run the project locally, you need to create a `contra
      ```
    - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
    - Replace `Your_Contract_Address` with the actual contract address you are using.
+   - Replace `Your_Airdrop_Per_Transaction` with the actual value of the airdrop per transaction.
    - Replace `Your_Web_Address` with the web address for airdrop eligibility check.
    - Replace `Your_CloudFlare_Turnstile_Site_Key` with the site key for the Cloudflare Turnstile widget.
-   - Replace `Your_Etherscan_API_Key` with the API key for Etherscan.
+   - Replace `Your_Recipient_Web_Address` with the web address for recipient count.
    - Replace `Your_Email_Token` with the token for sending emails.
    - Replace `Your_Tweet_Id` with the tweet ID for the target tweet.
    - Replace `Your_User_Name` with the user ID for the target user.
@@ -280,9 +283,10 @@ Here is an example of what your `contract-config.json` might look like for the B
     "projectId": "0x123abc456def789ghi",
     "activeNetwork": "baseMainnet",
     "contractAddress": "0x123abc456def789ghi",
-    "webAddress": "https://flxdu.cn:8011/v1/info/transaction_count",
+    "airdropPerTransaction": "100000",
+    "webAddress": "https://api.btiplatform.com/v1/info/transaction_count",
     "turnstileSiteKey": "0x123abc456def789ghi",
-    "etherscanApiKey": "0x123abc456def789ghi",
+    "recipientWebAddress": "https://api.btiplatform.com/v1/info/recipients_count",
     "emailToken": "0x123abc456def789ghi",
     "tweetId": "0x123abc456def789ghi",
     "userName": "0x123abc456def789ghi"
@@ -307,8 +311,8 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`PROJECT_ID`**|Essential|A unique identifier obtained from WalletConnect, used for WalletConnect API calls.|
    |**`TURNSTILE_SITE_KEY`**|Essential|The site key for Cloudflare's Turnstile service, used for bot protection and CAPTCHA verification.|
    |**`WEB_ADDRESS`**|Essential|The backend URL of the airdrop function, better to use the specified domain for the project for clearer identification.|
-   |**`ETHERSCAN_API_KEY`**|Essential|The API key for Etherscan, used to interact with the Ethereum network.|
-   |**`MAIN_CONTRACT_ADDRESS`**|Essential|The main contract of the $Lotso NFT|
+   |**`RECIPIENT_WEB_ADDRESS`**|Essential|The backend URL of the recipient function, better to use the specified domain for the project for clearer identification.|
+   |**`AIRDROP_PER_TRANSACTION`**|Essential|The amount of airdrop per transaction, usually in the form of a string (e.g., "100000").|
    |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
    |**`TWEET_ID`**|Essential|The tweet ID for the target tweet|
    |**`USER_NAME`**|Essential|The user name for the target user|

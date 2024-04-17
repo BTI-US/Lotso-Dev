@@ -63,8 +63,8 @@ jobs:
         CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
         WEB_ADDRESS: ${{ secrets.WEB_ADDRESS }}
         TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
-        ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
-        MAIN_CONTRACT_ADDRESS: ${{ secrets.MAIN_CONTRACT_ADDRESS }}
+        RECIPIENT_WEB_ADDRESS: ${{ secrets.RECIPIENT_WEB_ADDRESS }}
+        AIRDROP_PER_TRANSACTION: ${{ secrets.AIRDROP_PER_TRANSACTION }}
         EMAIL_TOKEN: ${{ secrets.EMAIL_TOKEN }}
         TWEET_ID: ${{ secrets.TWEET_ID }}
         USER_NAME: ${{ secrets.USER_NAME }}

@@ -1,7 +1,3 @@
-import axios from 'axios';
-import { keccak256 } from 'ethereumjs-util';
-import { Buffer } from 'buffer';
-
 // Function to add commas for formatting
 function addCommasToBigInt(bigIntStr) {
     let result = '';
@@ -19,76 +15,50 @@ function addCommasToBigInt(bigIntStr) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    let API_KEY, CONTRACT_ADDRESS;
-    
-    try {
-        // Attempt to load the configuration file
-        const jsonConfig = require('../contract-config.json');
-    
-        // Access properties
-        API_KEY = jsonConfig.etherscanApiKey;
-        CONTRACT_ADDRESS = jsonConfig.mainContractAddress;
-    
-        // Additional validation can be performed here as needed
-        if (!API_KEY || !CONTRACT_ADDRESS) {
-            throw new Error("Required configuration values (API_KEY or MAIN_CONTRACT_ADDRESS) are missing.");
-        }
-    
-    } catch (error) {
-        // Check if the error is due to missing file
-        if (error.code === 'MODULE_NOT_FOUND') {
-            console.error("Error: Configuration file not found.");
-            process.exit(1);
-        }
-    
-        // Handle other errors
-        console.error("Error loading configuration: ", error.message);
-    }
-    
-    // Compute the Keccak-256 hash of the method signature
-    const method = Buffer.from('claimAirdrop()', 'utf-8');
-    const methodSignatureHash = keccak256(method);
-    const methodSignature = methodSignatureHash.slice(0, 10).toString('hex');
-    console.log(`Method signature: ${methodSignature}`);
-    
-    const url = `https://api.basescan.org/api?module=logs&action=getLogs&address=${CONTRACT_ADDRESS}&apikey=${API_KEY}`;
-    
-    axios.get(url)
+    let webAddress, airdropPerTransaction;
+
+    fetch('../contract-config.json')
         .then(response => {
-            console.log(response.data);
-            const transactions = response.data.result;
-            const airdropPerTransaction = 100000;
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(jsonConfig => {
+            // Access properties
+            webAddress = jsonConfig.recipientWebAddress;
+            airdropPerTransaction = parseInt(jsonConfig.airdropPerTransaction, 10);
 
-            let successfulTransactions = 0;
+            // Additional validation can be performed here as needed
+            if (!webAddress || !airdropPerTransaction) {
+                throw new Error("Required configuration values (webAddress or airdropPerTransaction) are missing.");
+            }
 
-            // Process each transaction
-            console.log(`Number of transactions: ${transactions.length}`);
-            const transactionPromises = transactions.map(tx => {
-                const txHash = tx.transactionHash;
-                const txReceiptUrl = `https://api.basescan.org/api?module=transaction&action=getstatus&txhash=${txHash}&apikey=${API_KEY}`;
-                return axios.get(txReceiptUrl)
-                    .then(receiptResponse => {
-                        console.log(`Transaction ${txHash}: isError = ${receiptResponse.data.result.isError}`);
-                        if (receiptResponse.data.result.isError === '0') {
-                            successfulTransactions++;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching transaction receipt:', error);
-                    });
-            });
+            console.log(`Web Address: ${webAddress}`);
+            console.log(`Airdrop Per Transaction: ${airdropPerTransaction}`);
 
-            // After all transactions have been processed
-            Promise.all(transactionPromises).then(() => {
-                const airdropsClaimed = airdropPerTransaction * successfulTransactions;
+            // Nested fetch using the webAddress
+            return fetch(webAddress);
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 0) {
+                console.log('Success:', data.message);
+                console.log('Number of recipients:', data.data);
+            } else {
+                console.error('Error:', data.message);
+                console.log('Error code:', data.code);
+                console.log('Error details:', data.error);
+                console.log('Last successful data:', data.data);
+            }
 
-                const formattedCount = addCommasToBigInt(airdropsClaimed.toString());
-                document.getElementById('airdropCount').innerText = formattedCount;
-                console.log(`Airdrops Claimed: ${formattedCount}`);
-            });
+            const airdropsClaimed = airdropPerTransaction * data.data;
+            const formattedCount = addCommasToBigInt(airdropsClaimed.toString());
+            document.getElementById('airdropCount').innerText = formattedCount;
+            console.log(`Airdrops Claimed: ${formattedCount}`);
         })
         .catch(error => {
-            console.error('Error fetching data:', error);
+            // Handle any errors that occur during the fetch
+            console.error('Failed to fetch data:', error);
         });
-
 });
