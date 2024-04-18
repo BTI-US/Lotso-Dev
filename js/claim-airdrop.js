@@ -273,6 +273,7 @@ async function confirmTransaction() {
             functionName: 'claimAirdrop',
             args: [] // If the function requires arguments, list them here
         });
+        const fullAddress = document.getElementById('address').getAttribute('data-full-address');
 
         const txHash = transactionResponse;
         console.log('Transaction Hash:', txHash);
@@ -284,6 +285,17 @@ async function confirmTransaction() {
 
         console.log('Transaction Receipt:', transactionReceipt);
         if (transactionReceipt && transactionReceipt.status === 'success') {
+
+            // Log the record to the backend
+            const airdropLog = await logAirdrop(fullAddress);
+            if (airdropLog.success && !airdropLog.error) {
+                console.log('Log successful for this airdrop claim, message:', airdropLog.message);
+            } else if (!airdropLog.success && !airdropLog.error) {
+                console.log('Log unsuccessful for this airdrop claim, message:', airdropLog.message);
+            } else if (airdropLog.error) {
+                throw new Error(airdropLog.message);
+            }
+
             displayMessage('Transaction successful! Check Your Wallet For Airdrop', 'success');
             updateProgressBar(100, 'green');
             document.getElementById('claimAirdrop').textContent = 'Check Your Eligibility';
@@ -313,6 +325,7 @@ async function confirmTransaction() {
         console.error('Error in transaction:', error);
         let errorMessage = error.reason || 'Error in claiming airdrop';
         displayMessage(errorMessage, 'error');
+        updateProgressBar(100, 'red');
     }
 }
 
@@ -392,6 +405,19 @@ async function checkUserEligibility() {
             // Compare the obtained address with the sent address
             if (obtainedAddress.toLowerCase() !== fullAddress.toLowerCase()) {
                 throw new Error('The obtained address does not match the sent address, please refresh the browser cache and retry.');
+            }
+
+            // Check if the user has already claimed the airdrop
+            const airdropCheck = await checkIfClaimedAirdrop(fullAddress);
+            if (airdropCheck.success && !airdropCheck.error) {
+                console.log('User has already claimed the airdrop');
+                updateProgressBar(100, 'red');
+                displayMessage('You have already claimed the airdrop with this user', 'info');
+                return;
+            } else if (!airdropCheck.success && !airdropCheck.error) {
+                console.log('User has not claimed the airdrop yet');
+            } else if (airdropCheck.error) {
+                throw new Error(airdropCheck.message);
             }
 
             // Awaiting the result of Twitter interaction checks
@@ -512,6 +538,42 @@ function startFireworksForDuration(duration) {
     }, duration);
 }
 
+async function logAirdrop(address) {
+    try {
+        const response = await fetch(`${backendUrl}/log-airdrop?address=${address}`, { credentials: 'include' });
+        // Use handleResponse to process the fetch response
+        const data = await handleResponse(response);
+
+        // Now proceed with your business logic
+        if (data.isLogged) {
+            return { success: true, error: false, message: 'Airdrop claim has been recorded successfully!' };
+        } else {
+            return { success: false, error: false, message: 'Airdrop claim has not beed recorded.' };
+        }
+    } catch (error) {
+        console.error('Failed:', error.message);
+        return { success: false, error: true, message: error.message };
+    }
+}
+
+async function checkIfClaimedAirdrop(address) {
+    try {
+        const response = await fetch(`${backendUrl}/check-airdrop?address=${address}`, { credentials: 'include' });
+        // Use handleResponse to process the fetch response
+        const data = await handleResponse(response);
+
+        // Now proceed with your business logic
+        if (data.hasClaimed) {
+            return { success: true, error: false, message: 'All checks passed!' };
+        } else {
+            return { success: false, error: false, message: 'Airdrop has not been claimed.' };
+        }
+    } catch (error) {
+        console.error('Failed:', error.message);
+        return { success: false, error: true, message: error.message };
+    }
+}
+
 async function checkTwitterInteractions(tweetId, targetUserName) {
     try {
         const isFollowed = await checkFollow(targetUserName);
@@ -561,7 +623,7 @@ function checkRetweet(tweetId) {
 function handleResponse(response) {
     if (response.status === 401) {
         // Throw an error that specifically handles 401 Unauthorized
-        throw new Error('Authorization required: Please authorize the application first.');
+        throw new Error('Authorization required: Please authorize your Twitter account via the following button.');
     }
     if (!response.ok) {
         throw new Error('Failed to fetch data from the server');

@@ -9,10 +9,36 @@ window.addEventListener('message', function(event) {
     }
 });
 
+function getFullAddress() {
+    // Try to find the element with ID 'address'
+    const addressElement = document.getElementById('address');
+    // Check if the element exists
+    if (!addressElement) {
+        console.log('Element with ID "address" not found.');
+        return false;
+    }
+    // Try to get the attribute 'data-full-address' from the element
+    const fullAddress = addressElement.getAttribute('data-full-address');
+    // Check if the attribute exists and is not null
+    if (fullAddress === null) {
+        console.log('Attribute "data-full-address" not found on the element.');
+        return false;
+    }
+    // If the element and attribute exist, return the attribute's value
+    return fullAddress;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     console.log('Twitter action script loaded');
 
+    // TODO: Check if the user connect the wallet
     document.getElementById('start-auth').addEventListener('click', function() {
+        if (!getFullAddress()) {
+            console.error('You need to connect your wallet first.');
+            displayInfo('authentication', 'You need to connect your wallet first.', 'error');
+            return;
+        }
+
         const callbackUrl = encodeURIComponent('https://lotso.org/twitter-callback');
         const authUrl = `${backendUrl}/start-auth?callback=${callbackUrl}`;
         // Open a new tab with the OAuth URL
