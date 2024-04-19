@@ -421,8 +421,11 @@ async function checkUserEligibility() {
             }
 
             // Awaiting the result of Twitter interaction checks
-            const twitterCheck = await checkTwitterInteractions(tweetId, userName);
+            const twitterCheck = await checkTwitterInteractions(tweetId/*, userName*/);
             if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z" || !twitterCheck.success) {
+                if (!twitterCheck.success) {
+                    console.log('Twitter interaction checks failed:', twitterCheck.message);
+                }
                 updateProgressBar(100, 'red');
                 displayMessage('You do not have the eligibility to claim the airdrop', 'info');
             } else if (scheduledDelivery > now) {
@@ -574,13 +577,14 @@ async function checkIfClaimedAirdrop(address) {
     }
 }
 
-async function checkTwitterInteractions(tweetId, targetUserName) {
+async function checkTwitterInteractions(tweetId/*, targetUserName*/) {
     try {
-        const isFollowed = await checkFollow(targetUserName);
-        console.log('Follow check:', isFollowed);
-        if (!isFollowed) {
-            throw new Error('User is not following the target user.');
-        }
+        // FIXME: Check follow endpoint cannot be used
+        // const isFollowed = await checkFollow(targetUserName);
+        // console.log('Follow check:', isFollowed);
+        // if (!isFollowed) {
+        //     throw new Error('User is not following the target user.');
+        // }
 
         const isLiked = await checkLike(tweetId);
         console.log('Like check:', isLiked);
@@ -602,11 +606,11 @@ async function checkTwitterInteractions(tweetId, targetUserName) {
     }
 }
 
-function checkFollow(targetUserName) {
-    return fetch(`${backendUrl}/check-follow?targetUserId=${targetUserName}`, { credentials: 'include' })
-        .then(handleResponse)
-        .then(data => data.isFollowing);
-}
+// function checkFollow(targetUserName) {
+//     return fetch(`${backendUrl}/check-follow?userName=${targetUserName}`, { credentials: 'include' })
+//         .then(handleResponse)
+//         .then(data => data.isFollowing);
+// }
 
 function checkLike(tweetId) {
     return fetch(`${backendUrl}/check-like?tweetId=${tweetId}`, { credentials: 'include' })

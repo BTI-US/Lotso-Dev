@@ -176,7 +176,7 @@ async function handleAction(action) {
         }
 
         console.log(`${action} action response:`, data);
-        displayInfo(action, data.message, 'info');
+        displayInfo(action, `${action} action performed successfully`, 'info');
 
         // Set the corresponding class to be disabled after success
         switch (action) {
