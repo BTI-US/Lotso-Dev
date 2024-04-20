@@ -247,6 +247,7 @@ To successfully deploy and run the project locally, you need to create a `contra
          "recipientWebAddress": "Your_Receipient_Web_Address",
          "emailToken": "Your_Email_Token",
          "tweetId": "Your_Tweet_Id",
+         "tweetId2": "Your_Second_Tweet_Id",
          "userName": "Your_User_Name"
      }
      ```
@@ -289,6 +290,7 @@ Here is an example of what your `contract-config.json` might look like for the B
     "recipientWebAddress": "https://api.btiplatform.com/v1/info/recipients_count",
     "emailToken": "0x123abc456def789ghi",
     "tweetId": "0x123abc456def789ghi",
+    "tweetId2": "0x123abc456def789ghi",
     "userName": "0x123abc456def789ghi"
 }
 ```
@@ -315,6 +317,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`AIRDROP_PER_TRANSACTION`**|Essential|The amount of airdrop per transaction, usually in the form of a string (e.g., "100000").|
    |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
    |**`TWEET_ID`**|Essential|The tweet ID for the target tweet|
+   |**`TWEET_ID2`**|Essential|The second tweet ID for the target tweet|
    |**`USER_NAME`**|Essential|The user name for the target user|
 
 2. Used for Reverse Proxy

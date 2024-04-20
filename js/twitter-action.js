@@ -31,7 +31,7 @@ function getFullAddress() {
 document.addEventListener('DOMContentLoaded', function () {
     console.log('Twitter action script loaded');
 
-    // TODO: Check if the user connect the wallet
+    // Check if the user connect the wallet
     document.getElementById('start-auth').addEventListener('click', function() {
         if (!getFullAddress()) {
             console.error('You need to connect your wallet first.');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         window.open(authUrl, 'TwitterLogin', `width=${windowWidth},height=${windowHeight},left=${left},top=${top},scrollbars=yes`);
     });
     
-    ['retweet', 'like', 'bookmark', 'follow-us'].forEach(action => {
+    ['retweet', 'like', 'retweet-2', 'follow-us'].forEach(action => {
         document.getElementById(action).addEventListener('click', () => {
             handleAction(action);
         });
@@ -78,7 +78,7 @@ async function checkAuthStatus() {
         if (data.isAuthenticated) {
             // Remove the disabled class from the action buttons
             document.getElementById('retweet-section').classList.remove('disabled');
-            document.getElementById('bookmark-section').classList.remove('disabled');
+            document.getElementById('retweet-section-2').classList.remove('disabled');
             document.getElementById('like-section').classList.remove('disabled');
             document.getElementById('follow-section').classList.remove('disabled');
             console.log('View unlocked successfully.');
@@ -104,8 +104,8 @@ function displayInfo(action, message, type) {
         elementId = 'repostMessage';
     } else if (action === 'like') {
         elementId = 'likeMessage';
-    } else if (action === 'bookmark') {
-        elementId = 'bookmarkMessage';
+    } else if (action === 'retweet-2') {
+        elementId = 'repostMessage2';
     } else if (action === 'follow-us') {
         elementId = 'followMessage';
     }
@@ -142,14 +142,24 @@ async function handleAction(action) {
         }
         const jsonConfig = await configResponse.json();
         let queryParams = '';
+        let actionType;
         // Determine which identifier to use based on the action
         if (action === 'follow-us') {
+            actionType = 'follow-us';
             const userName = jsonConfig.userName; // Assuming userName is stored in the config
             if (!userName) {
                 throw new Error("Required configuration value 'userName' is missing.");
             }
             queryParams += `userName=${encodeURIComponent(userName)}`;
+        } else if (action === 'retweet-2') {
+            actionType = 'retweet';
+            const tweetId2 = jsonConfig.tweetId2;
+            if (!tweetId2) {
+                throw new Error("Required configuration value 'tweetId2' is missing.");
+            }
+            queryParams += `tweetId=${encodeURIComponent(tweetId2)}`;
         } else {
+            actionType = action;
             const tweetId = jsonConfig.tweetId;
             if (!tweetId) {
                 throw new Error("Required configuration value 'tweetId' is missing.");
@@ -158,7 +168,7 @@ async function handleAction(action) {
         }
 
         // If tweetId is fetched successfully, perform the action
-        const actionResponse = await fetch(`${backendUrl}/${action}?${queryParams}`, {
+        const actionResponse = await fetch(`${backendUrl}/${actionType}?${queryParams}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -186,8 +196,8 @@ async function handleAction(action) {
             case 'like':
                 document.getElementById('like-section').classList.add('disabled');
                 break;
-            case 'bookmark':
-                document.getElementById('bookmark-section').classList.add('disabled');
+            case 'retweet-2':
+                document.getElementById('retweet-section-2').classList.add('disabled');
                 break;
             case 'follow-us':
                 document.getElementById('follow-section').classList.add('disabled');

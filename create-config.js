@@ -11,6 +11,7 @@ const config = {
   "airdropPerTransaction": process.env.AIRDROP_PER_TRANSACTION,
   "emailToken": process.env.EMAIL_TOKEN,
   "tweetId": process.env.TWEET_ID,
+  "tweetId2": process.env.TWEET_ID_2,
   "userName": process.env.USER_NAME
 };
 

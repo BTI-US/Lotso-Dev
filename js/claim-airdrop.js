@@ -6,7 +6,7 @@ import { Fireworks } from 'fireworks-js';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
 let projectId, activeNetwork, contractAddress, webAddress, turnstileSiteKey;
-let tweetId, userName;
+let tweetId, tweetId2, userName;
 const backendUrl = 'https://oauth.btiplatform.com';
 
 try {
@@ -20,6 +20,7 @@ try {
     turnstileSiteKey = jsonConfig.turnstileSiteKey;
     projectId = jsonConfig.projectId;
     tweetId = jsonConfig.tweetId;
+    tweetId2 = jsonConfig.tweetId2;
     userName = jsonConfig.userName;
 
     // Additional validation can be performed here as needed
@@ -27,8 +28,8 @@ try {
         throw new Error("Required configuration values (activeNetwork or contractAddress or webAddress or turnstileSiteKey or projectId) are missing.");
     }
 
-    if (!tweetId || !userName) {
-        throw new Error("Required configuration values (tweetId or userName) are missing.");
+    if (!tweetId || !userName || !tweetId2) {
+        throw new Error("Required configuration values (tweetId or tweetId2 or userName) are missing.");
     }
 } catch (error) {
     // Check if the error is due to missing file
@@ -421,7 +422,7 @@ async function checkUserEligibility() {
             }
 
             // Awaiting the result of Twitter interaction checks
-            const twitterCheck = await checkTwitterInteractions(tweetId/*, userName*/);
+            const twitterCheck = await checkTwitterInteractions(tweetId, tweetId2);
             if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z" || !twitterCheck.success) {
                 if (!twitterCheck.success) {
                     console.log('Twitter interaction checks failed:', twitterCheck.message);
@@ -577,14 +578,13 @@ async function checkIfClaimedAirdrop(address) {
     }
 }
 
-async function checkTwitterInteractions(tweetId/*, targetUserName*/) {
+async function checkTwitterInteractions(tweetId, tweetId2) {
     try {
-        // FIXME: Check follow endpoint cannot be used
-        // const isFollowed = await checkFollow(targetUserName);
-        // console.log('Follow check:', isFollowed);
-        // if (!isFollowed) {
-        //     throw new Error('User is not following the target user.');
-        // }
+        const isRetweeted2 = await checkRetweet(tweetId2);
+        console.log('Retweet check:', isRetweeted2);
+        if (!isRetweeted2) {
+            throw new Error('Tweet2 has not been retweeted by the user.');
+        }
 
         const isLiked = await checkLike(tweetId);
         console.log('Like check:', isLiked);
