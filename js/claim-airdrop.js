@@ -389,7 +389,17 @@ async function checkUserEligibility() {
         const fullAddress = document.getElementById('address').getAttribute('data-full-address');
         console.log('Checking eligibility for address:', fullAddress);
 
-        const url = webAddress + `?address=${encodeURIComponent(fullAddress)}`;
+        // Check if the user has interacted with the required steps
+        const twitterCheck = await checkTwitterInteractions(tweetId, tweetId2);
+        if (!twitterCheck.success) {
+            console.log('Twitter interaction checks failed:', twitterCheck.message);
+            updateProgressBar(100, 'red');
+            displayMessage('Twitter interaction checks failed', 'error');
+            return;
+        }
+
+        const twitterSteps = twitterCheck.step;
+        const url = webAddress + `?address=${encodeURIComponent(fullAddress)}&count=${twitterSteps}`;
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -422,11 +432,7 @@ async function checkUserEligibility() {
             }
 
             // Awaiting the result of Twitter interaction checks
-            const twitterCheck = await checkTwitterInteractions(tweetId, tweetId2);
-            if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z" || !twitterCheck.success) {
-                if (!twitterCheck.success) {
-                    console.log('Twitter interaction checks failed:', twitterCheck.message);
-                }
+            if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z") {
                 updateProgressBar(100, 'red');
                 displayMessage('You do not have the eligibility to claim the airdrop', 'info');
             } else if (scheduledDelivery > now) {
@@ -580,29 +586,48 @@ async function checkIfClaimedAirdrop(address) {
 
 async function checkTwitterInteractions(tweetId, tweetId2) {
     try {
+        let step_cnt = 0;
         const isRetweeted2 = await checkRetweet(tweetId2);
         console.log('Retweet check:', isRetweeted2);
         if (!isRetweeted2) {
-            throw new Error('Tweet2 has not been retweeted by the user.');
+            console.log('Tweet2 has not been retweeted by the user.');
+        } else {
+            step_cnt++;
         }
 
         const isLiked = await checkLike(tweetId);
         console.log('Like check:', isLiked);
         if (!isLiked) {
-            throw new Error('Tweet is not liked by the user.');
+            console.log('Tweet is not liked by the user.');
+        } else {
+            step_cnt++;
         }
 
         const isRetweeted = await checkRetweet(tweetId);
         console.log('Retweet check:', isRetweeted);
         if (!isRetweeted) {
-            throw new Error('Tweet has not been retweeted by the user.');
+            console.log('Tweet has not been retweeted by the user.');
+        } else {
+            step_cnt++;
         }
 
-        console.log('All checks passed!');
-        return { success: true, message: 'All checks passed!'};
+        const isBookmarked = await checkBookmark(tweetId);
+        console.log('Bookmark check:', isBookmarked);
+        if (!isBookmarked) {
+            console.log('Tweet has not been bookmarked by the user.');
+        } else {
+            step_cnt++;
+        }
+
+        console.log('Checks passed steps: ', step_cnt);
+        if (step_cnt === 0) {
+            return { success: false, step: step_cnt, message: 'No checks passed' };
+        } else {
+            return { success: true, step: step_cnt, message: `Checks passed steps: ${step_cnt}`};
+        }
     } catch (error) {
         console.error('Failed:', error.message);
-        return { success: false, message: error.message };
+        return { success: false, step: 0, message: error.message };
     }
 }
 
@@ -611,6 +636,12 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
 //         .then(handleResponse)
 //         .then(data => data.isFollowing);
 // }
+
+function checkBookmark(tweetId) {
+    return fetch(`${backendUrl}/check-bookmark?tweetId=${tweetId}`, { credentials: 'include' })
+        .then(handleResponse)
+        .then(data => data.isBookmarked);
+}
 
 function checkLike(tweetId) {
     return fetch(`${backendUrl}/check-like?tweetId=${tweetId}`, { credentials: 'include' })
