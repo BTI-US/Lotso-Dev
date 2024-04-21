@@ -10,7 +10,7 @@ async function handleRequest(request) {
     // Check the request hostname and set the corresponding backend host and port
     if (url.hostname === 'oauth.btiplatform.com') {
         url.hostname = 'host.btiplatform.com';
-        url.port = '5000';
+        url.port = '__TWITTER_SERVER_HTTP_PORT__';
     } else if (url.hostname === 'api.btiplatform.com') {
         url.hostname = 'host.btiplatform.com';
         url.port = '__SERVER_HTTP_PORT__';

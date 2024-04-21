@@ -40,7 +40,7 @@ jobs:
       - name: Build Project
         run: npm install && npm run build
         env:
-          CLOUDFLARE_ENV: ${{ secrets.CLOUDFLARE_ENV }}
+          CLOUDFLARE_ENV: ${{ secrets.CLOUDFLARE_ENV || 'true' }}
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
           ACTIVE_NETWORK: ${{ secrets.ACTIVE_NETWORK }}
           CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
