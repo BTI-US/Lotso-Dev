@@ -61,7 +61,7 @@ jobs:
         PROJECT_ID: ${{ secrets.PROJECT_ID }}
         ACTIVE_NETWORK: ${{ secrets.ACTIVE_NETWORK }}
         CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
-        WEB_ADDRESS: ${{ secrets.WEB_ADDRESS }}
+        AUTH_WEB_ADDRESS: ${{ secrets.AUTH_WEB_ADDRESS }}
         TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
         RECIPIENT_WEB_ADDRESS: ${{ secrets.RECIPIENT_WEB_ADDRESS }}
         AIRDROP_PER_TRANSACTION: ${{ secrets.AIRDROP_PER_TRANSACTION }}

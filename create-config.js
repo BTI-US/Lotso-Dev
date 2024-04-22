@@ -5,7 +5,7 @@ const config = {
   "projectId": process.env.PROJECT_ID,
   "activeNetwork": process.env.ACTIVE_NETWORK,
   "contractAddress": process.env.CONTRACT_ADDRESS,
-  "webAddress": process.env.WEB_ADDRESS,
+  "authWebAddress": process.env.AUTH_WEB_ADDRESS,
   "turnstileSiteKey": process.env.TURNSTILE_SITE_KEY,
   "recipientWebAddress": process.env.RECIPIENT_WEB_ADDRESS,
   "airdropPerTransaction": process.env.AIRDROP_PER_TRANSACTION,

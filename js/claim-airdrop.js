@@ -5,9 +5,9 @@ import { Modal } from 'bootstrap';
 import { Fireworks } from 'fireworks-js';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
-let projectId, activeNetwork, contractAddress, webAddress, turnstileSiteKey;
+let projectId, activeNetwork, contractAddress, authWebAddress, turnstileSiteKey;
 let tweetId, tweetId2, userName;
-const backendUrl = 'https://oauth.btiplatform.com';
+//const backendUrl = 'https://oauth.btiplatform.com';
 
 try {
     // Attempt to load the configuration file
@@ -16,7 +16,7 @@ try {
     // Access properties
     activeNetwork = jsonConfig.activeNetwork;
     contractAddress = jsonConfig.contractAddress;
-    webAddress = jsonConfig.webAddress;
+    authWebAddress = jsonConfig.authWebAddress;
     turnstileSiteKey = jsonConfig.turnstileSiteKey;
     projectId = jsonConfig.projectId;
     tweetId = jsonConfig.tweetId;
@@ -24,8 +24,8 @@ try {
     userName = jsonConfig.userName;
 
     // Additional validation can be performed here as needed
-    if (!activeNetwork || !contractAddress || !webAddress || !turnstileSiteKey || !projectId) {
-        throw new Error("Required configuration values (activeNetwork or contractAddress or webAddress or turnstileSiteKey or projectId) are missing.");
+    if (!activeNetwork || !contractAddress || !authWebAddress || !turnstileSiteKey || !projectId) {
+        throw new Error("Required configuration values (activeNetwork or contractAddress or authWebAddress or turnstileSiteKey or projectId) are missing.");
     }
 
     if (!tweetId || !userName || !tweetId2) {
@@ -123,11 +123,11 @@ if (acceptBtn) {
 }
 
 function escapeHtml(str) {
-return str.replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+    return str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
 }
 
 // listening for account changes
@@ -183,6 +183,7 @@ watchAccount(config,
 );
 
 let airdropAmount = 0;
+let twitterSteps = 0;
 
 async function initiateTransaction() {
     // Updated contract ABI to include getAirdropAmount function
@@ -301,6 +302,24 @@ async function confirmTransaction() {
             updateProgressBar(100, 'green');
             document.getElementById('claimAirdrop').textContent = 'Check Your Eligibility';
 
+            // Send the airdrop reward if the current user uses the promotion code
+            let promotionCode = document.getElementById('promotion-code-input').value;
+            // Show error if the length of the promotionCode is not equal to 16
+            if (promotionCode && promotionCode.length !== 16) {
+                displayMessage('Promotion code must be 16 characters long.', 'error');
+                console.log('Promotion code must be 16 characters long.');
+                return;
+            }
+            let url = null;
+            if (promotionCode) {
+                url = authWebAddress + `/send-airdrop-parent?address=${encodeURIComponent(fullAddress)}&step=${twitterSteps}`;
+                
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+            }
+
             var modalElement = document.getElementById('connectModal2');
             document.getElementById('congratulation-message').innerText = airdropAmount;
 
@@ -397,9 +416,21 @@ async function checkUserEligibility() {
             displayMessage('Twitter interaction checks failed', 'error');
             return;
         }
-
-        const twitterSteps = twitterCheck.step;
-        const url = webAddress + `?address=${encodeURIComponent(fullAddress)}&count=${twitterSteps}`;
+        // If user input the promotion code, then pass this variable to the backend
+        twitterSteps = twitterCheck.step;
+        let url = null;
+        let promotionCode = document.getElementById('promotion-code-input').value;
+        // Show error if the length of the promotionCode is not equal to 16
+        if (promotionCode && promotionCode.length !== 16) {
+            displayMessage('Promotion code must be 16 characters long.', 'error');
+            console.log('Promotion code must be 16 characters long.');
+            return;
+        }
+        if (promotionCode) {
+            url = authWebAddress + `/check-airdrop-amount?address=${encodeURIComponent(fullAddress)}&step=${twitterSteps}&promotionCode=${encodeURIComponent(promotionCode)}`;
+        } else {
+            url = authWebAddress + `/check-airdrop-amount?address=${encodeURIComponent(fullAddress)}&step=${twitterSteps}`;
+        }
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -550,7 +581,7 @@ function startFireworksForDuration(duration) {
 
 async function logAirdrop(address) {
     try {
-        const response = await fetch(`${backendUrl}/log-airdrop?address=${address}`, { credentials: 'include' });
+        const response = await fetch(`${authWebAddress}/log-airdrop?address=${address}`, { credentials: 'include' });
         // Use handleResponse to process the fetch response
         const data = await handleResponse(response);
 
@@ -568,7 +599,7 @@ async function logAirdrop(address) {
 
 async function checkIfClaimedAirdrop(address) {
     try {
-        const response = await fetch(`${backendUrl}/check-airdrop?address=${address}`, { credentials: 'include' });
+        const response = await fetch(`${authWebAddress}/check-airdrop?address=${address}`, { credentials: 'include' });
         // Use handleResponse to process the fetch response
         const data = await handleResponse(response);
 
@@ -632,25 +663,25 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
 }
 
 // function checkFollow(targetUserName) {
-//     return fetch(`${backendUrl}/check-follow?userName=${targetUserName}`, { credentials: 'include' })
+//     return fetch(`${authWebAddress}/check-follow?userName=${targetUserName}`, { credentials: 'include' })
 //         .then(handleResponse)
 //         .then(data => data.isFollowing);
 // }
 
 function checkBookmark(tweetId) {
-    return fetch(`${backendUrl}/check-bookmark?tweetId=${tweetId}`, { credentials: 'include' })
+    return fetch(`${authWebAddress}/check-bookmark?tweetId=${tweetId}`, { credentials: 'include' })
         .then(handleResponse)
         .then(data => data.isBookmarked);
 }
 
 function checkLike(tweetId) {
-    return fetch(`${backendUrl}/check-like?tweetId=${tweetId}`, { credentials: 'include' })
+    return fetch(`${authWebAddress}/check-like?tweetId=${tweetId}`, { credentials: 'include' })
         .then(handleResponse)
         .then(data => data.isLiked);
 }
 
 function checkRetweet(tweetId) {
-    return fetch(`${backendUrl}/check-retweet?tweetId=${tweetId}`, { credentials: 'include' })
+    return fetch(`${authWebAddress}/check-retweet?tweetId=${tweetId}`, { credentials: 'include' })
         .then(handleResponse)
         .then(data => data.isRetweeted);
 }

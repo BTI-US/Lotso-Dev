@@ -1047,6 +1047,13 @@ over-btn a i {
     color: #787878;
 }
 
+.progress-cycle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 /*===========================
 5.0 *** GALLERY AREA START ***
 =============================*/
@@ -1689,6 +1696,13 @@ textarea::placeholder {
     font-family: pb;
     color: #ff7657;
     font-size: 18px;
+}
+
+.check-btn {
+    width: 60px;
+    background: #ff7657;
+    color: white;
+    border: 1px solid #ff7657;
 }
 
 /*===========================

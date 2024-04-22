@@ -216,7 +216,10 @@
                         <div class="modal-body">
                             <form>
                                 <div class="info-txt">
-                                    <div>Congratulations! You have claimed <span id="congratulation-message"></span> $Lotso, check on your wallet.</div>
+                                    <p>Congratulations! You have claimed <span id="congratulation-message"></span> $Lotso, check on your wallet.</p>
+                                    <p>Click the following button to generate a promotion code:</p>
+                                    <button type="button" id="generatePromotionButton" class="dropboxx2">Generate Promotion Code</button>
+                                    <div id="promotionCodeInfo"></div>
                                 </div>
                             </form>
                         </div>
@@ -603,13 +606,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="container" id="promotionCodeInput" style="display: none;">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-10 m-md-auto blog-text">
+                            <form>
+                                <div class="input-group contact-input mb-3">
+                                    <input id="promotion-code-input" type="text" class="form-control box-bg" placeholder="Input promotion code here..." aria-label="Username">
+                                    <button id="promotion-code-check-btn" class="check-btn" onclick="checkPromotionCode(event)"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+                                </div>
+                                <div id="promotion-input-error" class="error-message"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div id="retweet-section" class="col-lg-3 col-sm-6 mob-mar-bottom disabled">
                     <div class="price-table gold-bg">
                         <h3><sub>Step 1</sub></h3>
                         <h3 class="gold">Repost Our Tweet #1</h3>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Verified Twitter Account</p>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Repost Our Tweet</p>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Task Completed</p>
+                        <div id="retweet-progress" class="counter-1 progress-cycle" style="display: none;">
+                            <div class="chart" data-percent="0"></div>
+                            <h5>0%</h5>
+                            <span>Reposting Tweet #1</span>
+                        </div>
+                        <div id="retweet-info">
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Verified Twitter Account</p>
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Repost Our Tweet</p>
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Task Completed</p>
+                        </div>
                         <div class="price-btn gold-bg2 text-center">
                             <a href="javascript:void(0);" id="retweet"><i class="fa fa-twitter" aria-hidden="true"></i> Repost</a>
                         </div>
@@ -622,9 +645,16 @@
                     <div class="price-table">
                         <h3><sub>Step 2</sub></h3>
                         <h3>Repost Our Tweet #2</h3>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Verified Twitter Account</p>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Repost Our Tweet</p>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Task Completed</p>
+                        <div id="retweet-2-progress" class="counter-1 progress-cycle" style="display: none;">
+                            <div class="chart" data-percent="0"></div>
+                            <h5>0%</h5>
+                            <span>Reposting Tweet #2</span>
+                        </div>
+                        <div id="retweet-2-info">
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Verified Twitter Account</p>
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Repost Our Tweet</p>
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Task Completed</p>
+                        </div>
                         <div class="price-btn text-center">
                             <a href="javascript:void(0);" id="retweet-2"><i class="fa fa-twitter" aria-hidden="true"></i> Repost</a>
                         </div>
@@ -636,10 +666,17 @@
                 <div id="like-section" class="col-lg-3 col-sm-6 mob-mar-bottom disabled">
                     <div class="price-table">
                         <h3><sub>Step 3</sub></h3>
-                        <h3>Like Our Post</h3>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Verified Twitter Account</p>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Like Our Post</p>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Task Completed</p>
+                        <h3>Like Our Tweet</h3>
+                        <div id="like-progress" class="counter-1 progress-cycle" style="display: none;">
+                            <div class="chart" data-percent="0"></div>
+                            <h5>0%</h5>
+                            <span>Liking Tweet</span>
+                        </div>
+                        <div id="like-info">
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Verified Twitter Account</p>
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Like Our Tweet</p>
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Task Completed</p>
+                        </div>
                         <div class="price-btn text-center">
                             <a href="javascript:void(0);" id="like"><i class="fa fa-twitter" aria-hidden="true"></i> Like</a>
                         </div>
@@ -652,9 +689,16 @@
                     <div class="price-table mob-mar-bottom">
                         <h3><sub>Step 4</sub></h3>
                         <h3>Follow Our Twitter</h3>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Verified Twitter Account</p>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Follow Our Twitter</p>
-                        <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Task Completed</p>
+                        <div id="follow-progress" class="counter-1 progress-cycle" style="display: none;">
+                            <div class="chart" data-percent="0"></div>
+                            <h5>0%</h5>
+                            <span>Following Us</span>
+                        </div>
+                        <div id="follow-info">
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Verified Twitter Account</p>
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Follow Our Twitter</p>
+                            <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> Task Completed</p>\
+                        </div>
                         <div class="price-btn text-center">
                             <a href="javascript:void(0);" id="follow-us"><i class="fa fa-twitter" aria-hidden="true"></i> Follow</a>
                         </div>
@@ -1400,6 +1444,7 @@
     <script src="js/airdrop-update.js"></script>
     <script src="js/twitter-action.js"></script>
     <script src="js/cookie-consent.js"></script>
+    <script src="js/get-promotion-code.js"></script>
     <script type="text/javascript">
         "use strict";
         $('#ckLine').ckLine({

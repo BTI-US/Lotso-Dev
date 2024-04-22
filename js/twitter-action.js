@@ -1,4 +1,5 @@
-const backendUrl = 'https://oauth.btiplatform.com';
+//const backendUrl = 'https://oauth.btiplatform.com';
+let authWebAddress = null;
 
 window.addEventListener('message', function(event) {
     // Process the message data
@@ -31,31 +32,51 @@ function getFullAddress() {
 document.addEventListener('DOMContentLoaded', function () {
     console.log('Twitter action script loaded');
 
-    // Check if the user connect the wallet
-    document.getElementById('start-auth').addEventListener('click', function() {
-        if (!getFullAddress()) {
-            console.error('You need to connect your wallet first.');
-            displayInfo('authentication', 'You need to connect your wallet first.', 'error');
-            return;
-        }
+    fetch('../contract-config.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(jsonConfig => {
+            // Access properties
+            authWebAddress = jsonConfig.authWebAddress;
 
-        const callbackUrl = encodeURIComponent('https://lotso.org/twitter-callback');
-        const authUrl = `${backendUrl}/start-auth?callback=${callbackUrl}`;
-        // Open a new tab with the OAuth URL
-        const screenWidth = window.screen.width;
-        const screenHeight = window.screen.height;
-        const windowWidth = 500;
-        const windowHeight = 600;
-        const left = (screenWidth - windowWidth) / 2;
-        const top = (screenHeight - windowHeight) / 2;
-        window.open(authUrl, 'TwitterLogin', `width=${windowWidth},height=${windowHeight},left=${left},top=${top},scrollbars=yes`);
-    });
-    
-    ['retweet', 'like', 'retweet-2', 'follow-us'].forEach(action => {
-        document.getElementById(action).addEventListener('click', () => {
-            handleAction(action);
+            // Additional validation can be performed here as needed
+            if (!authWebAddress) {
+                throw new Error("Required configuration values (authWebAddress) are missing.");
+            }
+
+            // Check if the user connect the wallet
+            document.getElementById('start-auth').addEventListener('click', function() {
+                if (!getFullAddress()) {
+                    console.error('You need to connect your wallet first.');
+                    displayInfo('authentication', 'You need to connect your wallet first.', 'error');
+                    return;
+                }
+
+                const callbackUrl = encodeURIComponent('https://lotso.org/twitter-callback');
+                const authUrl = `${authWebAddress}/start-auth?callback=${callbackUrl}`;
+                // Open a new tab with the OAuth URL
+                const screenWidth = window.screen.width;
+                const screenHeight = window.screen.height;
+                const windowWidth = 500;
+                const windowHeight = 600;
+                const left = (screenWidth - windowWidth) / 2;
+                const top = (screenHeight - windowHeight) / 2;
+                window.open(authUrl, 'TwitterLogin', `width=${windowWidth},height=${windowHeight},left=${left},top=${top},scrollbars=yes`);
+            });
+            
+            ['retweet', 'like', 'retweet-2', 'follow-us'].forEach(action => {
+                document.getElementById(action).addEventListener('click', () => {
+                    handleAction(action);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error loading configuration:', error);
         });
-    });
 });
 
 // Check the authentication status when the page loads
@@ -63,7 +84,7 @@ async function checkAuthStatus() {
     console.log('Checking authentication status...');
     try {
         // Fetch authentication status from a secure backend endpoint
-        const response = await fetch(`${backendUrl}/check-auth-status`, {
+        const response = await fetch(`${authWebAddress}/check-auth-status`, {
             method: 'GET',
             credentials: 'include' // Ensures cookies or auth headers are sent with the request
         });
@@ -168,7 +189,7 @@ async function handleAction(action) {
         }
 
         // If tweetId is fetched successfully, perform the action
-        const actionResponse = await fetch(`${backendUrl}/${actionType}?${queryParams}`, {
+        const actionResponse = await fetch(`${authWebAddress}/${actionType}?${queryParams}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -191,22 +212,94 @@ async function handleAction(action) {
         // Set the corresponding class to be disabled after success
         switch (action) {
             case 'retweet':
-                document.getElementById('retweet-section').classList.add('disabled');
+                hideElement('retweet-info');
+                animateProgress('retweet-progress');
+                setTimeout(() => {
+                    document.getElementById('retweet-section').classList.add('disabled');
+                }, 2000);
                 break;
             case 'like':
-                document.getElementById('like-section').classList.add('disabled');
+                hideElement('like-info');
+                animateProgress('like-progress');
+                setTimeout(() => {
+                    document.getElementById('like-section').classList.add('disabled');
+                }, 2000);
                 break;
             case 'retweet-2':
-                document.getElementById('retweet-section-2').classList.add('disabled');
+                hideElement('retweet-2-info');
+                animateProgress('retweet-2-progress');
+                setTimeout(() => {
+                    document.getElementById('retweet-section-2').classList.add('disabled');
+                }, 2000);
                 break;
             case 'follow-us':
-                document.getElementById('follow-section').classList.add('disabled');
+                hideElement('follow-info');
+                animateProgress('follow-progress');
+                setTimeout(() => {
+                    document.getElementById('follow-section').classList.add('disabled');
+                }, 2000);
                 break;
             default:
                 break;
         }
+        checkAllActionsDisabled();
     } catch (error) {
         console.error(`Error performing ${action}:`, error);
         displayInfo(action, `Action error: ${error.message}`, 'error');
+    }
+}
+
+function checkAllActionsDisabled() {
+    const isRetweetDisabled = document.getElementById('retweet-section').classList.contains('disabled');
+    const isLikeDisabled = document.getElementById('like-section').classList.contains('disabled');
+    const isRetweet2Disabled = document.getElementById('retweet-section-2').classList.contains('disabled');
+    const isFollowUsDisabled = document.getElementById('follow-section').classList.contains('disabled');
+    if (isRetweetDisabled && isLikeDisabled && isRetweet2Disabled && isFollowUsDisabled) {
+        document.getElementById('promotionCodeInput').style.display = 'block';
+        // Wait for 3 seconds
+        setTimeout(() => {
+            document.getElementById('retweet-section').style.display = 'none';
+            document.getElementById('like-section').style.display = 'none';
+            document.getElementById('retweet-section-2').style.display = 'none';
+            document.getElementById('follow-section').style.display = 'none';
+        }, 3000);
+    }
+}
+
+function animateProgress(progressId) {
+    const progressContainer = document.getElementById(progressId);
+    const progressElement = progressContainer.querySelector('.chart');
+    const percentText = progressContainer.querySelector('h5');
+    let percent = 0;
+    const totalDuration = 2000; // 2 seconds in milliseconds
+    const intervalTime = 20; // update every 20 milliseconds
+    const increment = 100 * (intervalTime / totalDuration); // calculate increment per update
+
+    // Make the progress container visible at the start of the animation
+    progressContainer.style.display = 'block';
+
+    const interval = setInterval(() => {
+        percent += increment;
+        if (percent >= 100) {
+            percent = 100;
+            progressElement.setAttribute('data-percent', percent.toFixed(0));
+            percentText.textContent = `${percent.toFixed(0)}%`;
+
+            clearInterval(interval); // stop the interval
+
+            // Optional: Set the progress container to be invisible after reaching 100%
+        } else {
+            progressElement.setAttribute('data-percent', percent.toFixed(0));
+            percentText.textContent = `${percent.toFixed(0)}%`;
+        }
+    }, intervalTime);
+}
+
+function hideElement(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.style.display = 'none'; // Set the display to 'none' to hide the element
+    } else {
+        console.log('Element not found with ID:', elementId); // Optional: log an error if the element is not found
     }
 }
