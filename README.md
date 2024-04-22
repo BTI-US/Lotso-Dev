@@ -5,7 +5,7 @@
 [![Deploy Worker to Cloudflare](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-- Last Modified: 2024-04-13
+- Last Modified: 2024-04-22
 - Author: Phill Weston
 
 ## Table of Contents
@@ -238,11 +238,11 @@ To successfully deploy and run the project locally, you need to create a `contra
    - Open the file in a text editor and add the following JSON structure:
      ```json
      {
-         "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Base Testnet or 'sepolia' for Sepolia Main Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
+         "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Base Testnet or 'sepolia' for Sepolia Main Testnet), 'contractAddress' is the address of the smart contract, 'authWebAddress' is the API endpoint for backend authentication server, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
          "activeNetwork": "Your_Network_Choice",
          "contractAddress": "Your_Contract_Address",
          "airdropPerTransaction": "Your_Airdrop_Per_Transaction",
-         "webAddress": "Your_Web_Address",
+         "authWebAddress": "Your_Web_Address",
          "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
          "recipientWebAddress": "Your_Receipient_Web_Address",
          "emailToken": "Your_Email_Token",
@@ -280,12 +280,12 @@ Here is an example of what your `contract-config.json` might look like for the B
 
 ```json
 {
-    "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Base Testnet or 'sepolia' for Sepolia Main Testnet), 'contractAddress' is the address of the smart contract, 'webAddress' is the API endpoint for transaction counts, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
+    "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Base Testnet or 'sepolia' for Sepolia Main Testnet), 'contractAddress' is the address of the smart contract, 'authWebAddress' is the API endpoint for backend authentication server, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
     "projectId": "0x123abc456def789ghi",
     "activeNetwork": "baseMainnet",
     "contractAddress": "0x123abc456def789ghi",
     "airdropPerTransaction": "100000",
-    "webAddress": "https://api.btiplatform.com/v1/info/transaction_count",
+    "authWebAddress": "https://oauth.btiplatform.com",
     "turnstileSiteKey": "0x123abc456def789ghi",
     "recipientWebAddress": "https://api.btiplatform.com/v1/info/recipients_count",
     "emailToken": "0x123abc456def789ghi",
@@ -312,7 +312,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`CONTRACT_ADDRESS`**|Essential|The Ethereum smart contract address the web application interacts with.|
    |**`PROJECT_ID`**|Essential|A unique identifier obtained from WalletConnect, used for WalletConnect API calls.|
    |**`TURNSTILE_SITE_KEY`**|Essential|The site key for Cloudflare's Turnstile service, used for bot protection and CAPTCHA verification.|
-   |**`WEB_ADDRESS`**|Essential|The backend URL of the airdrop function, better to use the specified domain for the project for clearer identification.|
+   |**`AUTH_WEB_ADDRESS`**|Essential|The backend URL of the authentication function, used for verifying user credentials.|
    |**`RECIPIENT_WEB_ADDRESS`**|Essential|The backend URL of the recipient function, better to use the specified domain for the project for clearer identification.|
    |**`AIRDROP_PER_TRANSACTION`**|Essential|The amount of airdrop per transaction, usually in the form of a string (e.g., "100000").|
    |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
@@ -337,7 +337,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 3. Click on "New repository secret" and add each environment variable:
    - Name: Variable name (e.g., `PROJECT_ID`).
    - Value: Corresponding value for the variable.
-4. Repeat this process for `ACTIVE_NETWORK`, `CONTRACT_ADDRESS`, `WEB_ADDRESS`, `TURNSTILE_SITE_KEY` and others.
+4. Repeat this process for `ACTIVE_NETWORK`, `CONTRACT_ADDRESS`, `AUTH_WEB_ADDRESS`, `TURNSTILE_SITE_KEY` and others.
 
 ### Deploying to GitHub Pages
 
