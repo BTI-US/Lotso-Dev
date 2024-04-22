@@ -1054,6 +1054,14 @@ over-btn a i {
     transform: translate(-50%, -50%);
 }
 
+.progress-cycle div {
+    margin-left: 28px;
+}
+
+.progress-cycle h5 {
+    margin-left: 58px;
+}
+
 /*===========================
 5.0 *** GALLERY AREA START ***
 =============================*/

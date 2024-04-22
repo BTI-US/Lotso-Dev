@@ -298,7 +298,10 @@ function animateProgress(progressId) {
 function hideElement(elementId) {
     const element = document.getElementById(elementId);
     if (element) {
-        element.style.display = 'none'; // Set the display to 'none' to hide the element
+        const paragraphs = element.getElementsByTagName('p'); // Get all <p> tags within the element
+        for (const paragraph of paragraphs) {
+            paragraph.innerHTML = ''; // Set the inner HTML to an empty string
+        }
     } else {
         console.log('Element not found with ID:', elementId); // Optional: log an error if the element is not found
     }
