@@ -37,8 +37,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+        
       - name: Build Project
-        run: npm install && npm run build
+        run: npm run build
         env:
           CLOUDFLARE_ENV: ${{ secrets.CLOUDFLARE_ENV || 'true' }}
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
@@ -52,13 +62,16 @@ jobs:
           TWEET_ID: ${{ secrets.TWEET_ID }}
           TWEET_ID_2: ${{ secrets.TWEET_ID_2 }}
           USER_NAME: ${{ secrets.USER_NAME }}
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
           path: '.'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
