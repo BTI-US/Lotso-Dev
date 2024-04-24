@@ -7,7 +7,6 @@ import { Fireworks } from 'fireworks-js';
 // 1. Get a project ID at https://cloud.walletconnect.com
 let projectId, activeNetwork, contractAddress, authWebAddress, turnstileSiteKey;
 let tweetId, tweetId2, userName;
-//const backendUrl = 'https://oauth.btiplatform.com';
 
 try {
     // Attempt to load the configuration file

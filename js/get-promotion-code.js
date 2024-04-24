@@ -1,4 +1,3 @@
-//const backendUrl = 'https://oauth.btiplatform.com';
 let authWebAddress = null;
 
 function checkPromotionCode(event) {
