@@ -241,7 +241,10 @@ async function handleAction(action) {
             default:
                 break;
         }
-        checkAllActionsDisabled();
+        // Wait for 3 seconds
+        setTimeout(() => {
+            checkAllActionsDisabled();
+        }, 3000);
     } catch (error) {
         console.error(`Error performing ${action}:`, error);
         displayInfo(action, `Action error: ${error.message}`, 'error');
@@ -255,13 +258,10 @@ function checkAllActionsDisabled() {
     const isFollowUsDisabled = document.getElementById('follow-section').classList.contains('disabled');
     if (isRetweetDisabled && isLikeDisabled && isRetweet2Disabled && isFollowUsDisabled) {
         document.getElementById('promotionCodeInput').style.display = 'block';
-        // Wait for 3 seconds
-        setTimeout(() => {
-            document.getElementById('retweet-section').style.display = 'none';
-            document.getElementById('like-section').style.display = 'none';
-            document.getElementById('retweet-section-2').style.display = 'none';
-            document.getElementById('follow-section').style.display = 'none';
-        }, 3000);
+        document.getElementById('retweet-section').style.display = 'none';
+        document.getElementById('like-section').style.display = 'none';
+        document.getElementById('retweet-section-2').style.display = 'none';
+        document.getElementById('follow-section').style.display = 'none';
     }
 }
 

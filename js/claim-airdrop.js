@@ -310,7 +310,7 @@ async function confirmTransaction() {
                 return;
             }
             let url = null;
-            if (promotionCode) {
+            if (promotionCode && twitterSteps !== 0) {
                 url = authWebAddress + `/send-airdrop-parent?address=${encodeURIComponent(fullAddress)}&step=${twitterSteps}`;
                 
                 const response = await fetch(url);
