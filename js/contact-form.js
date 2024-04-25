@@ -1,3 +1,28 @@
+function logSubscriptionInfo(userEmail, userName = null, subscriptionInfo = null) {
+    loadConfig()
+        .then(function(config) {
+            var authWebAddress = config.authWebAddress;
+            var url = authWebAddress + '/subscription-info?email=' + encodeURIComponent(userEmail) + '&name=' + (userName ? encodeURIComponent(userName) : '') + '&info=' + (subscriptionInfo ? encodeURIComponent(subscriptionInfo) : '');
+
+            return fetch(url)
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log(data);
+                })
+                .catch(function(error) {
+                    console.error('Failed to send subscription info:', error);
+                });
+        })
+        .catch(function(error) {
+            console.error('Failed to load configuration:', error);
+        });
+}
+
 document.getElementById('contactForm').addEventListener('submit', function(event) {    
     event.preventDefault(); // Prevent the form from submitting
 
@@ -10,7 +35,8 @@ document.getElementById('contactForm').addEventListener('submit', function(event
     let hasError = false;
 
     // Check Name
-    if (document.getElementById('userName').value.trim() === '') {
+    const userName = document.getElementById('userName').value.trim();
+    if (userName === '') {
         document.getElementById('nameError').textContent = 'Please enter your name.';
         hasError = true;
     }
@@ -30,7 +56,8 @@ document.getElementById('contactForm').addEventListener('submit', function(event
     }
 
     // Check Message
-    if (document.getElementById('userMessage').value.trim() === '') {
+    const userMessage = document.getElementById('userMessage').value.trim();
+    if (userMessage === '') {
         document.getElementById('messageError').textContent = 'Please enter your favorite Disney character.';
         hasError = true;
     }
@@ -43,6 +70,8 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         sendSubscriptionEmail(userEmail)
             .then(() => {
                 console.log('Email sent successfully');
+                // Send subscription info to the server
+                logSubscriptionInfo(userEmail, userName, userMessage);
                 document.getElementById('contactForm').submit(); // Submit the form after the email is sent
             })
             .catch(error => {
@@ -78,6 +107,8 @@ document.getElementById('subscriptionForm').addEventListener('submit', function(
         sendSubscriptionEmail(email)
             .then(() => {
                 console.log('Email sent successfully');
+                // Send subscription info to the server
+                logSubscriptionInfo(email);
                 document.getElementById('subscriptionForm').submit(); // Submit the form after the email is sent
             })
             .catch(error => {

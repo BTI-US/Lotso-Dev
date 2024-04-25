@@ -4,6 +4,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
     mode: "development",
+    devtool: 'source-map',
     entry: {
         'claim-airdrop': path.join(__dirname, 'js', 'claim-airdrop.js')
     },
