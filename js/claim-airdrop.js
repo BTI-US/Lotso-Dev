@@ -313,7 +313,7 @@ async function confirmTransaction() {
             if (promotionCode && twitterSteps !== 0) {
                 url = authWebAddress + `/send-airdrop-parent?address=${encodeURIComponent(fullAddress)}&step=${twitterSteps}`;
                 
-                const response = await fetch(url);
+                const response = await fetch(url, { credentials: 'include' });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -430,7 +430,7 @@ async function checkUserEligibility() {
         } else {
             url = authWebAddress + `/check-airdrop-amount?address=${encodeURIComponent(fullAddress)}&step=${twitterSteps}`;
         }
-        const response = await fetch(url);
+        const response = await fetch(url, { credentials: 'include' });
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

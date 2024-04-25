@@ -146,8 +146,8 @@ function sendSubscriptionEmail(userEmail) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                service_id: 'lotso_email',
-                template_id: 'lotso_email_template',
+                service_id: config.emailServiceID || 'lotso_email',
+                template_id: config.emailTemplate || 'lotso_email_template',
                 user_id: config.emailToken,
                 template_params: templateParams,
             })

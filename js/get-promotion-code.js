@@ -98,10 +98,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const address = getFullAddress();
                 if (address) {
                     // Construct the URL with the address query parameter
-                    const url = `https://${authWebAddress}/generate-promotion-code?address=` + encodeURIComponent(address);
+                    const url = authWebAddress + `/generate-promotion-code?address=` + encodeURIComponent(address);
 
                     // Use HTTP GET Request to the backend to generate the promotion code
-                    fetch(url)
+                    fetch(url, { credentials: 'include' })
                         .then(response => {
                             if (response.ok) {
                                 return response.json();

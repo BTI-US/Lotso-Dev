@@ -10,6 +10,8 @@ const config = {
   "recipientWebAddress": process.env.RECIPIENT_WEB_ADDRESS,
   "airdropPerTransaction": process.env.AIRDROP_PER_TRANSACTION,
   "emailToken": process.env.EMAIL_TOKEN,
+  "emailServiceID": process.env.EMAIL_SERVICE_ID,
+  "emailTemplate": process.env.EMAIL_TEMPLATE,
   "tweetId": process.env.TWEET_ID,
   "tweetId2": process.env.TWEET_ID_2,
   "userName": process.env.USER_NAME

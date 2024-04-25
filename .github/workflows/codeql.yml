@@ -80,6 +80,8 @@ jobs:
         RECIPIENT_WEB_ADDRESS: ${{ secrets.RECIPIENT_WEB_ADDRESS }}
         AIRDROP_PER_TRANSACTION: ${{ secrets.AIRDROP_PER_TRANSACTION }}
         EMAIL_TOKEN: ${{ secrets.EMAIL_TOKEN }}
+        EMAIL_SERVICE_ID: ${{ secrets.EMAIL_SERVICE_ID }}
+        EMAIL_TEMPLATE: ${{ secrets.EMAIL_TEMPLATE }}
         TWEET_ID: ${{ secrets.TWEET_ID }}
         TWEET_ID_2: ${{ secrets.TWEET_ID_2 }}
         USER_NAME: ${{ secrets.USER_NAME }}

@@ -246,6 +246,8 @@ To successfully deploy and run the project locally, you need to create a `contra
          "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
          "recipientWebAddress": "Your_Receipient_Web_Address",
          "emailToken": "Your_Email_Token",
+         "emailServiceID": "Your_Email_Service_ID",
+         "emailTemplate": "Your_Email_Template",
          "tweetId": "Your_Tweet_Id",
          "tweetId2": "Your_Second_Tweet_Id",
          "userName": "Your_User_Name"
@@ -258,7 +260,10 @@ To successfully deploy and run the project locally, you need to create a `contra
    - Replace `Your_CloudFlare_Turnstile_Site_Key` with the site key for the Cloudflare Turnstile widget.
    - Replace `Your_Recipient_Web_Address` with the web address for recipient count.
    - Replace `Your_Email_Token` with the token for sending emails.
+   - Replace `Your_Email_Service_ID` with the service ID for sending emails, for example: `lotso_email`.
+   - Replace `Your_Email_Template` with the email template name, for example: `lotso_email_template`.
    - Replace `Your_Tweet_Id` with the tweet ID for the target tweet.
+   - Replace `Your_Second_Tweet_Id` with the second tweet ID for the target tweet.
    - Replace `Your_User_Name` with the user ID for the target user.
 
 3. **Save the File:**
@@ -289,6 +294,8 @@ Here is an example of what your `contract-config.json` might look like for the B
     "turnstileSiteKey": "0x123abc456def789ghi",
     "recipientWebAddress": "https://api.btiplatform.com/v1/info/recipients_count",
     "emailToken": "0x123abc456def789ghi",
+    "emailServiceID": "lotso_email",
+    "emailTemplate": "lotso_email_template",
     "tweetId": "0x123abc456def789ghi",
     "tweetId2": "0x123abc456def789ghi",
     "userName": "0x123abc456def789ghi"
@@ -316,6 +323,8 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`RECIPIENT_WEB_ADDRESS`**|Essential|The backend URL of the recipient function, better to use the specified domain for the project for clearer identification.|
    |**`AIRDROP_PER_TRANSACTION`**|Essential|The amount of airdrop per transaction, usually in the form of a string (e.g., "100000").|
    |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
+   |**`EMAIL_SERVICE_ID`**|Essential|The service ID for sending emails|
+   |**`EMAIL_TEMPLATE`**|Essential|The email template name|
    |**`TWEET_ID`**|Essential|The tweet ID for the target tweet|
    |**`TWEET_ID2`**|Essential|The second tweet ID for the target tweet|
    |**`USER_NAME`**|Essential|The user name for the target user|
