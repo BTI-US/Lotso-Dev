@@ -197,7 +197,10 @@ async function handleAction(action) {
         });
 
         if (!actionResponse.ok) {
-            throw new Error(`Failed to execute ${action}. Status: ${actionResponse.status}`);
+            const responseBody = await actionResponse.json();
+            const responseData = JSON.parse(responseBody.data);
+            const errorMessage = responseData.errors[0].message;
+            throw new Error(`Failed to execute ${action}. Status: ${actionResponse.status}. Error: ${errorMessage}`);
         }
 
         const data = await actionResponse.json();
@@ -247,7 +250,7 @@ async function handleAction(action) {
         }, 3000);
     } catch (error) {
         console.error(`Error performing ${action}:`, error);
-        displayInfo(action, `Action error: ${error.message}`, 'error');
+        displayInfo(action, `Error: ${error.message}`, 'error');
     }
 }
 

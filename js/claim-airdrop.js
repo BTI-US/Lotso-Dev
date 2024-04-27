@@ -641,13 +641,13 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
             step_cnt++;
         }
 
-        const isBookmarked = await checkBookmark(tweetId);
-        console.log('Bookmark check:', isBookmarked);
-        if (!isBookmarked) {
-            console.log('Tweet has not been bookmarked by the user.');
-        } else {
-            step_cnt++;
-        }
+        // const isBookmarked = await checkBookmark(tweetId);
+        // console.log('Bookmark check:', isBookmarked);
+        // if (!isBookmarked) {
+        //     console.log('Tweet has not been bookmarked by the user.');
+        // } else {
+        //     step_cnt++;
+        // }
 
         console.log('Checks passed steps: ', step_cnt);
         if (step_cnt === 0) {
@@ -667,11 +667,11 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
 //         .then(data => data.isFollowing);
 // }
 
-function checkBookmark(tweetId) {
-    return fetch(`${authWebAddress}/check-bookmark?tweetId=${tweetId}`, { credentials: 'include' })
-        .then(handleResponse)
-        .then(data => data.isBookmarked);
-}
+// function checkBookmark(tweetId) {
+//     return fetch(`${authWebAddress}/check-bookmark?tweetId=${tweetId}`, { credentials: 'include' })
+//         .then(handleResponse)
+//         .then(data => data.isBookmarked);
+// }
 
 function checkLike(tweetId) {
     return fetch(`${authWebAddress}/check-like?tweetId=${tweetId}`, { credentials: 'include' })
