@@ -1,4 +1,5 @@
 let authWebAddress = null;
+let retweetEnabled, retweet2Enabled, likeEnabled, followEnabled;
 
 window.addEventListener('message', function(event) {
     // Process the message data
@@ -42,9 +43,19 @@ document.addEventListener('DOMContentLoaded', function () {
             // Access properties
             authWebAddress = jsonConfig.authWebAddress;
 
+            // Access additional properties if needed
+            retweetEnabled = jsonConfig.retweetEnabled;
+            retweet2Enabled = jsonConfig.retweet2Enabled;
+            likeEnabled = jsonConfig.likeEnabled;
+            followEnabled = jsonConfig.followEnabled;
+
             // Additional validation can be performed here as needed
             if (!authWebAddress) {
                 throw new Error("Required configuration values (authWebAddress) are missing.");
+            }
+
+            if (!retweetEnabled || !retweet2Enabled || !likeEnabled || !followEnabled) {
+                throw new Error("Required configuration values (retweetEnabled or retweet2Enabled or likeEnabled or followEnabled) are missing.");
             }
 
             // Check if the user connect the wallet
@@ -97,10 +108,18 @@ async function checkAuthStatus() {
 
         if (data.isAuthenticated) {
             // Remove the disabled class from the action buttons
-            document.getElementById('retweet-section').classList.remove('disabled');
-            document.getElementById('retweet-section-2').classList.remove('disabled');
-            document.getElementById('like-section').classList.remove('disabled');
-            document.getElementById('follow-section').classList.remove('disabled');
+            if (retweetEnabled === "true") {
+                document.getElementById('retweet-section').classList.remove('disabled');
+            }
+            if (retweet2Enabled === "true") {
+                document.getElementById('retweet-section-2').classList.remove('disabled');
+            }
+            if (likeEnabled === "true") {
+                document.getElementById('like-section').classList.remove('disabled');
+            }
+            if (followEnabled === "true") {
+                document.getElementById('follow-section').classList.remove('disabled');
+            }
             console.log('View unlocked successfully.');
 
             // Hide the `twitterAuth` container

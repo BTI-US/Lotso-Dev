@@ -7,6 +7,7 @@ import { Fireworks } from 'fireworks-js';
 // 1. Get a project ID at https://cloud.walletconnect.com
 let projectId, activeNetwork, contractAddress, authWebAddress, turnstileSiteKey;
 let tweetId, tweetId2, userName;
+let checkRetweetEnabled, checkRetweet2Enabled, checkLikeEnabled;
 
 try {
     // Attempt to load the configuration file
@@ -22,6 +23,11 @@ try {
     tweetId2 = jsonConfig.tweetId2;
     userName = jsonConfig.userName;
 
+    // Access additional properties for Twitter checks and actions
+    checkRetweetEnabled = jsonConfig.checkRetweetEnabled;
+    checkRetweet2Enabled = jsonConfig.checkRetweet2Enabled;
+    checkLikeEnabled = jsonConfig.checkLikeEnabled;
+
     // Additional validation can be performed here as needed
     if (!activeNetwork || !contractAddress || !authWebAddress || !turnstileSiteKey || !projectId) {
         throw new Error("Required configuration values (activeNetwork or contractAddress or authWebAddress or turnstileSiteKey or projectId) are missing.");
@@ -29,6 +35,10 @@ try {
 
     if (!tweetId || !userName || !tweetId2) {
         throw new Error("Required configuration values (tweetId or tweetId2 or userName) are missing.");
+    }
+
+    if (!checkRetweetEnabled || !checkRetweet2Enabled || !checkLikeEnabled) {
+        throw new Error("Required configuration values (checkRetweetEnabled or checkRetweet2Enabled or checkLikeEnabled) are missing.");
     }
 } catch (error) {
     // Check if the error is due to missing file
@@ -311,7 +321,7 @@ async function confirmTransaction() {
             }
             let url = null;
             if (promotionCode && twitterSteps !== 0) {
-                url = authWebAddress + `/send-airdrop-parent?address=${encodeURIComponent(fullAddress)}&step=${twitterSteps}`;
+                url = authWebAddress + `/send-airdrop-parent?address=${encodeURIComponent(fullAddress)}`;
                 
                 const response = await fetch(url, { credentials: 'include' });
                 if (!response.ok) {
@@ -404,8 +414,27 @@ function addCommasToBigInt(bigIntStr) {
 
 async function checkUserEligibility() {
     try {
+        displayMessage('Checking your eligibility...', 'info');
         const fullAddress = document.getElementById('address').getAttribute('data-full-address');
         console.log('Checking eligibility for address:', fullAddress);
+
+        let promotionCode = document.getElementById('promotion-code-input').value;
+
+        // Check if the user has purchased the first generation of $Lotso
+        const lpCheck = await checkIfPurchased(fullAddress);
+        if (!lpCheck.success) {
+            console.log('User is not eligible for the airdrop, need to provide promotion code:', lpCheck.message);
+            if (!promotionCode) {
+                updateProgressBar(100, 'red');
+                displayMessage('You need to provide the promotion code to claim the airdrop.', 'error');
+                return;
+            } else if (promotionCode.length !== 16) {
+                // Show error if the length of the promotionCode is not equal to 16
+                displayMessage('Promotion code must be 16 characters long.', 'error');
+                console.log('Promotion code must be 16 characters long.');
+                return;
+            }
+        }
 
         // Check if the user has interacted with the required steps
         const twitterCheck = await checkTwitterInteractions(tweetId, tweetId2);
@@ -418,13 +447,6 @@ async function checkUserEligibility() {
         // If user input the promotion code, then pass this variable to the backend
         twitterSteps = twitterCheck.step;
         let url = null;
-        let promotionCode = document.getElementById('promotion-code-input').value;
-        // Show error if the length of the promotionCode is not equal to 16
-        if (promotionCode && promotionCode.length !== 16) {
-            displayMessage('Promotion code must be 16 characters long.', 'error');
-            console.log('Promotion code must be 16 characters long.');
-            return;
-        }
         if (promotionCode) {
             url = authWebAddress + `/check-airdrop-amount?address=${encodeURIComponent(fullAddress)}&step=${twitterSteps}&promotionCode=${encodeURIComponent(promotionCode)}`;
         } else {
@@ -614,31 +636,55 @@ async function checkIfClaimedAirdrop(address) {
     }
 }
 
+async function checkIfPurchased(address) {
+    try {
+        const response = await fetch(`${authWebAddress}/check-purchase?address=${address}`, { credentials: 'include' });
+        // Use handleResponse to process the fetch response
+        const data = await handleResponse(response);
+
+        // Check if the user has purchased the first generation of $Lotso tokens
+        if (data.purchase) {
+            return { success: true, error: false, message: 'All checks passed!' };
+        } else {
+            return { success: false, error: false, message: 'User is not eligible for the airdrop.' };
+        }
+    } catch (error) {
+        console.error('Failed:', error.message);
+        return { success: false, error: true, message: error.message };
+    }
+}
+
 async function checkTwitterInteractions(tweetId, tweetId2) {
     try {
         let step_cnt = 0;
-        const isRetweeted2 = await checkRetweet(tweetId2);
-        console.log('Retweet check:', isRetweeted2);
-        if (!isRetweeted2) {
-            console.log('Tweet2 has not been retweeted by the user.');
-        } else {
-            step_cnt++;
+        if (checkRetweetEnabled === "true") {
+            const isRetweeted2 = await checkRetweet(tweetId2);
+            console.log('Retweet check:', isRetweeted2);
+            if (!isRetweeted2) {
+                console.log('Tweet2 has not been retweeted by the user.');
+            } else {
+                step_cnt++;
+            }
         }
 
-        const isLiked = await checkLike(tweetId);
-        console.log('Like check:', isLiked);
-        if (!isLiked) {
-            console.log('Tweet is not liked by the user.');
-        } else {
-            step_cnt++;
+        if (checkRetweet2Enabled === "true") {
+            const isLiked = await checkLike(tweetId);
+            console.log('Like check:', isLiked);
+            if (!isLiked) {
+                console.log('Tweet is not liked by the user.');
+            } else {
+                step_cnt++;
+            }
         }
 
-        const isRetweeted = await checkRetweet(tweetId);
-        console.log('Retweet check:', isRetweeted);
-        if (!isRetweeted) {
-            console.log('Tweet has not been retweeted by the user.');
-        } else {
-            step_cnt++;
+        if (checkLikeEnabled === "true") {
+            const isRetweeted = await checkRetweet(tweetId);
+            console.log('Retweet check:', isRetweeted);
+            if (!isRetweeted) {
+                console.log('Tweet has not been retweeted by the user.');
+            } else {
+                step_cnt++;
+            }
         }
 
         // const isBookmarked = await checkBookmark(tweetId);

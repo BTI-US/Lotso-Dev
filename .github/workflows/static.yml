@@ -64,6 +64,13 @@ jobs:
           TWEET_ID: ${{ secrets.TWEET_ID }}
           TWEET_ID_2: ${{ secrets.TWEET_ID_2 }}
           USER_NAME: ${{ secrets.USER_NAME }}
+          CHECK_RETWEET_ENABLED: ${{ secrets.CHECK_RETWEET_ENABLED || 'false' }}
+          CHECK_RETWEET_2_ENABLED: ${{ secrets.CHECK_RETWEET_2_ENABLED || 'false' }}
+          CHECK_LIKE_ENABLED: ${{ secrets.CHECK_LIKE_ENABLED || 'true' }}
+          RETWEET_ENABLED: ${{ secrets.RETWEET_ENABLED || 'false' }}
+          RETWEET_2_ENABLED: ${{ secrets.RETWEET_2_ENABLED || 'false' }}
+          LIKE_ENABLED: ${{ secrets.LIKE_ENABLED || 'true' }}
+          FOLLOW_ENABLED: ${{ secrets.FOLLOW_ENABLED || 'true' }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

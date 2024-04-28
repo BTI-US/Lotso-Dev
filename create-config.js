@@ -14,7 +14,14 @@ const config = {
   "emailTemplate": process.env.EMAIL_TEMPLATE,
   "tweetId": process.env.TWEET_ID,
   "tweetId2": process.env.TWEET_ID_2,
-  "userName": process.env.USER_NAME
+  "userName": process.env.USER_NAME,
+  "checkRetweetEnabled": process.env.CHECK_RETWEET_ENABLED,
+  "checkRetweet2Enabled": process.env.CHECK_RETWEET_2_ENABLED,
+  "checkLikeEnabled": process.env.CHECK_LIKE_ENABLED,
+  "retweetEnabled": process.env.RETWEET_ENABLED,
+  "retweet2Enabled": process.env.RETWEET_2_ENABLED,
+  "likeEnabled": process.env.LIKE_ENABLED,
+  "followEnabled": process.env.FOLLOW_ENABLED,
 };
 
 fs.writeFileSync('contract-config.json', JSON.stringify(config, null, 2));

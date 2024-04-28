@@ -328,6 +328,14 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`TWEET_ID`**|Essential|The tweet ID for the target tweet|
    |**`TWEET_ID2`**|Essential|The second tweet ID for the target tweet|
    |**`USER_NAME`**|Essential|The user name for the target user|
+   |**`CHECK_RETWEET_ENABLED`**|Optional|Indicates if the retweet check is enabled, "false" by default|
+   |**`CHECK_RETWEET_2_ENABLED`**|Optional|Indicates if the retweet check is enabled, "false" by default|
+   |**`CHECK_LIKE_ENABLED`**|Optional|Indicates if the like check is enabled, "true" by default|
+   |**`CHECK_FOLLOW_ENABLED`**|Optional|Indicates if the follow check is enabled, "true" by default|
+   |**`RETWEET_ENABLED`**|Optional|Indicates if the retweet is enabled, "false" by default|
+   |**`RETWEET_2_ENABLED`**|Optional|Indicates if the retweet is enabled, "false" by default|
+   |**`LIKE_ENABLED`**|Optional|Indicates if the like is enabled, "true" by default|
+   |**`FOLLOW_ENABLED`**|Optional|Indicates if the follow is enabled, "true" by default|
 
 2. Used for Reverse Proxy
 
