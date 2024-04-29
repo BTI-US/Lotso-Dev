@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         })
                         // Handle the response to display the promotion code
                         .then(response => {
-                            const promotionCode = response.promotion_code;
+                            const promotionCode = response.data.promotion_code;
                             // Assuming the response returns the promotion code directly
                             let promotionCodeHtml = '<div class="address-container code-container">';
                             promotionCodeHtml += '<input id="promotionCode" type="text" value="' + escapeHtml(promotionCode) + '" readonly data-full-code="' + escapeHtml(promotionCode) + '">';

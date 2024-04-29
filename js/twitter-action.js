@@ -103,10 +103,10 @@ async function checkAuthStatus() {
             throw new Error(`Failed to fetch authentication status. Status: ${response.status}`);
         }
 
-        const data = await response.json();
-        console.log('Received authentication status:', data);
+        const result = await response.json();
+        console.log('Received authentication status:', result);
 
-        if (data.isAuthenticated) {
+        if (result.data.isAuthenticated) {
             // Remove the disabled class from the action buttons
             if (retweetEnabled === "true") {
                 document.getElementById('retweet-section').classList.remove('disabled');
@@ -222,17 +222,20 @@ async function handleAction(action) {
             throw new Error(`Failed to execute ${action}. Status: ${actionResponse.status}. Error: ${errorMessage}`);
         }
 
-        const data = await actionResponse.json();
-        if (data.error) {
-            throw new Error(data.message);
-        }
+        const response = await actionResponse.json();
 
-        console.log(`${action} action response:`, data);
+        console.log(`${action} action response:`, response);
         displayInfo(action, `${action} action performed successfully`, 'info');
 
         // Set the corresponding class to be disabled after success
         switch (action) {
             case 'retweet':
+                if (response.error && response.code == 10017) {
+                    console.log('You have already retweeted this tweet.');
+                    displayInfo(action, 'You have already retweeted this tweet.', 'error');
+                } else {
+                    throw new Error('Error retweeting the tweet:', response.error);
+                }
                 hideElement('retweet-info');
                 animateProgress('retweet-progress');
                 setTimeout(() => {
@@ -240,6 +243,12 @@ async function handleAction(action) {
                 }, 2000);
                 break;
             case 'like':
+                if (response.error && response.code == 10018) {
+                    console.log('You have already liked this tweet.');
+                    displayInfo(action, 'You have already liked this tweet.', 'error');
+                } else {
+                    throw new Error('Error liking the tweet:', response.error);
+                }
                 hideElement('like-info');
                 animateProgress('like-progress');
                 setTimeout(() => {
@@ -247,6 +256,12 @@ async function handleAction(action) {
                 }, 2000);
                 break;
             case 'retweet-2':
+                if (response.error && response.code == 10017) {
+                    console.log('You have already retweeted this tweet.');
+                    displayInfo(action, 'You have already retweeted this tweet.', 'error');
+                } else {
+                    throw new Error('Error retweeting the tweet:', response.error);
+                }
                 hideElement('retweet-2-info');
                 animateProgress('retweet-2-progress');
                 setTimeout(() => {
@@ -254,6 +269,10 @@ async function handleAction(action) {
                 }, 2000);
                 break;
             case 'follow-us':
+                // Note: Since Twitter disallows checking if a user is already followed, the error is thrown if found in the response
+                if (response.error) {
+                    throw new Error('Error following the user:', response.error);
+                }
                 hideElement('follow-info');
                 animateProgress('follow-progress');
                 setTimeout(() => {

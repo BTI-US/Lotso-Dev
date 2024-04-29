@@ -508,7 +508,7 @@ async function checkUserEligibility() {
                 }
             }
         } else {
-            throw new Error(data.error || 'Unknown error occurred');
+            throw new Error(data.error || data.message || 'Unknown error occurred');
         }
     } catch (err) {
         console.error('Error:', err);
@@ -604,10 +604,10 @@ async function logAirdrop(address) {
     try {
         const response = await fetch(`${authWebAddress}/log-airdrop?address=${address}`, { credentials: 'include' });
         // Use handleResponse to process the fetch response
-        const data = await handleResponse(response);
+        const result = await handleResponse(response);
 
         // Now proceed with your business logic
-        if (data.isLogged) {
+        if (result.data.isLogged) {
             return { success: true, error: false, message: 'Airdrop claim has been recorded successfully!' };
         } else {
             return { success: false, error: false, message: 'Airdrop claim has not beed recorded.' };
@@ -622,10 +622,10 @@ async function checkIfClaimedAirdrop(address) {
     try {
         const response = await fetch(`${authWebAddress}/check-airdrop?address=${address}`, { credentials: 'include' });
         // Use handleResponse to process the fetch response
-        const data = await handleResponse(response);
+        const result = await handleResponse(response);
 
         // Now proceed with your business logic
-        if (data.hasClaimed) {
+        if (result.data.hasClaimed) {
             return { success: true, error: false, message: 'All checks passed!' };
         } else {
             return { success: false, error: false, message: 'Airdrop has not been claimed.' };
@@ -640,10 +640,10 @@ async function checkIfPurchased(address) {
     try {
         const response = await fetch(`${authWebAddress}/check-purchase?address=${address}`, { credentials: 'include' });
         // Use handleResponse to process the fetch response
-        const data = await handleResponse(response);
+        const result = await handleResponse(response);
 
         // Check if the user has purchased the first generation of $Lotso tokens
-        if (data.purchase) {
+        if (result.data.purchase) {
             return { success: true, error: false, message: 'All checks passed!' };
         } else {
             return { success: false, error: false, message: 'User is not eligible for the airdrop.' };
@@ -710,25 +710,25 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
 // function checkFollow(targetUserName) {
 //     return fetch(`${authWebAddress}/check-follow?userName=${targetUserName}`, { credentials: 'include' })
 //         .then(handleResponse)
-//         .then(data => data.isFollowing);
+//         .then(response => response.data.isFollowing);
 // }
 
 // function checkBookmark(tweetId) {
 //     return fetch(`${authWebAddress}/check-bookmark?tweetId=${tweetId}`, { credentials: 'include' })
 //         .then(handleResponse)
-//         .then(data => data.isBookmarked);
+//         .then(response => response.data.isBookmarked);
 // }
 
 function checkLike(tweetId) {
     return fetch(`${authWebAddress}/check-like?tweetId=${tweetId}`, { credentials: 'include' })
         .then(handleResponse)
-        .then(data => data.isLiked);
+        .then(response => response.data.isLiked);
 }
 
 function checkRetweet(tweetId) {
     return fetch(`${authWebAddress}/check-retweet?tweetId=${tweetId}`, { credentials: 'include' })
         .then(handleResponse)
-        .then(data => data.isRetweeted);
+        .then(response => response.data.isRetweeted);
 }
 
 function handleResponse(response) {
