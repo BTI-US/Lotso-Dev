@@ -22,9 +22,6 @@
     - [Blockchain Information for Base Network](#blockchain-information-for-base-network)
     - [Blockchain Information for Base Sepolia Network](#blockchain-information-for-base-sepolia-network)
     - [Supported Blockchain](#supported-blockchain)
-  - [JSON Protocol](#json-protocol)
-    - [Body Parameters](#body-parameters)
-    - [Description](#description)
   - [Setting Up for Mail Subscription Service](#setting-up-for-mail-subscription-service)
   - [Setting Up `contract-config.json` for Local Deployment](#setting-up-contract-configjson-for-local-deployment)
     - [Step-by-Step Guide](#step-by-step-guide)
@@ -155,39 +152,6 @@ Refer to the [Base Sepolia Network](https://github.com/wevm/viem/blob/main/src/c
 ### Supported Blockchain
 
 Click [here](https://github.com/WalletConnect/blockchain-api/blob/master/SUPPORTED_CHAINS.md) to view the supported blockchain for WalletConnect.
-
-## JSON Protocol
-
-### Body Parameters
-
-```json
-{
-    "code": 0,
-    "message": "Success",
-    "error": "",
-    "data": {
-        "address": "0xbA6a68677e0A16dcB1ff4BDDF613563133201280",
-        "transaction_count": 8552,
-        "airdrop_count": 100000000000000000000000,
-        "has_airdropped": false,
-        "scheduled_delivery": "2024-03-31T11:00:00Z"
-    }
-}
-```
-
-### Description
-
-| Field              | Type    | Description                                                                                      |
-|--------------------|---------|--------------------------------------------------------------------------------------------------|
-| `code`             | Integer | The status code of the response. `0` indicates a successful response.                             |
-| `message`          | String  | The status message associated with the response. `Success` indicates a successful operation.      |
-| `error`            | String  | Contains error message if any error occurs, otherwise empty.                                      |
-| `data`             | Object  | A container for the data payload of the response.                                                 |
-| `data.address`     | String  | The blockchain address associated with the query.                                                 |
-| `data.transaction_count` | Integer | The number of transactions associated with the address.                                     |
-| `data.airdrop_count`| Integer | The airdrop count for the address, which is either `0` or `100000000000000000000000` (100000 * 10^18).                           |
-| `data.has_airdropped` | Boolean | Indicates if the airdrop has occurred. `false` means airdrop has not started; `true` means airdrop has occurred, and the user cannot claim it again if already claimed. |
-| `data.scheduled_delivery` | String | The next available time for claiming the airdrop. If it cannot be claimed (transaction_count <= 10), it will be set to 1970-01-01T08:00:00Z in UTC+0 timezone. |
 
 ## Setting Up for Mail Subscription Service
 
