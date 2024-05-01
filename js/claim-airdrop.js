@@ -457,7 +457,7 @@ async function checkUserEligibility() {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        if (data.code === 0 && data.message === 'Success' && !data.error) {
+        if (data.code === 0 || data.code === 10006) {
             const hasAirdropped = data.data.has_airdropped_count;
             const obtainedAddress = data.data.address;
             const airdropCount = BigInt(data.data.airdrop_count);
@@ -469,17 +469,19 @@ async function checkUserEligibility() {
                 throw new Error('The obtained address does not match the sent address, please refresh the browser cache and retry.');
             }
 
-            // Check if the user has already claimed the airdrop
-            const airdropCheck = await checkIfClaimedAirdrop(fullAddress);
-            if (airdropCheck.success && !airdropCheck.error) {
-                console.log('User has already claimed the airdrop');
-                updateProgressBar(100, 'red');
-                displayMessage('You have already claimed the airdrop with this user', 'info');
-                return;
-            } else if (!airdropCheck.success && !airdropCheck.error) {
-                console.log('User has not claimed the airdrop yet');
-            } else if (airdropCheck.error) {
-                throw new Error(airdropCheck.message);
+            if (data.code === 0) {
+                // Check if the user has already claimed the airdrop
+                const airdropCheck = await checkIfClaimedAirdrop(fullAddress);
+                if (airdropCheck.success && !airdropCheck.error) {
+                    console.log('User has already claimed the airdrop');
+                    updateProgressBar(100, 'red');
+                    displayMessage('You have already claimed the airdrop with this user', 'info');
+                    return;
+                } else if (!airdropCheck.success && !airdropCheck.error) {
+                    console.log('User has not claimed the airdrop yet');
+                } else if (airdropCheck.error) {
+                    throw new Error(airdropCheck.message);
+                }
             }
 
             // Awaiting the result of Twitter interaction checks
@@ -492,7 +494,11 @@ async function checkUserEligibility() {
                 let days = Math.floor(timeDiff / (1000 * 3600 * 24));
                 let hours = Math.floor((timeDiff % (1000 * 3600 * 24)) / (1000 * 3600));
                 let minutes = Math.floor((timeDiff % (1000 * 3600)) / (1000 * 60));
-                displayMessage(`Congratulations! You have been allocated ${airdropCount} Lotso tokens for the airdrop. We have recorded your address and will distribute the airdrop to you in ${days} days, ${hours} hours, and ${minutes} minutes. You can come and claim the airdrop after we distribute it.`, 'info');
+                if (data.code === 0) {
+                    displayMessage(`Congratulations! You have been allocated ${airdropCount} Lotso tokens for the airdrop. We have recorded your address and will distribute the airdrop to you in ${days} days, ${hours} hours, and ${minutes} minutes. You can come and claim the airdrop after we distribute it.`, 'info');
+                } else if (data.code === 10006) {
+                    displayMessage(`You have been applied ${airdropCount} Lotso tokens for the airdrop. We have recorded your address and will distribute the airdrop to you in ${days} days, ${hours} hours, and ${minutes} minutes. You can come and claim the airdrop after we distribute it.`, 'info');
+                }
             } else {
                 if (!hasAirdropped) {
                     console.log('Airdrop has not started yet. Please wait patiently.');
@@ -506,7 +512,7 @@ async function checkUserEligibility() {
                 }
             }
         } else {
-            throw new Error(data.error || data.message || 'Unknown error occurred');
+            throw new Error(data.error || data.message || 'Unknown error occurred, code:', data.code);
         }
     } catch (err) {
         console.error('Error:', err);
