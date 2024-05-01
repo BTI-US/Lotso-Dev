@@ -661,7 +661,7 @@ async function checkIfPurchased(address) {
 async function checkTwitterInteractions(tweetId, tweetId2) {
     try {
         let step_cnt = 0;
-        if (checkRetweetEnabled === "true") {
+        if (checkRetweet2Enabled === "true") {
             const isRetweeted2 = await checkRetweet(tweetId2);
             console.log('Retweet check:', isRetweeted2);
             if (!isRetweeted2) {
@@ -671,7 +671,7 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
             }
         }
 
-        if (checkRetweet2Enabled === "true") {
+        if (checkLikeEnabled === "true") {
             const isLiked = await checkLike(tweetId);
             console.log('Like check:', isLiked);
             if (!isLiked) {
@@ -681,7 +681,7 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
             }
         }
 
-        if (checkLikeEnabled === "true") {
+        if (checkRetweetEnabled === "true") {
             const isRetweeted = await checkRetweet(tweetId);
             console.log('Retweet check:', isRetweeted);
             if (!isRetweeted) {
