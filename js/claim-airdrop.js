@@ -299,12 +299,10 @@ async function confirmTransaction() {
 
             // Log the record to the backend
             const airdropLog = await logAirdrop(fullAddress);
-            if (airdropLog.success && !airdropLog.error) {
+            if (airdropLog.success) {
                 console.log('Log successful for this airdrop claim, message:', airdropLog.message);
-            } else if (!airdropLog.success && !airdropLog.error) {
+            } else {
                 console.log('Log unsuccessful for this airdrop claim, message:', airdropLog.message);
-            } else if (airdropLog.error) {
-                throw new Error(airdropLog.message);
             }
 
             displayMessage('Transaction successful! Check Your Wallet For Airdrop', 'success');
@@ -472,15 +470,13 @@ async function checkUserEligibility() {
             if (data.code === 0) {
                 // Check if the user has already claimed the airdrop
                 const airdropCheck = await checkIfClaimedAirdrop(fullAddress);
-                if (airdropCheck.success && !airdropCheck.error) {
+                if (airdropCheck.success) {
                     console.log('User has already claimed the airdrop');
                     updateProgressBar(100, 'red');
                     displayMessage('You have already claimed the airdrop with this user', 'info');
                     return;
-                } else if (!airdropCheck.success && !airdropCheck.error) {
+                } else {
                     console.log('User has not claimed the airdrop yet');
-                } else if (airdropCheck.error) {
-                    throw new Error(airdropCheck.message);
                 }
             }
 
@@ -612,13 +608,13 @@ async function logAirdrop(address) {
 
         // Now proceed with your business logic
         if (result.data.isLogged) {
-            return { success: true, error: false, message: 'Airdrop claim has been recorded successfully!' };
+            return { success: true, message: 'Airdrop claim has been recorded successfully!' };
         } else {
-            return { success: false, error: false, message: 'Airdrop claim has not beed recorded.' };
+            return { success: false, message: 'Airdrop claim has not beed recorded.' };
         }
     } catch (error) {
         console.error('Failed:', error.message);
-        return { success: false, error: true, message: error.message };
+        throw error;
     }
 }
 
@@ -636,7 +632,7 @@ async function checkIfClaimedAirdrop(address) {
         }
     } catch (error) {
         console.error('Failed:', error.message);
-        return { success: false, error: true, message: error.message };
+        throw error;
     }
 }
 
@@ -654,7 +650,7 @@ async function checkIfPurchased(address) {
         }
     } catch (error) {
         console.error('Failed:', error.message);
-        return { success: false, error: true, message: error.message };
+        throw error;
     }
 }
 
@@ -707,7 +703,7 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
         }
     } catch (error) {
         console.error('Failed:', error.message);
-        return { success: false, step: 0, message: error.message };
+        throw error;
     }
 }
 
