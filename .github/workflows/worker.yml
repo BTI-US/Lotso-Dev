@@ -36,10 +36,12 @@ jobs:
           PORT=${{ secrets.SERVER_HTTP_PORT || '8080' }}
           PORT2=${{ secrets.SERVER_HTTP_PORT2 || '8081' }}
           PORT3=${{ secrets.TWITTER_SERVER_HTTP_PORT || '5000' }}
+          GANACHE_PORT=${{ secrets.GANACHE_HTTP_PORT || '8546' }}
           
           sed -i "s/__SERVER_HTTP_PORT__/$PORT/g" worker.js
           sed -i "s/__SERVER_HTTP_PORT2__/$PORT2/g" worker.js
           sed -i "s/__TWITTER_SERVER_HTTP_PORT__/$PORT3/g" worker.js
+          sed -i "s/__GANACHE_HTTP_PORT__/$GANACHE_PORT/g" worker.js
 
       - name: Publish the Worker
         run: wrangler deploy --env production

@@ -1,5 +1,6 @@
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
 import { base, baseSepolia, sepolia } from 'viem/chains';
+import { ganacheTestChain } from './ganache-testnet';
 import { reconnect, watchAccount, disconnect, getAccount, readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core';
 import { Modal } from 'bootstrap';
 import { Fireworks } from 'fireworks-js';
@@ -67,6 +68,8 @@ if (activeNetwork === 'baseMainnet') {
     chains = [baseSepolia];
 } else if (activeNetwork === 'sepolia') {
     chains = [sepolia];
+} else if (activeNetwork === 'ganache') {
+    chains = [ganacheTestChain];
 } else {
     console.log('Invalid network selection');
     process.exit(1);

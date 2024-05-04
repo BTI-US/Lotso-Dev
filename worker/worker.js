@@ -17,6 +17,9 @@ async function handleRequest(request) {
     } else if (url.hostname === 'api-dev.btiplatform.com') {
         url.hostname = 'host.btiplatform.com';
         url.port = '__SERVER_HTTP_PORT2__';
+    } else if (url.hostname === 'ganache.btiplatform.com') {
+        url.hostname = 'host.btiplatform.com';
+        url.port = '__GANACHE_HTTP_PORT__';
     }
 
     // Fetch the data from the modified URL
