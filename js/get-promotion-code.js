@@ -1,5 +1,3 @@
-let authWebAddress = null;
-
 function checkPromotionCode(event) {
     event.preventDefault();
 
@@ -74,8 +72,9 @@ function escapeHtml(str) {
                 .replace(/'/g, "&#039;");
 }
 
-// Reset the promotionCodeInfo to empty after refreshing the webpage
-document.addEventListener('DOMContentLoaded', function() {
+/* global $ */
+$(document).on('show.bs.modal','#connectModal2', function () {
+    // Reset the promotionCodeInfo to empty after popup is shown
     document.getElementById('promotionCodeInfo').innerHTML = '';
 
     fetch('../contract-config.json')
@@ -87,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(jsonConfig => {
             // Access properties
-            authWebAddress = jsonConfig.authWebAddress;
+            let authWebAddress = jsonConfig.authWebAddress;
 
             // Additional validation can be performed here as needed
             if (!authWebAddress) {
@@ -95,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             document.getElementById('generatePromotionButton').addEventListener('click', function() {
+                console.log('Generating promotion code...');
                 const address = getFullAddress();
                 if (address) {
                     // Construct the URL with the address query parameter
@@ -111,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Handle the response to display the promotion code
                         .then(response => {
                             const promotionCode = response.data.promotion_code;
+                            console.log('Promotion code:', promotionCode);
                             // Assuming the response returns the promotion code directly
                             let promotionCodeHtml = '<div class="address-container code-container">';
                             promotionCodeHtml += '<input id="promotionCode" type="text" value="' + escapeHtml(promotionCode) + '" readonly data-full-code="' + escapeHtml(promotionCode) + '">';

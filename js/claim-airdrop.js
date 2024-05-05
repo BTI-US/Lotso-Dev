@@ -224,13 +224,6 @@ async function initiateTransaction() {
     displayMessage('Waiting for user confirmation', 'info');
 
     try {
-        // Ensuring activeNetwork is valid
-        if (!['baseSepolia', 'baseMainnet', 'sepolia'].includes(activeNetwork)) {
-            console.log('Invalid network selection');
-            displayMessage('Invalid network selection', 'error');
-            return;
-        }
-
         // Acquire full address from the DOM element
         const fullAddress = document.getElementById('address').getAttribute('data-full-address');
         console.log('Full Address:', fullAddress);
@@ -341,10 +334,6 @@ async function confirmTransaction() {
             // Show the modal
             bootstrapModal.show();
 
-            // Set a timeout to close the modal after 5 seconds
-            setTimeout(function() {
-                bootstrapModal.hide();
-            }, 5000);
             // Show fireworks animation for 10 seconds
             startFireworksForDuration(10000);
         } else {

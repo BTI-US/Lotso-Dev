@@ -1980,6 +1980,7 @@ textarea::placeholder {
     border-radius: 10px; /* This value might need to be adjusted based on the container's height */
     margin-bottom: 15px !important; /* Adds 15px space above the username container */
     max-width: 1000px; /* or any other value that suits your design */
+    margin-top: 20px; /* Adds 20px space at the top of the container */
 }
 
 .address-container input {
