@@ -2,7 +2,6 @@ import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
 import { base, baseSepolia, sepolia } from 'viem/chains';
 import { ganacheTestChain } from './ganache-testnet';
 import { reconnect, watchAccount, disconnect, getAccount, readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core';
-import { Modal } from 'bootstrap';
 import { Fireworks } from 'fireworks-js';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
@@ -323,16 +322,9 @@ async function confirmTransaction() {
                 }
             }
 
-            var modalElement = document.getElementById('connectModal2');
-            document.getElementById('congratulation-message').innerText = airdropAmount;
-
-            // Initialize the Bootstrap Modal
-            var bootstrapModal = new Modal(modalElement, {
-                keyboard: false
-            });
-
-            // Show the modal
-            bootstrapModal.show();
+            /* global $ */
+            $('#connectModal2').modal('show');
+            document.getElementById('congratulation-message').innerText = 0;
 
             // Show fireworks animation for 10 seconds
             startFireworksForDuration(10000);
