@@ -297,7 +297,8 @@ async function confirmTransaction() {
             if (airdropLog.success) {
                 console.log('Log successful for this airdrop claim, message:', airdropLog.message);
             } else {
-                console.log('Log unsuccessful for this airdrop claim, message:', airdropLog.message);
+                console.error('Log unsuccessful for this airdrop claim, message:', airdropLog.message);
+                return;
             }
 
             displayMessage('Transaction successful! Check Your Wallet For Airdrop', 'success');
