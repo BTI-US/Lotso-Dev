@@ -324,7 +324,7 @@ async function confirmTransaction() {
 
             /* global $ */
             $('#connectModal2').modal('show');
-            document.getElementById('congratulation-message').innerText = 0;
+            document.getElementById('congratulation-message').innerText = airdropAmount;
 
             // Show fireworks animation for 10 seconds
             startFireworksForDuration(10000);
