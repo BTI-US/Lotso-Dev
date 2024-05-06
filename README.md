@@ -308,8 +308,11 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`CLOUDFLARE_ACCOUNT_ID`**|Essential|The account ID for Cloudflare, used to authenticate and manage resources via Cloudflare APIs.|
    |**`CLOUDFLARE_API_TOKEN`**|Essential|A token used to authenticate API requests to Cloudflare, allowing to interact with Cloudflare worker services.|
    |**`CLOUDFLARE_WORKER_NAME`**|Optional|The name of a Cloudflare Worker, if used, which can execute serverless code at the edge for tasks like routing or custom caching, "api" by default|
-   |**`SERVER_HTTP_PORT`**|Essential|The port number on which the reverse proxy server listens for HTTP traffic of production website, "8080" by default|
-   |**`SERVER_HTTP_PORT2`**|Essential|The second port number on which the reverse proxy server listens for HTTP traffic of test website, "8081" by default|
+   |**`AIRDROP_SERVER_HTTP_PORT`**|Essential|The port number on which the reverse proxy server listens for HTTP traffic of production website, "8080" by default|
+   |**`AIRDROP_SERVER_HTTP_PORT2`**|Essential|The second port number on which the reverse proxy server listens for HTTP traffic of test website, "8081" by default|
+   |**`TWITTER_SERVER_HTTP_PORT`**|Essential|The port number on which the reverse proxy server listens for HTTP traffic of Twitter server, "5000" by default|
+   |**`TWITTER_SERVER_HTTP_PORT2`**|Essential|The second port number on which the reverse proxy server listens for HTTP traffic of Twitter server, "5001" by default|
+   |**`GANACHE_HTTP_PORT`**|Essential|The port number on which the reverse proxy server listens for HTTP traffic of Ganache server, "8546" by default|
 
 ### Setting Environment Variables in GitHub
 

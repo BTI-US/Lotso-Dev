@@ -33,14 +33,16 @@ jobs:
       - name: Replace Port in worker.js
         run: |
           WORKER_NAME=${{ secrets.CLOUDFLARE_WORKER_NAME || 'api' }}
-          PORT=${{ secrets.SERVER_HTTP_PORT || '8080' }}
-          PORT2=${{ secrets.SERVER_HTTP_PORT2 || '8081' }}
-          PORT3=${{ secrets.TWITTER_SERVER_HTTP_PORT || '5000' }}
+          AIRDROP_PORT=${{ secrets.AIRDROP_SERVER_HTTP_PORT || '8080' }}
+          AIRDROP_PORT2=${{ secrets.AIRDROP_SERVER_HTTP_PORT2 || '8081' }}
+          TWITTER_PORT=${{ secrets.TWITTER_SERVER_HTTP_PORT || '5000' }}
+          TWITTER_PORT2=${{ secrets.TWITTER_SERVER_HTTP_PORT2 || '5001' }}
           GANACHE_PORT=${{ secrets.GANACHE_HTTP_PORT || '8546' }}
           
-          sed -i "s/__SERVER_HTTP_PORT__/$PORT/g" worker.js
-          sed -i "s/__SERVER_HTTP_PORT2__/$PORT2/g" worker.js
-          sed -i "s/__TWITTER_SERVER_HTTP_PORT__/$PORT3/g" worker.js
+          sed -i "s/__AIRDROP_SERVER_HTTP_PORT__/$AIRDROP_PORT/g" worker.js
+          sed -i "s/__AIRDROP_SERVER_HTTP_PORT2__/$AIRDROP_PORT2/g" worker.js
+          sed -i "s/__TWITTER_SERVER_HTTP_PORT__/$TWITTER_PORT/g" worker.js
+          sed -i "s/__TWITTER_SERVER_HTTP_PORT2__/$TWITTER_PORT2/g" worker.js
           sed -i "s/__GANACHE_HTTP_PORT__/$GANACHE_PORT/g" worker.js
 
       - name: Publish the Worker

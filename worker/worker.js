@@ -11,12 +11,15 @@ async function handleRequest(request) {
     if (url.hostname === 'oauth.btiplatform.com') {
         url.hostname = 'host.btiplatform.com';
         url.port = '__TWITTER_SERVER_HTTP_PORT__';
+    } else if (url.hostname === 'oauth-dev.btiplatform.com') {
+        url.hostname = 'host.btiplatform.com';
+        url.port = '__TWITTER_SERVER_HTTP_PORT2__';
     } else if (url.hostname === 'api.btiplatform.com') {
         url.hostname = 'host.btiplatform.com';
-        url.port = '__SERVER_HTTP_PORT__';
+        url.port = '__AIRDROP_SERVER_HTTP_PORT__';
     } else if (url.hostname === 'api-dev.btiplatform.com') {
         url.hostname = 'host.btiplatform.com';
-        url.port = '__SERVER_HTTP_PORT2__';
+        url.port = '__AIRDROP_SERVER_HTTP_PORT2__';
     } else if (url.hostname === 'ganache.btiplatform.com') {
         url.hostname = 'host.btiplatform.com';
         url.port = '__GANACHE_HTTP_PORT__';
