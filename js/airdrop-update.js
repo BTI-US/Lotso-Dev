@@ -15,7 +15,7 @@ function addCommasToBigInt(bigIntStr) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    let webAddress, airdropPerTransaction;
+    let webAddress;
 
     fetch('../contract-config.json')
         .then(response => {
@@ -26,16 +26,14 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(jsonConfig => {
             // Access properties
-            webAddress = jsonConfig.authWebAddress + '/v1/info/recipients_count';
-            airdropPerTransaction = parseInt(jsonConfig.airdropPerTransaction, 10);
+            webAddress = jsonConfig.authWebAddress + '/v1/info/recipient_info';
 
             // Additional validation can be performed here as needed
-            if (!webAddress || !airdropPerTransaction) {
-                throw new Error("Required configuration values (webAddress or airdropPerTransaction) are missing.");
+            if (!webAddress) {
+                throw new Error("Required configuration values (webAddress) are missing.");
             }
 
             console.log(`Web Address: ${webAddress}`);
-            console.log(`Airdrop Per Transaction: ${airdropPerTransaction}`);
 
             // Nested fetch using the webAddress
             return fetch(webAddress);
@@ -52,10 +50,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Last successful data:', data.data);
             }
 
-            const airdropsClaimed = airdropPerTransaction * data.data;
+            const airdropsClaimed = data.data.airdrop_amount;
+            const participantCount = data.data.recipient_count;
             const formattedCount = addCommasToBigInt(airdropsClaimed.toString());
             document.getElementById('airdropCount').innerText = formattedCount;
-            console.log(`Airdrops Claimed: ${formattedCount}`);
+            document.getElementById('participantCount').innerText = participantCount;
+            console.log(`Airdrops Claimed: ${formattedCount}, participant number: ${participantCount}`);
         })
         .catch(error => {
             // Handle any errors that occur during the fetch

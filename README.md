@@ -205,7 +205,6 @@ To successfully deploy and run the project locally, you need to create a `contra
          "_comment": "Configuration settings for blockchain interaction and Turnstile widget. 'projectId' is the unique identifier for the project, 'activeNetwork' specifies the blockchain network (like 'baseMainnet' for Base Mainnet or 'baseSepolia' for Sepolia Base Testnet or 'sepolia' for Sepolia Main Testnet), 'contractAddress' is the address of the smart contract, 'authWebAddress' is the API endpoint for backend authentication server, and 'turnstileSiteKey' is the site key for the Cloudflare Turnstile widget.",
          "activeNetwork": "Your_Network_Choice",
          "contractAddress": "Your_Contract_Address",
-         "airdropPerTransaction": "Your_Airdrop_Per_Transaction",
          "authWebAddress": "Your_Web_Address",
          "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
          "emailToken": "Your_Email_Token",
@@ -213,12 +212,19 @@ To successfully deploy and run the project locally, you need to create a `contra
          "emailTemplate": "Your_Email_Template",
          "tweetId": "Your_Tweet_Id",
          "tweetId2": "Your_Second_Tweet_Id",
-         "userName": "Your_User_Name"
+         "userName": "Your_User_Name",
+         "checkRetweetEnabled": "false",
+         "checkRetweet2Enabled": "false",
+         "checkLikeEnabled": "true",
+         "checkFollowEnabled": "true",
+         "retweetEnabled": "false",
+         "retweet2Enabled": "false",
+         "likeEnabled": "true",
+         "followEnabled": "true"
      }
      ```
    - Replace `Your_Network_Choice` with the network you are using (e.g., `base` for the Base Mainnet).
    - Replace `Your_Contract_Address` with the actual contract address you are using.
-   - Replace `Your_Airdrop_Per_Transaction` with the actual value of the airdrop per transaction.
    - Replace `Your_Web_Address` with the web address for airdrop eligibility check.
    - Replace `Your_CloudFlare_Turnstile_Site_Key` with the site key for the Cloudflare Turnstile widget.
    - Replace `Your_Email_Token` with the token for sending emails.
@@ -251,7 +257,6 @@ Here is an example of what your `contract-config.json` might look like for the B
     "projectId": "0x123abc456def789ghi",
     "activeNetwork": "baseMainnet",
     "contractAddress": "0x123abc456def789ghi",
-    "airdropPerTransaction": "100000",
     "authWebAddress": "https://api.btiplatform.com",
     "turnstileSiteKey": "0x123abc456def789ghi",
     "emailToken": "0x123abc456def789ghi",
@@ -259,7 +264,15 @@ Here is an example of what your `contract-config.json` might look like for the B
     "emailTemplate": "lotso_email_template",
     "tweetId": "0x123abc456def789ghi",
     "tweetId2": "0x123abc456def789ghi",
-    "userName": "0x123abc456def789ghi"
+    "userName": "0x123abc456def789ghi",
+    "checkRetweetEnabled": "false",
+    "checkRetweet2Enabled": "false",
+    "checkLikeEnabled": "true",
+    "checkFollowEnabled": "true",
+    "retweetEnabled": "false",
+    "retweet2Enabled": "false",
+    "likeEnabled": "true",
+    "followEnabled": "true"
 }
 ```
 
@@ -281,7 +294,6 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`PROJECT_ID`**|Essential|A unique identifier obtained from WalletConnect, used for WalletConnect API calls.|
    |**`TURNSTILE_SITE_KEY`**|Essential|The site key for Cloudflare's Turnstile service, used for bot protection and CAPTCHA verification.|
    |**`AUTH_WEB_ADDRESS`**|Essential|The backend URL of the authentication function, used for verifying user credentials.|
-   |**`AIRDROP_PER_TRANSACTION`**|Essential|The amount of airdrop per transaction, usually in the form of a string (e.g., "100000").|
    |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
    |**`EMAIL_SERVICE_ID`**|Essential|The service ID for sending emails|
    |**`EMAIL_TEMPLATE`**|Essential|The email template name|
@@ -338,6 +350,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 3. Add the following custom domains for the worker to route traffic accordingly.
    - `api.btiplatform.com`
    - `api-dev.btiplatform.com`
+   - `ganache.btiplatform.com`
 
 ### Deploying to Cloudflare Pages
 
