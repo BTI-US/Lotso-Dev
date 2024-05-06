@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(jsonConfig => {
             // Access properties
-            webAddress = jsonConfig.recipientWebAddress;
+            webAddress = jsonConfig.authWebAddress + '/v1/info/recipients_count';
             airdropPerTransaction = parseInt(jsonConfig.airdropPerTransaction, 10);
 
             // Additional validation can be performed here as needed

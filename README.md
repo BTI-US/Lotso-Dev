@@ -208,7 +208,6 @@ To successfully deploy and run the project locally, you need to create a `contra
          "airdropPerTransaction": "Your_Airdrop_Per_Transaction",
          "authWebAddress": "Your_Web_Address",
          "turnstileSiteKey": "Your_CloudFlare_Turnstile_Site_Key",
-         "recipientWebAddress": "Your_Receipient_Web_Address",
          "emailToken": "Your_Email_Token",
          "emailServiceID": "Your_Email_Service_ID",
          "emailTemplate": "Your_Email_Template",
@@ -222,7 +221,6 @@ To successfully deploy and run the project locally, you need to create a `contra
    - Replace `Your_Airdrop_Per_Transaction` with the actual value of the airdrop per transaction.
    - Replace `Your_Web_Address` with the web address for airdrop eligibility check.
    - Replace `Your_CloudFlare_Turnstile_Site_Key` with the site key for the Cloudflare Turnstile widget.
-   - Replace `Your_Recipient_Web_Address` with the web address for recipient count.
    - Replace `Your_Email_Token` with the token for sending emails.
    - Replace `Your_Email_Service_ID` with the service ID for sending emails, for example: `lotso_email`.
    - Replace `Your_Email_Template` with the email template name, for example: `lotso_email_template`.
@@ -254,9 +252,8 @@ Here is an example of what your `contract-config.json` might look like for the B
     "activeNetwork": "baseMainnet",
     "contractAddress": "0x123abc456def789ghi",
     "airdropPerTransaction": "100000",
-    "authWebAddress": "https://oauth.btiplatform.com",
+    "authWebAddress": "https://api.btiplatform.com",
     "turnstileSiteKey": "0x123abc456def789ghi",
-    "recipientWebAddress": "https://api.btiplatform.com/v1/info/recipients_count",
     "emailToken": "0x123abc456def789ghi",
     "emailServiceID": "lotso_email",
     "emailTemplate": "lotso_email_template",
@@ -284,7 +281,6 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`PROJECT_ID`**|Essential|A unique identifier obtained from WalletConnect, used for WalletConnect API calls.|
    |**`TURNSTILE_SITE_KEY`**|Essential|The site key for Cloudflare's Turnstile service, used for bot protection and CAPTCHA verification.|
    |**`AUTH_WEB_ADDRESS`**|Essential|The backend URL of the authentication function, used for verifying user credentials.|
-   |**`RECIPIENT_WEB_ADDRESS`**|Essential|The backend URL of the recipient function, better to use the specified domain for the project for clearer identification.|
    |**`AIRDROP_PER_TRANSACTION`**|Essential|The amount of airdrop per transaction, usually in the form of a string (e.g., "100000").|
    |**`EMAIL_TOKEN`**|Essential|The token for sending emails|
    |**`EMAIL_SERVICE_ID`**|Essential|The service ID for sending emails|
@@ -342,7 +338,6 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
 3. Add the following custom domains for the worker to route traffic accordingly.
    - `api.btiplatform.com`
    - `api-dev.btiplatform.com`
-   - `oauth.btiplatform.com`
 
 ### Deploying to Cloudflare Pages
 

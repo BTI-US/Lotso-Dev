@@ -7,7 +7,6 @@ const config = {
   "contractAddress": process.env.CONTRACT_ADDRESS,
   "authWebAddress": process.env.AUTH_WEB_ADDRESS,
   "turnstileSiteKey": process.env.TURNSTILE_SITE_KEY,
-  "recipientWebAddress": process.env.RECIPIENT_WEB_ADDRESS,
   "airdropPerTransaction": process.env.AIRDROP_PER_TRANSACTION,
   "emailToken": process.env.EMAIL_TOKEN,
   "emailServiceID": process.env.EMAIL_SERVICE_ID,

@@ -56,7 +56,6 @@ jobs:
           CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
           AUTH_WEB_ADDRESS: ${{ secrets.AUTH_WEB_ADDRESS }}
           TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
-          RECIPIENT_WEB_ADDRESS: ${{ secrets.RECIPIENT_WEB_ADDRESS }}
           AIRDROP_PER_TRANSACTION: ${{ secrets.AIRDROP_PER_TRANSACTION }}
           EMAIL_TOKEN: ${{ secrets.EMAIL_TOKEN }}
           EMAIL_SERVICE_ID: ${{ secrets.EMAIL_SERVICE_ID }}
