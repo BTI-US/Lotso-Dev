@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 function checkPromotionCode(event) {
     event.preventDefault();
 
@@ -19,6 +20,7 @@ function checkPromotionCode(event) {
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 function copyPromotionCode(event) {
     event.preventDefault();
 

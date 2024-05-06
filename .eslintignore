@@ -1,1 +1,11 @@
 dist/
+documentation/assets/scripts
+js/light-version/circular.js
+js/app.js
+js/bootstrap.min.js
+js/circular.js
+js/custom.js
+js/jquery-3.3.1.min.js
+js/line.min.js
+js/particles.js
+js/slick.min.js

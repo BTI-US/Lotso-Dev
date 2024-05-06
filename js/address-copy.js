@@ -1,4 +1,4 @@
-// address-copy.js
+// eslint-disable-next-line no-unused-vars
 function copyAddress(event) {
     event.preventDefault();
 

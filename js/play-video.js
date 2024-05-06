@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 function playVideo(youtubeLink) {
     var videoModal = document.getElementById("videoModal");
     var youtubeVideo = document.getElementById("youtubeVideo");
@@ -10,6 +11,7 @@ function playVideo(youtubeLink) {
     videoModal.style.display = "block";
 }
 
+// eslint-disable-next-line no-unused-vars
 function closeVideoModal() {
     var videoModal = document.getElementById("videoModal");
     var youtubeVideo = document.getElementById("youtubeVideo");
