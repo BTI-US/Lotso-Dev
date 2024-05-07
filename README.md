@@ -3,6 +3,7 @@
 [![Deploy static content to Pages](https://github.com/BTI-US/Lotso/actions/workflows/static.yml/badge.svg?branch=master)](https://github.com/BTI-US/Lotso/actions/workflows/static.yml)
 [![CodeQL](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/codeql.yml)
 [![Deploy Worker to Cloudflare](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/worker.yml)
+[![reviewdog](https://github.com/BTI-US/Lotso/actions/workflows/reviewdog.yml/badge.svg)](https://github.com/BTI-US/Lotso/actions/workflows/reviewdog.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 - Last Modified: 2024-04-22
