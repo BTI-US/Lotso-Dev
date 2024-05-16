@@ -174,39 +174,28 @@ function displayInfo(action, message, type) {
 
 async function handleAction(action) {
     try {
+        const actionConfig = {
+            'follow-us': { configKey: 'userName', actionType: 'follow-us', info: 'follow-info', progress: 'follow-progress', section: 'follow-section' },
+            'retweet-2': { configKey: 'tweetId2', actionType: 'retweet', info: 'retweet-2-info', progress: 'retweet-2-progress', section: 'retweet-section-2' },
+            'retweet': { configKey: 'tweetId', actionType: 'retweet', info: 'retweet-info', progress: 'retweet-progress', section: 'retweet-section' },
+            'like': { configKey: 'tweetId', actionType: 'like', info: 'like-info', progress: 'like-progress', section: 'like-section' },
+        };
+
         // Fetch the tweetId from the configuration file
         const configResponse = await fetch('../contract-config.json');
         if (!configResponse.ok) {
             throw new Error(`Failed to load configuration file. Status: ${configResponse.status}`);
         }
         const jsonConfig = await configResponse.json();
-        let queryParams = '';
-        let actionType;
-        // Determine which identifier to use based on the action
-        if (action === 'follow-us') {
-            actionType = 'follow-us';
-            const userName = jsonConfig.userName; // Assuming userName is stored in the config
-            if (!userName) {
-                throw new Error("Required configuration value 'userName' is missing.");
-            }
-            queryParams += `userName=${encodeURIComponent(userName)}`;
-        } else if (action === 'retweet-2') {
-            actionType = 'retweet';
-            const tweetId2 = jsonConfig.tweetId2;
-            if (!tweetId2) {
-                throw new Error("Required configuration value 'tweetId2' is missing.");
-            }
-            queryParams += `tweetId=${encodeURIComponent(tweetId2)}`;
-        } else {
-            actionType = action;
-            const tweetId = jsonConfig.tweetId;
-            if (!tweetId) {
-                throw new Error("Required configuration value 'tweetId' is missing.");
-            }
-            queryParams += `tweetId=${encodeURIComponent(tweetId)}`;
-        }
 
-        // If tweetId is fetched successfully, perform the action
+        const configKey = actionConfig[action].configKey;
+        const configValue = jsonConfig[configKey];
+        if (!configValue) {
+            throw new Error(`Required configuration value '${configKey}' is missing.`);
+        }
+        const queryParams = `${configKey}=${encodeURIComponent(configValue)}`;
+        const actionType = actionConfig[action].actionType;
+
         const actionResponse = await fetch(`${authWebAddress}/${actionType}?${queryParams}`, {
             method: 'GET',
             headers: {
@@ -225,64 +214,27 @@ async function handleAction(action) {
         const response = await actionResponse.json();
 
         console.log(`${action} action response:`, response);
-        displayInfo(action, `${action} action performed successfully`, 'info');
 
-        // Set the corresponding class to be disabled after success
-        switch (action) {
-            case 'retweet':
-                if (response.error && response.code == 10017) {
-                    console.log('You have already retweeted this tweet.');
-                    displayInfo(action, 'You have already retweeted this tweet.', 'error');
-                } else {
-                    throw new Error('Error retweeting the tweet:', response.error);
-                }
-                hideElement('retweet-info');
-                animateProgress('retweet-progress');
-                setTimeout(() => {
-                    document.getElementById('retweet-section').classList.add('disabled');
-                }, 2000);
-                break;
-            case 'like':
-                if (response.error && response.code == 10018) {
-                    console.log('You have already liked this tweet.');
-                    displayInfo(action, 'You have already liked this tweet.', 'error');
-                } else {
-                    throw new Error('Error liking the tweet:', response.error);
-                }
-                hideElement('like-info');
-                animateProgress('like-progress');
-                setTimeout(() => {
-                    document.getElementById('like-section').classList.add('disabled');
-                }, 2000);
-                break;
-            case 'retweet-2':
-                if (response.error && response.code == 10017) {
-                    console.log('You have already retweeted this tweet.');
-                    displayInfo(action, 'You have already retweeted this tweet.', 'error');
-                } else {
-                    throw new Error('Error retweeting the tweet:', response.error);
-                }
-                hideElement('retweet-2-info');
-                animateProgress('retweet-2-progress');
-                setTimeout(() => {
-                    document.getElementById('retweet-section-2').classList.add('disabled');
-                }, 2000);
-                break;
-            case 'follow-us':
-                // Note: Since Twitter disallows checking if a user is already followed, the error is thrown if found in the response
-                if (response.error) {
-                    throw new Error('Error following the user:', response.error);
-                }
-                hideElement('follow-info');
-                animateProgress('follow-progress');
-                setTimeout(() => {
-                    document.getElementById('follow-section').classList.add('disabled');
-                }, 2000);
-                break;
-            default:
-                break;
+        const infoElementId = actionConfig[action].info;
+        const progressElementId = actionConfig[action].progress;
+        const sectionElementId = actionConfig[action].section;
+
+        if (response.error && (response.code == 10017 || response.code == 10018)) {
+            console.log(`You have already ${actionType} this tweet.`);
+            displayInfo(action, `You have already ${actionType} this tweet.`, 'error');
+        } else if (!response.error && response.code == 0) {
+            console.log(`${actionType.charAt(0).toUpperCase() + actionType.slice(1)} successful.`);
+            displayInfo(action, `${actionType.charAt(0).toUpperCase() + actionType.slice(1)} successful.`, 'info');
+        } else {
+            throw new Error(`Error ${actionType} the tweet:`, response.error);
         }
-        // Wait for 3 seconds
+
+        hideElement(infoElementId);
+        animateProgress(progressElementId);
+        setTimeout(() => {
+            document.getElementById(sectionElementId).classList.add('disabled');
+        }, 2000);
+
         setTimeout(() => {
             checkAllActionsDisabled();
         }, 3000);
