@@ -2,14 +2,17 @@
 function checkPromotionCode(event) {
     event.preventDefault();
 
+    const promotionInputMessage = document.getElementById('promotionInputMessage');
+    promotionCode.classList.remove('success-message', 'error-message');
+
     var promotionCode = document.getElementById('promotion-code-input').value;
     // Show error if the length of the promotionCode is not equal to 16
     if (promotionCode && promotionCode.length !== 16) {
-        document.getElementById('promotion-input-error').innerText = 'Promotion code must be 16 characters long.';
-        setTimeout(function() {
-            document.getElementById('promotion-input-error').innerText = '';
-        }, 5000);
+        promotionInputMessage.classList.add('error-message');
+        promotionInputMessage.innerText = 'Promotion code must be 16 characters long.';
     } else {
+        promotionInputMessage.classList.add('success-message');
+        promotionInputMessage.innerText = 'Promotion code has been saved, please claim your airdrop.';
         // Smoothly scroll to the desired section if the promotion code is correct
         var desiredSection = document.getElementById('airdrop');
         if (desiredSection) {
@@ -18,6 +21,9 @@ function checkPromotionCode(event) {
             });
         }
     }
+    setTimeout(function() {
+        promotionInputMessage.innerText = '';
+    }, 5000);
 }
 
 // eslint-disable-next-line no-unused-vars

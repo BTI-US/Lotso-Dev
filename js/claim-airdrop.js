@@ -359,11 +359,11 @@ function displayMessage(message, type) {
             messageElement.classList.add('error-message');
         }
 
-        // Clear the message after 10 seconds
+        // Clear the message after 30 seconds
         setTimeout(() => {
             messageElement.innerText = ''; // Clear the text
             messageElement.className = ''; // Also clear any class that was added
-        }, 10000);
+        }, 30000);
     }
 }
 

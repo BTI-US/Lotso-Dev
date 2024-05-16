@@ -88,21 +88,26 @@ document.getElementById('subscriptionForm').addEventListener('submit', function(
     event.preventDefault(); // Prevent the default form submission
 
     // Clear existing errors
-    document.getElementById('subscriptionEmailError').textContent = '';
-    document.getElementById('subscriptionSuccess').textContent = '';
+    const subscriptionInfo = document.getElementById('subscriptionInfo');
+    subscriptionInfo.textContent = '';
+    // Clear the classlist
+    subscriptionInfo.classList.remove('success-message', 'error-message');
 
     var email = document.getElementById('subscriptionEmail').value;
     var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     
     if (email.trim() === '') {
-        document.getElementById('subscriptionEmailError').textContent = 'Please enter your email address.';
+        subscriptionInfo.classList.add('error-message');
+        subscriptionInfo.textContent = 'Please enter your email address.';
     }
     else if (!emailRegex.test(email)) {
-        document.getElementById('subscriptionEmailError').textContent = 'Please enter a valid email address.';
+        subscriptionInfo.classList.add('error-message');
+        subscriptionInfo.textContent = 'Please enter a valid email address.';
     }
     else {
+        subscriptionInfo.classList.add('success-message');
         // If email is valid
-        document.getElementById('subscriptionSuccess').textContent = 'Email is valid! Proceeding with subscription.';
+        subscriptionInfo.textContent = 'Email is valid! Proceeding with subscription.';
         // Email sending for subscription
         sendSubscriptionEmail(email)
             .then(() => {
@@ -113,6 +118,8 @@ document.getElementById('subscriptionForm').addEventListener('submit', function(
             })
             .catch(error => {
                 console.log('Failed to send email: ' + error);
+                subscriptionInfo.classList.add('error-message');
+                subscriptionInfo.textContent = 'Failed to send email. Please try again.';
             });
     }
 });
