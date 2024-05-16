@@ -98,9 +98,9 @@
                         <div class="modal-body">
                             <form>
                                 <div class="info-txt">
-                                    <div><strong>Public Chain:</strong> Base</div>
-                                    <div><strong>Initial Liquidity Pool:</strong> 1ETH</div>
-                                    <div><strong>Risk Warning:</strong> "Prohibited to purchase within the first 40 seconds after market opening——anti-bot measures."</div>
+                                    <p><strong>Public Chain:</strong> Base</p>
+                                    <p><strong>Initial Liquidity Pool:</strong> 1ETH</p>
+                                    <p><strong>Risk Warning:</strong> "Prohibited to purchase within the first 40 seconds after market opening——anti-bot measures."</p>
                                 </div>
                             </form>
                         </div>
@@ -122,7 +122,7 @@
                         <div class="modal-body">
                             <form>
                                 <div class="info-txt">
-                                    <div>All users can only buy and cannot sell. Except after 3 days from opening or there are 1000 ETH in the liquidity pool.</div>
+                                    <p>All users can only buy and cannot sell. Except after 3 days from opening or there are 1000 ETH in the liquidity pool.</p>
                                 </div>
                             </form>
                         </div>
@@ -144,7 +144,7 @@
                         <div class="modal-body">
                             <form>
                                 <div class="info-txt">
-                                    <div>Before trading opens, each address can buy a maximum of 2% of tokens. Once trading is open, this restriction will be lifted in preparation for listing on exchanges.</div>
+                                    <p>Before trading opens, each address can buy a maximum of 2% of tokens. Once trading is open, this restriction will be lifted in preparation for listing on exchanges.</p>
                                 </div>
                             </form>
                         </div>
@@ -166,8 +166,8 @@
                         <div class="modal-body">
                             <form>
                                 <div class="info-txt">
-                                    <div><strong>Before trading opens:</strong> No slippage</div>
-                                    <div><strong>After trading opens:</strong> 1 buy, 1 sale</div>
+                                    <p><strong>Before trading opens:</strong> No slippage</p>
+                                    <p><strong>After trading opens:</strong> 1 buy, 1 sale</p>
                                 </div>
                             </form>
                         </div>
@@ -193,8 +193,10 @@
                                     <div id="walletAddressHint2">By clicking "Accept and Continue", you agree to our <a href="#" data-toggle="modal" data-target="#termsModal">terms and conditions</a> and <a href="#" data-toggle="modal" data-target="#privacyModal">privacy policy</a>. You will be prompted to connect your wallet via an external link. Ensure you're using a trusted and secure wallet service.</div>
                                 </div>
                             </form>
-                            <div id="gotoSection" style="display: none;">
-                                <button type="button" id="checkAirdropButton" class="dropboxx2" data-dismiss="modal">Check Your Airdrop</button>
+                            <div id="claimReward" class="info-txt" style="display: none;">
+                                <p>Your total reward is: <span id="totalAirdropReward"></span></p>
+                                <p><small>Press the following button to claim your reward.</small></p>
+                                <button type="button" id="claimRewardBtn" class="dropboxx2" data-dismiss="modal">Check Your Reward</button>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -1458,7 +1460,7 @@
     </script>
     <script>
         $(document).ready(function () {
-            $('#checkAirdropButton').click(function() {
+            $('#claimRewardBtn').click(function() {
                 // Close the modal (Bootstrap 4 with jQuery)
                 $('#connectModal').modal('hide');
 

@@ -9,6 +9,46 @@ let projectId, activeNetwork, contractAddress, authWebAddress, turnstileSiteKey;
 let tweetId, tweetId2, userName;
 let checkRetweetEnabled, checkRetweet2Enabled, checkLikeEnabled;
 
+// Updated contract ABI to include getAirdropAmount function
+const airdropAcquireABI = [
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "getAirdropAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+];
+
+// Contract ABI for claimAirdrop
+const airdropContractABI = [
+    {
+        "inputs": [],
+        "name": "claimAirdrop",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+];
+
 try {
     // Attempt to load the configuration file
     const jsonConfig = require('../contract-config.json');
@@ -114,7 +154,8 @@ const acceptBtn = document.getElementById('connectAccept');
 const declineBtn = document.getElementById('connectDecline');
 const connectTitle = document.getElementById('walletAddressTitle');
 const airdrop = document.getElementById('airdropSection');
-const gotoAirdrop = document.getElementById('gotoSection');
+const claimReward = document.getElementById('claimReward');
+const totalAirdropReward = document.getElementById('totalAirdropReward');
 
 if (acceptBtn) {
     acceptBtn.addEventListener('click', function() {
@@ -141,39 +182,61 @@ function escapeHtml(str) {
                 .replace(/'/g, "&#039;");
 }
 
+async function checkRewardAmount(address) {
+    try {
+        const url = authWebAddress + `/check-reward-amount?address=${encodeURIComponent(address)}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+
+        if (data.code === 0 && data.data.rewardAmount != null) {
+            return data.data.rewardAmount;
+        }
+        
+        throw new Error(data.error || data.message || 'Unknown error occurred, code:', data.code);
+    } catch (error) {
+        console.error('Failed:', error.message);
+        return 0;
+    }
+}
+
 // listening for account changes
 watchAccount(config,
     {
         onChange(account) {
             let truncatedAddress;
-            if (hint2) {
-                let address = account.address ?? '';
-                // Check if the username length exceeds 15 characters
-                if (address.length > 15) {
-                    // Truncate the username to the first 5 characters, an ellipsis, and the last 5 characters
-                    truncatedAddress = address.substring(0, 5) + '...' + address.substring(address.length - 5);
-                } else {
-                    // If the username is 15 characters or less, use it as is
-                    truncatedAddress = address;
-                }
-
-                let addressHtml = '<div class="address-container">';
-                addressHtml += '<input id="address" type="text" value="' + escapeHtml(address) + '" readonly data-full-address="' + escapeHtml(address) + '">';
-                addressHtml += '<button onclick="copyAddress(event)"><i class="fa fa-copy"></i></button>';
-                addressHtml += '</div>';
-
-                hint2.innerHTML = addressHtml;
-            }
             if (acceptBtn) {
                 if (account.isConnected) {
                     hint1.innerText = 'Your wallet address is:';
+                    if (hint2) {
+                        let address = account.address ?? '';
+                        // Check if the username length exceeds 15 characters
+                        if (address.length > 15) {
+                            // Truncate the username to the first 5 characters, an ellipsis, and the last 5 characters
+                            truncatedAddress = address.substring(0, 5) + '...' + address.substring(address.length - 5);
+                        } else {
+                            // If the username is 15 characters or less, use it as is
+                            truncatedAddress = address;
+                        }
+        
+                        let addressHtml = '<div class="address-container">';
+                        addressHtml += '<input id="address" type="text" value="' + escapeHtml(address) + '" readonly data-full-address="' + escapeHtml(address) + '">';
+                        addressHtml += '<button onclick="copyAddress(event)"><i class="fa fa-copy"></i></button>';
+                        addressHtml += '</div>';
+        
+                        hint2.innerHTML = addressHtml;
+                    }
                     acceptBtn.innerText = 'Disconnect';
                     connectBtn.innerText = truncatedAddress;
                     connectTitle.innerText = 'Account Information';
                     declineBtn.innerText = 'Close';
                     airdrop.style.display = 'block';
-                    // TODO: Temporarily disable this button
-                    gotoAirdrop.style.display = 'none';
+                    claimReward.style.display = 'block';
+                    (async function() {
+                        totalAirdropReward.innerText = await checkRewardAmount(account.address);
+                    })();
                     // Hide the continue button after connecting the wallet
                     airdropHint1.style.display = 'none';
                 } else {
@@ -184,7 +247,8 @@ watchAccount(config,
                     connectTitle.innerText = 'Notes Before Connecting';
                     declineBtn.innerText = 'Decline';
                     airdrop.style.display = 'none';
-                    gotoAirdrop.style.display = 'none';
+                    claimReward.style.display = 'none';
+                    totalAirdropReward.innerText = 0;
                     // Show the continue button before connecting the wallet
                     airdropHint1.style.display = 'block';
                 }
@@ -197,29 +261,6 @@ let airdropAmount = 0;
 let twitterSteps = 0;
 
 async function initiateTransaction() {
-    // Updated contract ABI to include getAirdropAmount function
-    const airdropAcquireABI = [
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "account",
-                    "type": "address"
-                }
-            ],
-            "name": "getAirdropAmount",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        }
-    ];
-
     displayMessage('Waiting for user confirmation', 'info');
 
     try {
@@ -237,7 +278,7 @@ async function initiateTransaction() {
         console.log('Airdrop Amount:', contractReadResult);
         updateProgressBar(50, 'green');
         if (contractReadResult === BigInt(0)) {
-            displayMessage('You have already claimed your airdrop.', 'info');
+            displayMessage('You have already claimed your airdrop or you are not eligible to claim.', 'info');
             updateProgressBar(100, 'red');
         } else {
             const divisor = BigInt("1000000000000000000");
@@ -252,24 +293,7 @@ async function initiateTransaction() {
     }
 }
 
-async function confirmTransaction() {    
-    // Contract ABI for claimAirdrop
-    const airdropContractABI = [
-        {
-            "inputs": [],
-            "name": "claimAirdrop",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        }
-    ];
-
+async function confirmTransaction() {
     displayMessage('Processing airdrop claim...', 'info');
 
     try {
@@ -313,9 +337,8 @@ async function confirmTransaction() {
                 console.log('Promotion code must be 16 characters long.');
                 return;
             }
-            let url = null;
             if (promotionCode && twitterSteps !== 0) {
-                url = authWebAddress + `/send-airdrop-parent?address=${encodeURIComponent(fullAddress)}`;
+                const url = authWebAddress + `/send-airdrop-parent?address=${encodeURIComponent(fullAddress)}`;
                 
                 const response = await fetch(url, { credentials: 'include' });
                 if (!response.ok) {
@@ -452,18 +475,19 @@ async function checkUserEligibility() {
                 throw new Error('The obtained address does not match the sent address, please refresh the browser cache and retry.');
             }
 
-            if (data.code === 0) {
-                // Check if the user has already claimed the airdrop
-                const airdropCheck = await checkIfClaimedAirdrop(fullAddress);
-                if (airdropCheck.success) {
-                    console.log('User has already claimed the airdrop');
-                    updateProgressBar(100, 'red');
-                    displayMessage('You have already claimed the airdrop with this user', 'info');
-                    return;
-                } else {
-                    console.log('User has not claimed the airdrop yet');
-                }
-            }
+            // Note: We do not perform the check for claimed airdrop here
+            // if (data.code === 0) {
+            //     // Check if the user has already claimed the airdrop
+            //     const airdropCheck = await checkIfClaimedAirdrop(fullAddress);
+            //     if (airdropCheck.success) {
+            //         console.log('User has already claimed the airdrop');
+            //         updateProgressBar(100, 'red');
+            //         displayMessage('You have already claimed the airdrop with this user', 'info');
+            //         return;
+            //     } else {
+            //         console.log('User has not claimed the airdrop yet');
+            //     }
+            // }
 
             // Awaiting the result of Twitter interaction checks
             if (scheduledDelivery.toISOString() === "1970-01-01T08:00:00Z") {
@@ -603,23 +627,23 @@ async function logAirdrop(address) {
     }
 }
 
-async function checkIfClaimedAirdrop(address) {
-    try {
-        const response = await fetch(`${authWebAddress}/check-airdrop?address=${address}`, { credentials: 'include' });
-        // Use handleResponse to process the fetch response
-        const result = await handleResponse(response);
+// async function checkIfClaimedAirdrop(address) {
+//     try {
+//         const response = await fetch(`${authWebAddress}/check-airdrop?address=${address}`, { credentials: 'include' });
+//         // Use handleResponse to process the fetch response
+//         const result = await handleResponse(response);
 
-        // Now proceed with your business logic
-        if (result.data.hasClaimed) {
-            return { success: true, error: false, message: 'All checks passed!' };
-        } else {
-            return { success: false, error: false, message: 'Airdrop has not been claimed.' };
-        }
-    } catch (error) {
-        console.error('Failed:', error.message);
-        throw error;
-    }
-}
+//         // Now proceed with your business logic
+//         if (result.data.hasClaimed) {
+//             return { success: true, error: false, message: 'All checks passed!' };
+//         } else {
+//             return { success: false, error: false, message: 'Airdrop has not been claimed.' };
+//         }
+//     } catch (error) {
+//         console.error('Failed:', error.message);
+//         throw error;
+//     }
+// }
 
 async function checkIfPurchased(address) {
     try {
