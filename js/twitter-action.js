@@ -1,5 +1,5 @@
 let authWebAddress = null;
-let retweetEnabled, retweet2Enabled, likeEnabled, followEnabled;
+let actionsEnabled = {};
 
 window.addEventListener('message', function(event) {
     // Process the message data
@@ -44,17 +44,22 @@ document.addEventListener('DOMContentLoaded', function () {
             authWebAddress = jsonConfig.authWebAddress;
 
             // Access additional properties if needed
-            retweetEnabled = jsonConfig.retweetEnabled;
-            retweet2Enabled = jsonConfig.retweet2Enabled;
-            likeEnabled = jsonConfig.likeEnabled;
-            followEnabled = jsonConfig.followEnabled;
+            actionsEnabled = {
+                retweet: jsonConfig.retweetEnabled,
+                retweet2: jsonConfig.retweet2Enabled,
+                like: jsonConfig.likeEnabled,
+                follow: jsonConfig.followEnabled
+            };
 
             // Additional validation can be performed here as needed
             if (!authWebAddress) {
                 throw new Error("Required configuration values (authWebAddress) are missing.");
             }
 
-            if (!retweetEnabled || !retweet2Enabled || !likeEnabled || !followEnabled) {
+            // Check if any action is not enabled
+            const isAnyActionDisabled = Object.entries(actionsEnabled).some(isEnabled => !isEnabled);
+
+            if (isAnyActionDisabled) {
                 throw new Error("Required configuration values (retweetEnabled or retweet2Enabled or likeEnabled or followEnabled) are missing.");
             }
 
@@ -107,19 +112,19 @@ async function checkAuthStatus() {
         console.log('Received authentication status:', result);
 
         if (result.data.isAuthenticated) {
+            // Map of enabled flags to their corresponding element IDs
+            const actionElementMap = {
+                retweet: 'retweet-section',
+                retweet2: 'retweet-section-2',
+                like: 'like-section',
+                follow: 'follow-section'
+            };
             // Remove the disabled class from the action buttons
-            if (retweetEnabled === "true") {
-                document.getElementById('retweet-section').classList.remove('disabled');
-            }
-            if (retweet2Enabled === "true") {
-                document.getElementById('retweet-section-2').classList.remove('disabled');
-            }
-            if (likeEnabled === "true") {
-                document.getElementById('like-section').classList.remove('disabled');
-            }
-            if (followEnabled === "true") {
-                document.getElementById('follow-section').classList.remove('disabled');
-            }
+            Object.entries(actionsEnabled).forEach(([action, isEnabled]) => {
+                if (isEnabled === "true") {
+                    document.getElementById(actionElementMap[action]).classList.remove('disabled');
+                }
+            });
             console.log('View unlocked successfully.');
 
             // Hide the `twitterAuth` container
@@ -135,19 +140,16 @@ async function checkAuthStatus() {
 }
 
 function displayInfo(action, message, type) {
-    let elementId;
+    // Map the action to the corresponding element ID
+    const actionElementMap = {
+        'authentication': 'twitterAuthMessage',
+        'retweet': 'repostMessage',
+        'like': 'likeMessage',
+        'retweet-2': 'repostMessage2',
+        'follow-us': 'followMessage'
+    };
 
-    if (action === 'authentication') {
-        elementId = 'twitterAuthMessage';
-    } else if (action === 'retweet') {
-        elementId = 'repostMessage';
-    } else if (action === 'like') {
-        elementId = 'likeMessage';
-    } else if (action === 'retweet-2') {
-        elementId = 'repostMessage2';
-    } else if (action === 'follow-us') {
-        elementId = 'followMessage';
-    }
+    let elementId = actionElementMap[action];
 
     // Set the message to the appropriate element and add relevant class
     if (elementId) {
@@ -245,16 +247,20 @@ async function handleAction(action) {
 }
 
 function checkAllActionsDisabled() {
-    const isRetweetDisabled = document.getElementById('retweet-section').classList.contains('disabled');
-    const isLikeDisabled = document.getElementById('like-section').classList.contains('disabled');
-    const isRetweet2Disabled = document.getElementById('retweet-section-2').classList.contains('disabled');
-    const isFollowUsDisabled = document.getElementById('follow-section').classList.contains('disabled');
-    if (isRetweetDisabled && isLikeDisabled && isRetweet2Disabled && isFollowUsDisabled) {
+    const actionElementMap = {
+        retweet: 'retweet-section',
+        like: 'like-section',
+        retweet2: 'retweet-section-2',
+        follow: 'follow-section'
+    };
+
+    const areAllActionsDisabled = Object.values(actionElementMap).every(id => document.getElementById(id).classList.contains('disabled'));
+
+    if (areAllActionsDisabled) {
+        Object.values(actionElementMap).forEach(id => {
+            document.getElementById(id).style.display = 'none';
+        });
         document.getElementById('promotionCodeInput').style.display = 'block';
-        document.getElementById('retweet-section').style.display = 'none';
-        document.getElementById('like-section').style.display = 'none';
-        document.getElementById('retweet-section-2').style.display = 'none';
-        document.getElementById('follow-section').style.display = 'none';
     }
 }
 

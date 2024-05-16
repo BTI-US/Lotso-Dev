@@ -7,7 +7,7 @@ import { Fireworks } from 'fireworks-js';
 // 1. Get a project ID at https://cloud.walletconnect.com
 let projectId, activeNetwork, contractAddress, authWebAddress, turnstileSiteKey;
 let tweetId, tweetId2, userName;
-let checkRetweetEnabled, checkRetweet2Enabled, checkLikeEnabled;
+let checkActionsEnabled = {};
 
 // Updated contract ABI to include getAirdropAmount function
 const airdropAcquireABI = [
@@ -64,9 +64,11 @@ try {
     userName = jsonConfig.userName;
 
     // Access additional properties for Twitter checks and actions
-    checkRetweetEnabled = jsonConfig.checkRetweetEnabled;
-    checkRetweet2Enabled = jsonConfig.checkRetweet2Enabled;
-    checkLikeEnabled = jsonConfig.checkLikeEnabled;
+    checkActionsEnabled = {
+        checkRetweet: jsonConfig.checkRetweetEnabled,
+        checkRetweet2: jsonConfig.checkRetweet2Enabled,
+        checkLike: jsonConfig.checkLikeEnabled
+    };
 
     // Additional validation can be performed here as needed
     if (!activeNetwork || !contractAddress || !authWebAddress || !turnstileSiteKey || !projectId) {
@@ -77,8 +79,8 @@ try {
         throw new Error("Required configuration values (tweetId or tweetId2 or userName) are missing.");
     }
 
-    if (!checkRetweetEnabled || !checkRetweet2Enabled || !checkLikeEnabled) {
-        throw new Error("Required configuration values (checkRetweetEnabled or checkRetweet2Enabled or checkLikeEnabled) are missing.");
+    if (Object.values(checkActionsEnabled).includes(false)) {
+        throw new Error("Required configuration values (checkRetweetEnabled, checkRetweet2Enabled, or checkLikeEnabled) are missing.");
     }
 } catch (error) {
     // Check if the error is due to missing file
@@ -101,14 +103,17 @@ const metadata = {
 
 let chains;
 
-if (activeNetwork === 'baseMainnet') {
-    chains = [base];
-} else if (activeNetwork === 'baseSepolia') {
-    chains = [baseSepolia];
-} else if (activeNetwork === 'sepolia') {
-    chains = [sepolia];
-} else if (activeNetwork === 'ganache') {
-    chains = [ganacheTestChain];
+const networkChainMap = {
+    // Network name: [chain_config]
+    baseMainnet: [base],
+    baseSepolia: [baseSepolia],
+    sepolia: [sepolia],
+    ganache: [ganacheTestChain]
+};
+
+// Check if the active network is in the networkChainMap
+if (Object.prototype.hasOwnProperty.call(networkChainMap, activeNetwork)) {
+    chains = networkChainMap[activeNetwork];
 } else {
     console.log('Invalid network selection');
     process.exit(1);
@@ -666,43 +671,24 @@ async function checkIfPurchased(address) {
 async function checkTwitterInteractions(tweetId, tweetId2) {
     try {
         let step_cnt = 0;
-        if (checkRetweet2Enabled === "true") {
-            const isRetweeted2 = await checkRetweet(tweetId2);
-            console.log('Retweet check:', isRetweeted2);
-            if (!isRetweeted2) {
-                console.log('Tweet2 has not been retweeted by the user.');
-            } else {
-                step_cnt++;
+        const actionsMap = {
+            checkRetweet2: { action: 'retweet', responseKey: 'isRetweeted', tweetId: tweetId2, message: 'Tweet2 has not been retweeted by the user.' },
+            checkLike: { action: 'like', responseKey: 'isLiked', tweetId: tweetId, message: 'Tweet is not liked by the user.' },
+            checkRetweet: { action: 'retweet', responseKey: 'isRetweeted', tweetId: tweetId, message: 'Tweet has not been retweeted by the user.' },
+            //checkBookmark: { action: 'bookmark', responseKey: 'isBookmarked', tweetId: tweetId, message: 'Tweet has not been bookmarked by the user.' }
+        };
+        
+        for (let action in actionsMap) {
+            if (checkActionsEnabled[action] === "true") {
+                const isActionDone = await checkAction(actionsMap[action].action, actionsMap[action].tweetId, actionsMap[action].responseKey);
+                console.log(`${action} check:`, isActionDone);
+                if (!isActionDone) {
+                    console.log(actionsMap[action].message);
+                } else {
+                    step_cnt++;
+                }
             }
         }
-
-        if (checkLikeEnabled === "true") {
-            const isLiked = await checkLike(tweetId);
-            console.log('Like check:', isLiked);
-            if (!isLiked) {
-                console.log('Tweet is not liked by the user.');
-            } else {
-                step_cnt++;
-            }
-        }
-
-        if (checkRetweetEnabled === "true") {
-            const isRetweeted = await checkRetweet(tweetId);
-            console.log('Retweet check:', isRetweeted);
-            if (!isRetweeted) {
-                console.log('Tweet has not been retweeted by the user.');
-            } else {
-                step_cnt++;
-            }
-        }
-
-        // const isBookmarked = await checkBookmark(tweetId);
-        // console.log('Bookmark check:', isBookmarked);
-        // if (!isBookmarked) {
-        //     console.log('Tweet has not been bookmarked by the user.');
-        // } else {
-        //     step_cnt++;
-        // }
 
         console.log('Checks passed steps: ', step_cnt);
         if (step_cnt === 0) {
@@ -716,28 +702,10 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
     }
 }
 
-// function checkFollow(targetUserName) {
-//     return fetch(`${authWebAddress}/check-follow?userName=${targetUserName}`, { credentials: 'include' })
-//         .then(handleResponse)
-//         .then(response => response.data.isFollowing);
-// }
-
-// function checkBookmark(tweetId) {
-//     return fetch(`${authWebAddress}/check-bookmark?tweetId=${tweetId}`, { credentials: 'include' })
-//         .then(handleResponse)
-//         .then(response => response.data.isBookmarked);
-// }
-
-function checkLike(tweetId) {
-    return fetch(`${authWebAddress}/check-like?tweetId=${tweetId}`, { credentials: 'include' })
+function checkAction(action, tweetId, responseKey) {
+    return fetch(`${authWebAddress}/check-${action}?tweetId=${tweetId}`, { credentials: 'include' })
         .then(handleResponse)
-        .then(response => response.data.isLiked);
-}
-
-function checkRetweet(tweetId) {
-    return fetch(`${authWebAddress}/check-retweet?tweetId=${tweetId}`, { credentials: 'include' })
-        .then(handleResponse)
-        .then(response => response.data.isRetweeted);
+        .then(response => response.data[responseKey]);
 }
 
 function handleResponse(response) {
