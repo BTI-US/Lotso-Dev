@@ -196,8 +196,8 @@ async function checkRewardAmount(address) {
         }
         const data = await response.json();
 
-        if (data.code === 0 && data.data.rewardAmount != null) {
-            return data.data.rewardAmount;
+        if (data.code === 0 && data.data.totalRewardAmount != null) {
+            return data.data.totalRewardAmount;
         }
         
         throw new Error(data.error || data.message || 'Unknown error occurred, code:', data.code);
