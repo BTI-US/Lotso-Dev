@@ -208,7 +208,7 @@ async function handleAction(action) {
 
         if (!actionResponse.ok) {
             const responseBody = await actionResponse.json();
-            const responseData = JSON.parse(responseBody.data);
+            const responseData = responseBody.data;
             const errorMessage = responseData.errors[0].message;
             throw new Error(`Failed to execute ${action}. Status: ${actionResponse.status}. Error: ${errorMessage}`);
         }
