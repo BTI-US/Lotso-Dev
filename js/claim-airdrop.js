@@ -6,7 +6,7 @@ import { Fireworks } from 'fireworks-js';
 
 // 1. Get a project ID at https://cloud.walletconnect.com
 let projectId, activeNetwork, contractAddress, authWebAddress, turnstileSiteKey;
-let tweetId, tweetId2, userName;
+let tweetId, tweetMessage, userName;
 let checkActionsEnabled = {};
 
 // Updated contract ABI to include getAirdropAmount function
@@ -60,13 +60,13 @@ try {
     turnstileSiteKey = jsonConfig.turnstileSiteKey;
     projectId = jsonConfig.projectId;
     tweetId = jsonConfig.tweetId;
-    tweetId2 = jsonConfig.tweetId2;
+    tweetMessage = jsonConfig.tweetMessage;
     userName = jsonConfig.userName;
 
     // Access additional properties for Twitter checks and actions
     checkActionsEnabled = {
         checkRetweet: jsonConfig.checkRetweetEnabled,
-        checkRetweet2: jsonConfig.checkRetweet2Enabled,
+        checkTweet: jsonConfig.checkTweetEnabled,
         checkLike: jsonConfig.checkLikeEnabled
     };
 
@@ -75,12 +75,12 @@ try {
         throw new Error("Required configuration values (activeNetwork or contractAddress or authWebAddress or turnstileSiteKey or projectId) are missing.");
     }
 
-    if (!tweetId || !userName || !tweetId2) {
-        throw new Error("Required configuration values (tweetId or tweetId2 or userName) are missing.");
+    if (!tweetId || !userName || !tweetMessage) {
+        throw new Error("Required configuration values (tweetId or tweetMessage or userName) are missing.");
     }
 
     if (Object.values(checkActionsEnabled).includes(false)) {
-        throw new Error("Required configuration values (checkRetweetEnabled, checkRetweet2Enabled, or checkLikeEnabled) are missing.");
+        throw new Error("Required configuration values (checkRetweetEnabled, checkTweetEnabled, or checkLikeEnabled) are missing.");
     }
 } catch (error) {
     // Check if the error is due to missing file
@@ -448,7 +448,7 @@ async function checkUserEligibility() {
         }
 
         // Check if the user has interacted with the required steps
-        const twitterCheck = await checkTwitterInteractions(tweetId, tweetId2);
+        const twitterCheck = await checkTwitterInteractions(tweetId);
         if (!twitterCheck.success) {
             console.log('Twitter interaction checks failed:', twitterCheck.message);
             updateProgressBar(100, 'red');
@@ -668,27 +668,37 @@ async function checkIfPurchased(address) {
     }
 }
 
-async function checkTwitterInteractions(tweetId, tweetId2) {
+async function checkTwitterInteractions(tweetId) {
     try {
         let step_cnt = 0;
         const actionsMap = {
-            checkRetweet2: { action: 'retweet', responseKey: 'isRetweeted', tweetId: tweetId2, message: 'Tweet2 has not been retweeted by the user.' },
-            checkLike: { action: 'like', responseKey: 'isLiked', tweetId: tweetId, message: 'Tweet is not liked by the user.' },
             checkRetweet: { action: 'retweet', responseKey: 'isRetweeted', tweetId: tweetId, message: 'Tweet has not been retweeted by the user.' },
+            checkTweet: { action: 'tweet', responseKey: 'isTweeted', tweetId: null, message: 'Tweet is not posted by the user.' },
+            checkLike: { action: 'like', responseKey: 'isLiked', tweetId: tweetId, message: 'Tweet is not liked by the user.' },
             //checkBookmark: { action: 'bookmark', responseKey: 'isBookmarked', tweetId: tweetId, message: 'Tweet has not been bookmarked by the user.' }
         };
-        
+        let promises = [];
         for (let action in actionsMap) {
             if (checkActionsEnabled[action] === "true") {
-                const isActionDone = await checkAction(actionsMap[action].action, actionsMap[action].tweetId, actionsMap[action].responseKey);
-                console.log(`${action} check:`, isActionDone);
-                if (!isActionDone) {
-                    console.log(actionsMap[action].message);
-                } else {
-                    step_cnt++;
+                let url = `${authWebAddress}/check-${actionsMap[action].action}`;
+                if (actionsMap[action].tweetId !== null) {
+                    url += `?tweetId=${actionsMap[action].tweetId}`;
                 }
+                let promise = fetch(url, { credentials: 'include' })
+                    .then(handleResponse)
+                    .then(response => {
+                        console.log(`${action} check:`, response.data[actionsMap[action].responseKey]);
+                        if (!response.data[actionsMap[action].responseKey]) {
+                            console.log(actionsMap[action].message);
+                        } else {
+                            step_cnt++;
+                        }
+                    });
+                promises.push(promise);
             }
         }
+
+        await Promise.all(promises);
 
         console.log('Checks passed steps: ', step_cnt);
         if (step_cnt === 0) {
@@ -700,12 +710,6 @@ async function checkTwitterInteractions(tweetId, tweetId2) {
         console.error('Failed:', error.message);
         throw error;
     }
-}
-
-function checkAction(action, tweetId, responseKey) {
-    return fetch(`${authWebAddress}/check-${action}?tweetId=${tweetId}`, { credentials: 'include' })
-        .then(handleResponse)
-        .then(response => response.data[responseKey]);
 }
 
 function handleResponse(response) {

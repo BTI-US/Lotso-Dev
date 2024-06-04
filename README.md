@@ -212,14 +212,14 @@ To successfully deploy and run the project locally, you need to create a `contra
          "emailServiceID": "Your_Email_Service_ID",
          "emailTemplate": "Your_Email_Template",
          "tweetId": "Your_Tweet_Id",
-         "tweetId2": "Your_Second_Tweet_Id",
+         "tweetMessage": "Your_Tweet_Message",
          "userName": "Your_User_Name",
-         "checkRetweetEnabled": "false",
-         "checkRetweet2Enabled": "false",
+         "checkRetweetEnabled": "true",
+         "checkTweetEnabled": "true",
          "checkLikeEnabled": "true",
          "checkFollowEnabled": "true",
-         "retweetEnabled": "false",
-         "retweet2Enabled": "false",
+         "retweetEnabled": "true",
+         "tweetEnabled": "true",
          "likeEnabled": "true",
          "followEnabled": "true"
      }
@@ -264,14 +264,14 @@ Here is an example of what your `contract-config.json` might look like for the B
     "emailServiceID": "lotso_email",
     "emailTemplate": "lotso_email_template",
     "tweetId": "0x123abc456def789ghi",
-    "tweetId2": "0x123abc456def789ghi",
+    "tweetMessage": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     "userName": "0x123abc456def789ghi",
     "checkRetweetEnabled": "false",
-    "checkRetweet2Enabled": "false",
+    "checkTweetEnabled": "false",
     "checkLikeEnabled": "true",
     "checkFollowEnabled": "true",
-    "retweetEnabled": "false",
-    "retweet2Enabled": "false",
+    "retweetEnabled": "true",
+    "tweetEnabled": "true",
     "likeEnabled": "true",
     "followEnabled": "true"
 }
@@ -299,7 +299,7 @@ This section provides guidance on deploying your project to GitHub Pages and Clo
    |**`EMAIL_SERVICE_ID`**|Essential|The service ID for sending emails|
    |**`EMAIL_TEMPLATE`**|Essential|The email template name|
    |**`TWEET_ID`**|Essential|The tweet ID for the target tweet|
-   |**`TWEET_ID2`**|Essential|The second tweet ID for the target tweet|
+   |**`TWEET_MESSAGE`**|Essential|The message for the target tweet|
    |**`USER_NAME`**|Essential|The user name for the target user|
    |**`CHECK_RETWEET_ENABLED`**|Optional|Indicates if the retweet check is enabled, "false" by default|
    |**`CHECK_RETWEET_2_ENABLED`**|Optional|Indicates if the retweet check is enabled, "false" by default|

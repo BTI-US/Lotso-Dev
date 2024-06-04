@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Access additional properties if needed
             actionsEnabled = {
                 retweet: jsonConfig.retweetEnabled,
-                retweet2: jsonConfig.retweet2Enabled,
+                tweet: jsonConfig.tweetEnabled,
                 like: jsonConfig.likeEnabled,
                 follow: jsonConfig.followEnabled
             };
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const isAnyActionDisabled = Object.entries(actionsEnabled).some(isEnabled => !isEnabled);
 
             if (isAnyActionDisabled) {
-                throw new Error("Required configuration values (retweetEnabled or retweet2Enabled or likeEnabled or followEnabled) are missing.");
+                throw new Error("Required configuration values (retweetEnabled or tweetEnabled or likeEnabled or followEnabled) are missing.");
             }
 
             // Check if the user connect the wallet
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 window.open(authUrl, 'TwitterLogin', `width=${windowWidth},height=${windowHeight},left=${left},top=${top},scrollbars=yes`);
             });
             
-            ['retweet', 'like', 'retweet-2', 'follow-us'].forEach(action => {
+            ['retweet', 'like', 'tweet', 'follow-us'].forEach(action => {
                 document.getElementById(action).addEventListener('click', () => {
                     handleAction(action);
                 });
@@ -115,7 +115,7 @@ async function checkAuthStatus() {
             // Map of enabled flags to their corresponding element IDs
             const actionElementMap = {
                 retweet: 'retweet-section',
-                retweet2: 'retweet-section-2',
+                tweet: 'tweet-section',
                 like: 'like-section',
                 follow: 'follow-section'
             };
@@ -145,7 +145,7 @@ function displayInfo(action, message, type) {
         'authentication': 'twitterAuthMessage',
         'retweet': 'repostMessage',
         'like': 'likeMessage',
-        'retweet-2': 'repostMessage2',
+        'tweet': 'postMessage',
         'follow-us': 'followMessage'
     };
 
@@ -178,7 +178,7 @@ async function handleAction(action) {
     try {
         const actionConfig = {
             'follow-us': { configKey: 'userName', actionType: 'follow-us', info: 'follow-info', progress: 'follow-progress', section: 'follow-section' },
-            'retweet-2': { configKey: 'tweetId2', actionType: 'retweet', info: 'retweet-2-info', progress: 'retweet-2-progress', section: 'retweet-section-2' },
+            'tweet': { configKey: 'tweetMessage', actionType: 'tweet', info: 'tweet-info', progress: 'tweet-progress', section: 'tweet-section' },
             'retweet': { configKey: 'tweetId', actionType: 'retweet', info: 'retweet-info', progress: 'retweet-progress', section: 'retweet-section' },
             'like': { configKey: 'tweetId', actionType: 'like', info: 'like-info', progress: 'like-progress', section: 'like-section' },
         };
@@ -195,16 +195,25 @@ async function handleAction(action) {
         if (!configValue) {
             throw new Error(`Required configuration value '${configKey}' is missing.`);
         }
-        const queryParams = `${configKey}=${encodeURIComponent(configValue)}`;
         const actionType = actionConfig[action].actionType;
-
-        const actionResponse = await fetch(`${authWebAddress}/${actionType}?${queryParams}`, {
-            method: 'GET',
+        let fetchOptions = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'include', // Ensure cookies are included with the request
-        });
+            credentials: 'include', // Ensure cookies are included the request
+        };
+        
+        let url = `${authWebAddress}/${actionType}`;
+        
+        if (actionType === 'tweet') {
+            fetchOptions.method = 'POST';
+            fetchOptions.body = JSON.stringify({ [configKey]: configValue });
+        } else {
+            fetchOptions.method = 'GET';
+            url += `?${configKey}=${encodeURIComponent(configValue)}`; // Include queryParams in the URL for GET requests
+        }
+
+        const actionResponse = await fetch(url, fetchOptions);
 
         if (!actionResponse.ok) {
             const responseBody = await actionResponse.json();
@@ -250,7 +259,7 @@ function checkAllActionsDisabled() {
     const actionElementMap = {
         retweet: 'retweet-section',
         like: 'like-section',
-        retweet2: 'retweet-section-2',
+        tweet: 'tweet-section',
         follow: 'follow-section'
     };
 
