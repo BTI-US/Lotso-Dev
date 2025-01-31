@@ -1,7 +1,6 @@
 {
   "name": "Lotso",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "git@github.com:BTI-US/Lotso.git",
   "author": "Phillweston <2436559745@qq.com>",
   "license": "MIT",
