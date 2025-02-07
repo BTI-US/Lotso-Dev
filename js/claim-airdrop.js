@@ -1,5 +1,6 @@
-import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
-import { base, baseSepolia, sepolia } from 'viem/chains';
+import { createAppKit } from "@reown/appkit";
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import { base, baseSepolia, sepolia } from "@reown/appkit/networks";
 import { ganacheTestChain } from './ganache-testnet';
 import { reconnect, watchAccount, disconnect, getAccount, readContract, writeContract, waitForTransactionReceipt } from '@wagmi/core';
 import { Fireworks } from 'fireworks-js';
@@ -119,23 +120,35 @@ if (Object.prototype.hasOwnProperty.call(networkChainMap, activeNetwork)) {
     process.exit(1);
 }
 
-export const config = defaultWagmiConfig({
-    chains,
+const wagmiAdapter = new WagmiAdapter({
+    ssr: true,
+    networks: chains,
     projectId,
-    metadata,
 });
+
+const config = wagmiAdapter.wagmiConfig;
+
 reconnect(config);
-console.log("Wagmi Config is:" + config);
+//console.log("Wagmi Config is:" + config);
 
 // 3. Create modal
-const modal = createWeb3Modal({
-    wagmiConfig: config,
+const modal = createAppKit({
+    adapters: [wagmiAdapter],
     projectId,
-    enableAnalytics: true, // Optional - defaults to your Cloud configuration
-    enableOnramp: true, // Optional - false as default
-    themeVariables: {
-        '--w3m-z-index': 999
-    }
+    metadata,
+    enableWalletConnect: true, // Optional - defaults to your Cloud configuration
+    debug: false, // Optional - defaults to false
+    allWallets: 'SHOW',
+    defaultNetwork: chains,
+    allowUnsupportedChain: true,
+    features: {
+        analytics: true, // Optional - defaults to your Cloud configuration
+        swaps: true,
+        onramp: true, // Optional - false as default
+        legalCheckbox: true,
+    },
+    themeMode: 'dark',
+    themeVariables: {}
 });
 
 function connect(param = 'dark') {
