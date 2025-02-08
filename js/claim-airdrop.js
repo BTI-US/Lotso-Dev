@@ -129,11 +129,11 @@ const wagmiAdapter = new WagmiAdapter({
 const config = wagmiAdapter.wagmiConfig;
 
 reconnect(config);
-//console.log("Wagmi Config is:" + config);
 
 // 3. Create modal
 const modal = createAppKit({
     adapters: [wagmiAdapter],
+    networks: [base, baseSepolia, sepolia, ganacheTestChain],
     projectId,
     metadata,
     enableWalletConnect: true, // Optional - defaults to your Cloud configuration
