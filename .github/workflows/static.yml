@@ -50,25 +50,25 @@ jobs:
       - name: Build Project
         run: npm run build
         env:
-          CLOUDFLARE_ENV: ${{ secrets.CLOUDFLARE_ENV || 'true' }}
+          CLOUDFLARE_ENV: ${{ vars.CLOUDFLARE_ENV || 'true' }}
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          ACTIVE_NETWORK: ${{ secrets.ACTIVE_NETWORK }}
-          CONTRACT_ADDRESS: ${{ secrets.CONTRACT_ADDRESS }}
-          AUTH_WEB_ADDRESS: ${{ secrets.AUTH_WEB_ADDRESS }}
+          ACTIVE_NETWORK: ${{ vars.ACTIVE_NETWORK }}
+          CONTRACT_ADDRESS: ${{ vars.CONTRACT_ADDRESS }}
+          AUTH_WEB_ADDRESS: ${{ vars.AUTH_WEB_ADDRESS }}
           TURNSTILE_SITE_KEY: ${{ secrets.TURNSTILE_SITE_KEY }}
           EMAIL_TOKEN: ${{ secrets.EMAIL_TOKEN }}
-          EMAIL_SERVICE_ID: ${{ secrets.EMAIL_SERVICE_ID }}
-          EMAIL_TEMPLATE: ${{ secrets.EMAIL_TEMPLATE }}
-          TWEET_ID: ${{ secrets.TWEET_ID }}
-          TWEET_ID_2: ${{ secrets.TWEET_ID_2 }}
-          USER_NAME: ${{ secrets.USER_NAME }}
-          CHECK_RETWEET_ENABLED: ${{ secrets.CHECK_RETWEET_ENABLED || 'false' }}
-          CHECK_RETWEET_2_ENABLED: ${{ secrets.CHECK_RETWEET_2_ENABLED || 'false' }}
-          CHECK_LIKE_ENABLED: ${{ secrets.CHECK_LIKE_ENABLED || 'true' }}
-          RETWEET_ENABLED: ${{ secrets.RETWEET_ENABLED || 'false' }}
-          RETWEET_2_ENABLED: ${{ secrets.RETWEET_2_ENABLED || 'false' }}
-          LIKE_ENABLED: ${{ secrets.LIKE_ENABLED || 'true' }}
-          FOLLOW_ENABLED: ${{ secrets.FOLLOW_ENABLED || 'true' }}
+          EMAIL_SERVICE_ID: ${{ vars.EMAIL_SERVICE_ID }}
+          EMAIL_TEMPLATE: ${{ vars.EMAIL_TEMPLATE }}
+          TWEET_ID: ${{ vars.TWEET_ID }}
+          TWEET_MESSAGE: ${{ vars.TWEET_MESSAGE }}
+          USER_NAME: ${{ vars.USER_NAME }}
+          CHECK_RETWEET_ENABLED: ${{ vars.CHECK_RETWEET_ENABLED || 'false' }}
+          CHECK_TWEET_ENABLED: ${{ vars.CHECK_TWEET_ENABLED || 'false' }}
+          CHECK_LIKE_ENABLED: ${{ vars.CHECK_LIKE_ENABLED || 'true' }}
+          RETWEET_ENABLED: ${{ vars.RETWEET_ENABLED || 'false' }}
+          TWEET_ENABLED: ${{ vars.TWEET_ENABLED || 'false' }}
+          LIKE_ENABLED: ${{ vars.LIKE_ENABLED || 'true' }}
+          FOLLOW_ENABLED: ${{ vars.FOLLOW_ENABLED || 'true' }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
