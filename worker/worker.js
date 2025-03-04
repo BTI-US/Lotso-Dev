@@ -9,13 +9,13 @@ async function handleRequest(request) {
 
     // Check the request hostname and set the corresponding backend host and port
     if (url.hostname === 'api.btiplatform.com') {
-        url.hostname = 'host.btiplatform.com';
+        url.hostname = 'btiplatform.com';
         url.port = '__TWITTER_SERVER_HTTP_PORT__';
     } else if (url.hostname === 'api-dev.btiplatform.com') {
-        url.hostname = 'host.btiplatform.com';
+        url.hostname = 'btiplatform.com';
         url.port = '__TWITTER_SERVER_HTTP_PORT2__';
     } else if (url.hostname === 'ganache.btiplatform.com') {
-        url.hostname = 'host.btiplatform.com';
+        url.hostname = 'btiplatform.com';
         url.port = '__GANACHE_HTTP_PORT__';
     }
 
